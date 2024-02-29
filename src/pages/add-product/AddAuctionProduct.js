@@ -94,7 +94,7 @@ const AddAuctionProduct = () => {
         formData.append('gameName', auctionProductList.gameName)
         formData.append('name', auctionProductList.name)
         formData.append('defaultPrice', auctionProductList.defaultPrice)
-        formData.append('defaultd', auctionProductList.defaultBid)
+        formData.append('defaultBid', auctionProductList.defaultBid)
         formData.append('startTime', auctionProductList.startTime)
         formData.append('endTime', auctionProductList.endTime)
         formData.append('file', auctionProductList.information)
