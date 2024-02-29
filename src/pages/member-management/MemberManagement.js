@@ -74,7 +74,7 @@ const MemberManagement = () => {
             <MetaHeader title={`จัดการบัญชีผู้ใช้`} />
             <Navigation />
             <TitleBox title={'จัดการบัญชีผู้ใช้'} />
-                <div className='flex flex-row justify-end px-10 my-3'>
+                <div className='flex flex-row justify-end px-36 my-3'>
                     <label className="flex items-center self-end gap-2 input input-bordered input-md size-fit">
                         <Icon icon={"material-symbols:search"} className='text-xl' />
                         <input type="text" placeholder="ชื่อหรือบัญชีผู้ใช้" onChange={filterDataMember} />

@@ -1,22 +1,68 @@
 import MetaHeader from '../../components/meta-header/MetaHeader'
 import Navigation from '../../components/navigation/Navigation'
 import TitleBox from '../../components/title-box/TitleBox'
-import { useEffect } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Icon } from '@iconify/react'
+import Swal from 'sweetalert2'
+import axios from 'axios'
 
 const TopUp = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
+    const [giftTrueMoney, setGiftTrueMoney] = useState('')
 
-    useEffect(() => {
-        !isLogin.status && navigate('/')
-        isLogin.status && isLogin.payload.role !== 0 && navigate('/')
-    }, [isLogin, navigate])
+    const alertSuccess = (title, text, confirmButtonText) => {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: 'success',
+            confirmButtonText: confirmButtonText
+        })
+    }
+
+    const alertError = (title, text, confirmButtonText) => {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: 'error',
+            confirmButtonText: confirmButtonText
+        })
+    }
+
+    const alertWarning = (title, text, confirmButtonText) => {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: 'warning',
+            confirmButtonText: confirmButtonText
+        })
+    }
+
+    const handleTopUp = (event) => {
+        event.preventDefault()
+        if(isLogin.payload.role === 0){
+            axios.post(`${process.env.REACT_APP_API}/topup`, {email:isLogin.payload.email, giftTrueMoney:giftTrueMoney}, {
+                withCredentials: true
+            })
+            .then((response) => {
+                if(response.data.status){
+                    alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
+                }else{
+                    alertError('ผิดพลาด', response.data.payload, 'ตกลง')
+                }
+            })
+            .catch((error) => {
+                alertError('ผิดพลาด', `เติม Aysel ล้มเหลว6`, 'ตกลง')
+            })
+        }else{
+            alertWarning('คำเตือน', 'กรุณาเข้าสู่ระบบ', 'ตกลง')
+        }
+    }
 
     return (
-        <div className='mb-10'>
+        <div>
             <MetaHeader title={`เติมเงิน`} />
             <Navigation />
             <TitleBox title={'เติม Aysel'} />
@@ -29,19 +75,16 @@ const TopUp = () => {
             </div>
             <TitleBox title={'วิธีชำระเงิน'} />
             <div className='flex flex-col items-center justify-center mt-10 mx-60'>
-                <input type={'text'} placeholder={'กรุณากรอก URL'} className={'input w-full text-left border-none bg-shadow-grey text-shadow-black'} />
+                <input value={giftTrueMoney} onChange={(text) => {setGiftTrueMoney(text.target.value)}} type={'text'} placeholder={'กรุณากรอก URL'} className={'input w-full text-left border-none bg-shadow-grey text-shadow-black'} />
                 <Link to='/transaction' className='link mt-2 self-end text-shadow-accent hover:text-shadow-haccent'>ติดตามสถานะการเติมเงิน</Link>
-                <button type='button' className='btn w-max mt-5 border-none bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white rounded-box'>ยืนยัน</button>
+                <button type='button' onClick={handleTopUp} className='btn w-full mt-5 border-none bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>ยืนยัน</button>
             </div>
-            <div className='flex flex-row items-center mt-10 justify-evenly gap-10'>
+            <div className='flex flex-row items-center mt-10 justify-evenly'>
                 <button type='button' onClick={()=>document.getElementById('image-payment-method').showModal()} className='btn size-96 text-3xl border-none bg-shadow-primary hover:bg-shadow-primary text-shadow-accent'>ภาพวิธีการชำระเงิน</button>
                 <button type='button' onClick={()=>document.getElementById('video-payment-method').showModal()} className='btn size-96 text-3xl border-none bg-shadow-primary hover:bg-shadow-primary text-shadow-accent'>วิดีโอวิธีการชำระเงิน</button>
             </div>
-            <div>
-                
-            </div>
             <dialog id='image-payment-method' className='modal'>
-                <div className='modal-box w-svh max-w-5xl'>
+                <div className='modal-box'>
                     <span className="text-3xl">ภาพวิธีการชำระเงิน</span>
                     <img src={`${process.env.REACT_APP_PAYMENT_METHOD}payment-method.png`} alt='payment-method' className='size-full h-96' />
                     <div className="modal-action">
@@ -52,7 +95,7 @@ const TopUp = () => {
                 </div>
             </dialog>
             <dialog id='video-payment-method' className='modal'>
-                <div className='modal-box w-svh max-w-5xl'>
+                <div className='modal-box'>
                     <span className="text-3xl">วิดีโอวิธีการชำระเงิน</span>
                     <iframe src='https://www.youtube.com/embed/smdmEhkIRVc?si=mq3E5TZNz1Qi352p' title="payment-method-video" className='size-full h-96' frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                     <div className="modal-action">

@@ -80,7 +80,7 @@ const Analysis = () => {
                     <span>จำนวนสินค้าที่ขายไปทั้งหมด {product} ชิ้น</span>
                 </div>
                 <TitleBox title={'10 อันดับของขายดีประจำวัน'} />
-                <div className='mx-24 '>
+                <div className='mx-32 mb-10'>
                     <DataTable
                         columns={columns_top_product}
                         data={top_product}
@@ -101,7 +101,7 @@ const Analysis = () => {
                     <span>จำนวนสินค้าที่ขายไปทั้งหมด {product} ชิ้น</span>
                 </div>
                 <TitleBox title={'10 อันดับของขายดีประจำวัน'} />
-                <div className='mx-16'>
+                <div className='mx-16 mb-10'>
                     <DataTable
                         columns={columns_top_product}
                         data={top_product}

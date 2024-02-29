@@ -192,8 +192,8 @@ const ProductManagement = () => {
             <MetaHeader title={`จัดการสินค้า`} />
             <Navigation />
             <TitleBox title={'จัดการสินค้า'} name={'เพิ่มสินค้า'} path={'/add-general-product'} status={true} />
-            <div className='flex flex-row justify-end px-10 my-3'>
-                <label className="flex items-center self-end gap-2 input input-bordered input-md size-fit">
+            <div className='flex flex-row  justify-end px-36 my-3'>
+                <label className="flex items-center gap-2 input input-bordered input-md size-fit ">
                     <Icon icon={"material-symbols:search"} className='text-xl' />
                     <input type="text" placeholder="ชื่อสินค้า" onChange={filterDataGeneralProduct} />
                 </label>
@@ -210,7 +210,7 @@ const ProductManagement = () => {
             />
             </div>
             <TitleBox title={'จัดการสินค้ากาชาปอง'} name={'เพิ่มสินค้ากาชาปอง'} path={'/add-gacha-product'} status={true} />
-            <div className='flex flex-row justify-end px-10 my-3'>
+            <div className='flex flex-row justify-end px-36 my-3'>
                 <label className="flex items-center self-end gap-2 input input-bordered input-md size-fit">
                     <Icon icon={"material-symbols:search"} className='text-xl' />
                     <input type="text" placeholder="ชื่อสินค้า" onChange={filterDataGachaProduct} />
@@ -228,7 +228,7 @@ const ProductManagement = () => {
             />
             </div>
             <TitleBox title={'จัดการสินค้าประมูล'} name={'เพิ่มสินค้าประมูล'} path={'/add-auction-product'} status={true} />
-            <div className='flex flex-row justify-end px-10 my-3'>
+            <div className='flex flex-row justify-end px-36 my-3'>
                 <label className="flex items-center self-end gap-2 input input-bordered input-md size-fit">
                     <Icon icon={"material-symbols:search"} className='text-xl' />
                     <input type="text" placeholder="ชื่อสินค้า" onChange={filterDataAuctionProduct} />
