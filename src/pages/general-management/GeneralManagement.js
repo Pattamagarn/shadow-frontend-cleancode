@@ -7,6 +7,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Icon } from '@iconify/react'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 const GeneralManagement = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
@@ -21,6 +22,8 @@ const GeneralManagement = () => {
     const [dataGameName, setDataGameName] = useState([])
     const [dataGameNameSearch, setDataGameNameSearch] = useState([])
     const [dataPaymentMethod, setDataPaymentMethod] = useState([])
+    const [dataBannerActive, setDataBannerActive] = useState(true)
+    const [dataGameNameActive, setDataGameNameActive] = useState(true)
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/banner-select`)
@@ -32,7 +35,7 @@ const GeneralManagement = () => {
             }
         })
         .catch((error) => {})
-    }, [])
+    }, [dataBannerActive])
     
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/game-name-select`)
@@ -44,7 +47,7 @@ const GeneralManagement = () => {
             }
         })
         .catch((error) => {})
-    },[])
+    },[dataGameNameActive])
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/payment-method-select`)
@@ -57,6 +60,88 @@ const GeneralManagement = () => {
         })
         .catch((error) => {})
     }, [])
+
+    const handleDeleteBanner = (uuid) => {
+        Swal.fire({
+            title: 'คุณแน่ใจใช่ไหม?',
+            text: 'หากลบแล้วจะไม่สามารถกู้คืนได้',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3FC3EE',
+
+            cancelButtonColor: '#F27474',
+            confirmButtonText: 'ตกลง, ลบได้เลย',
+            cancelButtonText: 'ยกเลิก'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`${process.env.REACT_APP_API}/banner-delete/${uuid}`)
+                    .then((response) => {
+                        if(response.data.status){
+                            Swal.fire({
+                                title: 'สำเร็จ',
+                                text: response.data.payload,
+                                icon: 'success'
+                              });
+                            setDataBannerActive(!dataBannerActive)
+                        }else{
+                            Swal.fire({
+                                title: 'ผิดพลาด',
+                                text: response.data.payload,
+                                icon: 'error'
+                              });
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire({
+                            title: 'ผิดพลาด',
+                            text: 'ลบ Banner ล้มเหลว',
+                            icon: 'error'
+                          });
+                });
+            }
+          });
+    }
+
+    const handleDeleteGameName = (uuid) => {
+        Swal.fire({
+            title: 'คุณแน่ใจใช่ไหม?',
+            text: 'หากลบแล้วจะไม่สามารถกู้คืนได้',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3FC3EE',
+
+            cancelButtonColor: '#F27474',
+            confirmButtonText: 'ตกลง, ลบได้เลย',
+            cancelButtonText: 'ยกเลิก'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`${process.env.REACT_APP_API}/game-name-delete/${uuid}`)
+                    .then((response) => {
+                        if(response.data.status){
+                            Swal.fire({
+                                title: 'สำเร็จ',
+                                text: response.data.payload,
+                                icon: 'success'
+                              });
+                            setDataGameNameActive(!dataGameNameActive)
+                        }else{
+                            Swal.fire({
+                                title: 'ผิดพลาด',
+                                text: response.data.payload,
+                                icon: 'error'
+                              });
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire({
+                            title: 'ผิดพลาด',
+                            text: 'ลบชื่อเกมล้มเหลว',
+                            icon: 'error'
+                          });
+                });
+            }
+          });
+    }
 
     const columnsBanner = [
         {
@@ -77,7 +162,7 @@ const GeneralManagement = () => {
         {
             name: 'ลบ',
             selector: row => row.uuid,
-            cell: (row) => [<button key={row.uuid} type={`button`} className='btn border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>ลบ</button>]
+            cell: (row) => [<button onClick={() => handleDeleteBanner(row.uuid)} key={row.uuid} type={`button`} className='btn border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>ลบ</button>]
         }
     ]
 
@@ -136,16 +221,6 @@ const GeneralManagement = () => {
         })
         setDataGameNameSearch(newDataGameName)
     }
-    const handleDeleteGameName = (uuid) => {
-        // console.log(uuid);
-        axios.delete(`${process.env.REACT_APP_API}/game-name-delete/${uuid}`)
-            .then((response) => {
-                console.log('Data deleted successfully');
-            })
-            .catch((error) => {
-                console.error('Error deleting data:', error);
-            });
-    };
 
 
     return (
@@ -165,7 +240,7 @@ const GeneralManagement = () => {
             />
             </div>
             <TitleBox title={'จัดการชื่อเกม'} name={'เพิ่มชื่อเกม'} path={'/add-game-name'} status={true} />
-            <div className='flex flex-row justify-end px-36 my-3'>
+            <div className='flex flex-row justify-end my-3 px-36'>
                 <label className="flex items-center self-end gap-2 input input-bordered input-md size-fit">
                     <Icon icon={"material-symbols:search"} className='text-xl' />
                     <input type="text" placeholder="ชื่อเกม" onChange={filterDataGameName} />
