@@ -204,6 +204,7 @@ const ProductManagement = () => {
                 data={dataGeneralProductSearch.length <= 0 ? dataGeneralProduct : dataGeneralProductSearch}
                 pagination
                 striped
+                responsive
                 persistTableHead={true}
                 minRows={5}
     
@@ -222,6 +223,7 @@ const ProductManagement = () => {
                 data={dataGachaProductSearch.length <= 0 ? dataGachaProduct : dataGachaProductSearch}
                 pagination
                 striped
+                responsive
                 persistTableHead={true}
                 minRows={5}
     
@@ -240,6 +242,7 @@ const ProductManagement = () => {
                 data={dataAuctionProductSearch.length <= 0 ? dataAuctionProduct : dataAuctionProductSearch}
                 pagination
                 striped
+                responsive
                 persistTableHead={true}
                 minRows={5}
     
