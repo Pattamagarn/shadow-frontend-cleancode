@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import { Icon } from '@iconify/react'
+import Swal from 'sweetalert2'
 
 const ProductManagement = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
@@ -23,6 +24,9 @@ const ProductManagement = () => {
     const [dataGachaProductSearch, setDataGachaProductSearch] = useState([])
     const [dataAuctionProduct, setDataAuctionProduct] = useState([])
     const [dataAuctionProductSearch, setDataAuctionProductSearch] = useState([])
+    const [dataGeneralProductActive, setDataGeneralProductActive] = useState(true)
+    const [dataGachaProductActive, setDataGachaProductActive] = useState(true)
+    const [dataAuctionProductActive, setDataAuctionProductActive] = useState(true)
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-general-product`)
@@ -34,7 +38,7 @@ const ProductManagement = () => {
             }
         })
         .catch((error) => {})
-    }, [])
+    }, [dataGeneralProductActive])
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-gacha-product`)
@@ -46,7 +50,7 @@ const ProductManagement = () => {
             }
         })
         .catch((error) => {})
-    }, [])
+    }, [dataGachaProductActive])
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-auction-product`)
@@ -58,7 +62,130 @@ const ProductManagement = () => {
             }
         })
         .catch((error) => {})
-    }, [])
+    }, [dataAuctionProductActive])
+
+    const handleDeleteGeneralProduct = (uuid) => {
+        Swal.fire({
+            title: 'คุณแน่ใจใช่ไหม?',
+            text: 'หากลบแล้วจะไม่สามารถกู้คืนได้',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3FC3EE',
+
+            cancelButtonColor: '#F27474',
+            confirmButtonText: 'ตกลง, ลบได้เลย',
+            cancelButtonText: 'ยกเลิก'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`${process.env.REACT_APP_API}/delete-general-product/${uuid}`)
+                    .then((response) => {
+                        if(response.data.status){
+                            Swal.fire({
+                                title: 'สำเร็จ',
+                                text: response.data.payload,
+                                icon: 'success'
+                              });
+                            setDataGeneralProductActive(!dataGeneralProductActive)
+                        }else{
+                            Swal.fire({
+                                title: 'ผิดพลาด',
+                                text: response.data.payload,
+                                icon: 'error'
+                              });
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire({
+                            title: 'ผิดพลาด',
+                            text: 'ลบสินค้าล้มเหลว',
+                            icon: 'error'
+                          });
+                });
+            }
+          });
+    }
+
+    const handleDeleteGachaProduct = (uuid) => {
+        Swal.fire({
+            title: 'คุณแน่ใจใช่ไหม?',
+            text: 'หากลบแล้วจะไม่สามารถกู้คืนได้',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3FC3EE',
+
+            cancelButtonColor: '#F27474',
+            confirmButtonText: 'ตกลง, ลบได้เลย',
+            cancelButtonText: 'ยกเลิก'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`${process.env.REACT_APP_API}/delete-gacha-product/${uuid}`)
+                    .then((response) => {
+                        if(response.data.status){
+                            Swal.fire({
+                                title: 'สำเร็จ',
+                                text: response.data.payload,
+                                icon: 'success'
+                              });
+                            setDataGachaProductActive(!dataGachaProductActive)
+                        }else{
+                            Swal.fire({
+                                title: 'ผิดพลาด',
+                                text: response.data.payload,
+                                icon: 'error'
+                              });
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire({
+                            title: 'ผิดพลาด',
+                            text: 'ลบสินค้ากาชาปองล้มเหลว',
+                            icon: 'error'
+                          });
+                });
+            }
+          });
+    }
+
+    const handleDeleteAuctionProduct = (uuid) => {
+        Swal.fire({
+            title: 'คุณแน่ใจใช่ไหม?',
+            text: 'หากลบแล้วจะไม่สามารถกู้คืนได้',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3FC3EE',
+
+            cancelButtonColor: '#F27474',
+            confirmButtonText: 'ตกลง, ลบได้เลย',
+            cancelButtonText: 'ยกเลิก'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`${process.env.REACT_APP_API}/delete-auction-product/${uuid}`)
+                    .then((response) => {
+                        if(response.data.status){
+                            Swal.fire({
+                                title: 'สำเร็จ',
+                                text: response.data.payload,
+                                icon: 'success'
+                              });
+                            setDataAuctionProductActive(!dataAuctionProductActive)
+                        }else{
+                            Swal.fire({
+                                title: 'ผิดพลาด',
+                                text: response.data.payload,
+                                icon: 'error'
+                              });
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire({
+                            title: 'ผิดพลาด',
+                            text: 'ลบสินค้าประมูลล้มเหลว',
+                            icon: 'error'
+                          });
+                });
+            }
+          });
+    }
 
     const columnsGeneralProduct = [
         {
@@ -89,12 +216,12 @@ const ProductManagement = () => {
         {
             name: 'แก้ไข',
             selector: row => row.uuid,
-            cell: (row) => [<Link key={row.uuid} to={`/edit-general-product/${row.uuid}`} className='btn border-none bg-shadow-warning hover:bg-shadow-hwarning text-shadow-white'>แก้ไข</Link>]
+            cell: (row) => [<Link key={row.uuid} to={`/edit-general-product/${row.uuid}`} className='border-none btn bg-shadow-warning hover:bg-shadow-hwarning text-shadow-white'>แก้ไข</Link>]
         },
         {
             name: 'ลบ',
             selector: row => row.uuid,
-            cell: (row) => [<button key={row.uuid} type={`button`} className='btn border-none bg-shadow-error hover:bg-shadow-herror text-shadow-white'>ลบ</button>]
+            cell: (row) => [<button onClick={() => handleDeleteGeneralProduct(row.uuid)} key={row.uuid} type={`button`} className='border-none btn bg-shadow-error hover:bg-shadow-herror text-shadow-white'>ลบ</button>]
         }
     ]
 
@@ -123,12 +250,12 @@ const ProductManagement = () => {
         {
             name: 'แก้ไข',
             selector: row => row.uuid,
-            cell: (row) => [<Link key={row.uuid} to={`/edit-gacha-product/${row.uuid}`} className='btn border-none bg-shadow-warning hover:bg-shadow-hwarning text-shadow-white'>แก้ไข</Link>]
+            cell: (row) => [<Link key={row.uuid} to={`/edit-gacha-product/${row.uuid}`} className='border-none btn bg-shadow-warning hover:bg-shadow-hwarning text-shadow-white'>แก้ไข</Link>]
         },
         {
             name: 'ลบ',
             selector: row => row.uuid,
-            cell: (row) => [<button key={row.uuid} type={`button`} className='btn border-none bg-shadow-error hover:bg-shadow-herror text-shadow-white'>ลบ</button>]
+            cell: (row) => [<button onClick={() => handleDeleteGachaProduct(row.uuid)} key={row.uuid} type={`button`} className='border-none btn bg-shadow-error hover:bg-shadow-herror text-shadow-white'>ลบ</button>]
         }
     ]
 
@@ -157,12 +284,12 @@ const ProductManagement = () => {
         {
             name: 'แก้ไข',
             selector: row => row.uuid,
-            cell: (row) => [<Link key={row.uuid} to={`/edit-gacha-product/${row.uuid}`} className='btn border-none bg-shadow-warning hover:bg-shadow-hwarning text-shadow-white'>แก้ไข</Link>]
+            cell: (row) => [<Link key={row.uuid} to={`/edit-gacha-product/${row.uuid}`} className='border-none btn bg-shadow-warning hover:bg-shadow-hwarning text-shadow-white'>แก้ไข</Link>]
         },
         {
             name: 'ลบ',
             selector: row => row.uuid,
-            cell: (row) => [<button key={row.uuid} type={`button`} className='btn border-none bg-shadow-error hover:bg-shadow-herror text-shadow-white'>ลบ</button>]
+            cell: (row) => [<button onClick={() => handleDeleteAuctionProduct(row.uuid)} key={row.uuid} type={`button`} className='border-none btn bg-shadow-error hover:bg-shadow-herror text-shadow-white'>ลบ</button>]
         }
     ]
 
@@ -192,7 +319,7 @@ const ProductManagement = () => {
             <MetaHeader title={`จัดการสินค้า`} />
             <Navigation />
             <TitleBox title={'จัดการสินค้า'} name={'เพิ่มสินค้า'} path={'/add-general-product'} status={true} />
-            <div className='flex flex-row  justify-end px-36 my-3'>
+            <div className='flex flex-row justify-end my-3 px-36'>
                 <label className="flex items-center gap-2 input input-bordered input-md size-fit ">
                     <Icon icon={"material-symbols:search"} className='text-xl' />
                     <input type="text" placeholder="ชื่อสินค้า" onChange={filterDataGeneralProduct} />
@@ -211,7 +338,7 @@ const ProductManagement = () => {
             />
             </div>
             <TitleBox title={'จัดการสินค้ากาชาปอง'} name={'เพิ่มสินค้ากาชาปอง'} path={'/add-gacha-product'} status={true} />
-            <div className='flex flex-row justify-end px-36 my-3'>
+            <div className='flex flex-row justify-end my-3 px-36'>
                 <label className="flex items-center self-end gap-2 input input-bordered input-md size-fit">
                     <Icon icon={"material-symbols:search"} className='text-xl' />
                     <input type="text" placeholder="ชื่อสินค้า" onChange={filterDataGachaProduct} />
@@ -230,7 +357,7 @@ const ProductManagement = () => {
             />
             </div>
             <TitleBox title={'จัดการสินค้าประมูล'} name={'เพิ่มสินค้าประมูล'} path={'/add-auction-product'} status={true} />
-            <div className='flex flex-row justify-end px-36 my-3'>
+            <div className='flex flex-row justify-end my-3 px-36'>
                 <label className="flex items-center self-end gap-2 input input-bordered input-md size-fit">
                     <Icon icon={"material-symbols:search"} className='text-xl' />
                     <input type="text" placeholder="ชื่อสินค้า" onChange={filterDataAuctionProduct} />
