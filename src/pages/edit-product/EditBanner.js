@@ -1,8 +1,8 @@
 import MetaHeader from '../../components/meta-header/MetaHeader'
 import Navigation from '../../components/navigation/Navigation'
 import TitleBox from '../../components/title-box/TitleBox'
-import {  useEffect,useState } from 'react'
-import { Link,useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import axios from 'axios'
@@ -17,6 +17,7 @@ const EditBanner = () => {
     }, [isLogin, navigate])
 
     const [bannerList, setBannerList] = useState({banner:''})
+    const { uuid } = useParams();
 
     const setBanner = (banner) => {
         setBannerList({...bannerList, banner:banner.target.files[0]})
@@ -52,11 +53,11 @@ const EditBanner = () => {
         event.preventDefault()
         const formData = new FormData()
         formData.append('file', bannerList.banner)
-
-        // axios.post(`${process.env.REACT_APP_API}/banner-update`, formData, {
-        //     headers: {'Content-Type': 'multipart/form-data'},
-        //     withCredentials: true
-        // })
+        formData.append('uuid', uuid)
+        axios.patch(`${process.env.REACT_APP_API}/banner-update`, formData, {
+            headers: {'Content-Type': 'multipart/form-data'},
+            withCredentials: true
+        })
         .then((response) => {
             if(response.data.status){
                 alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
@@ -65,7 +66,8 @@ const EditBanner = () => {
             }
         })
         .catch((error) => {
-            alertError('ผิดพลาด', `แก้ไขแบนเนอร์ล้มเหลว`, 'ตกลง')
+            console.log(error)
+            alertError('ผิดพลาด', `แก้ไขแบนเนอร์ล้มเหลว1`, 'ตกลง')
         })
     }
 
