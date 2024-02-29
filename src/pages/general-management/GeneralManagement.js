@@ -1,12 +1,12 @@
 import MetaHeader from '../../components/meta-header/MetaHeader'
 import Navigation from '../../components/navigation/Navigation'
 import TitleBox from '../../components/title-box/TitleBox'
+import DataTable from 'react-data-table-component'
 import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import DataTable from 'react-data-table-component'
-import axios from 'axios'
 import { Icon } from '@iconify/react'
+import axios from 'axios'
 
 const GeneralManagement = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
@@ -153,15 +153,17 @@ const GeneralManagement = () => {
             <MetaHeader title={`จัดการทั่วไป`} />
             <Navigation />
             <TitleBox title={'จัดการแบนเนอร์'} name={'เพิ่มแบนเนอร์'} path={'/add-banner'} status={true} />
+            <div className='mx-32 '>
             <DataTable
                 columns={columnsBanner}
                 data={dataBanner}
-                fixedHeader
                 pagination
+                striped
                 persistTableHead={true}
                 minRows={5}
-                className='px-10'
+                
             />
+            </div>
             <TitleBox title={'จัดการชื่อเกม'} name={'เพิ่มชื่อเกม'} path={'/add-game-name'} status={true} />
             <div className='flex flex-row justify-end px-10 my-3'>
                 <label className="flex items-center self-end gap-2 input input-bordered input-md size-fit">
@@ -169,25 +171,27 @@ const GeneralManagement = () => {
                     <input type="text" placeholder="ชื่อเกม" onChange={filterDataGameName} />
                 </label>
             </div>
+            <div className='mx-32 '>
             <DataTable
                 columns={columnsGameName}
                 data={dataGameNameSearch.length <= 0 ? dataGameName : dataGameNameSearch}
-                fixedHeader
                 pagination
+                striped
                 persistTableHead={true}
                 minRows={5}
-                className='px-10'
             />
+            </div>
             <TitleBox title={'จัดการวิธีการชำระเงิน'} />
+            <div className='mx-32 '>
             <DataTable
                 columns={columnsPaymentMethod}
                 data={dataPaymentMethod}
-                fixedHeader
                 pagination
+                striped
                 persistTableHead={true}
                 minRows={5}
-                className='px-10'
             />
+            </div>
         </div>
     )
 }

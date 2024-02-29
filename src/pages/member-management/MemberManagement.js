@@ -74,21 +74,25 @@ const MemberManagement = () => {
             <MetaHeader title={`จัดการบัญชีผู้ใช้`} />
             <Navigation />
             <TitleBox title={'จัดการบัญชีผู้ใช้'} />
-            <div className='flex flex-row justify-end px-10 my-3'>
-                <label className="flex items-center self-end gap-2 input input-bordered input-md size-fit">
-                    <Icon icon={"material-symbols:search"} className='text-xl' />
-                    <input type="text" placeholder="ชื่อหรือบัญชีผู้ใช้" onChange={filterDataMember} />
-                </label>
+                <div className='flex flex-row justify-end px-10 my-3'>
+                    <label className="flex items-center self-end gap-2 input input-bordered input-md size-fit">
+                        <Icon icon={"material-symbols:search"} className='text-xl' />
+                        <input type="text" placeholder="ชื่อหรือบัญชีผู้ใช้" onChange={filterDataMember} />
+                    </label>
+                </div>
+            <div className='mx-32'>
+                <DataTable
+                    columns={columnsMember}
+                    data={dataMemberSearch.length <= 0 ? dataMember : dataMemberSearch}
+                    // fixedHeader
+                    pagination
+                    persistTableHead={true}
+                    minRows={5}
+                    striped
+                    responsive
+                    
+                />
             </div>
-            <DataTable
-                columns={columnsMember}
-                data={dataMemberSearch.length <= 0 ? dataMember : dataMemberSearch}
-                fixedHeader
-                pagination
-                persistTableHead={true}
-                minRows={5}
-                className='px-10'
-            />
         </div>
     )
 }

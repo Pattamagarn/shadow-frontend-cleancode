@@ -198,15 +198,17 @@ const ProductManagement = () => {
                     <input type="text" placeholder="ชื่อสินค้า" onChange={filterDataGeneralProduct} />
                 </label>
             </div>
+            <div className='mx-32'>
             <DataTable
                 columns={columnsGeneralProduct}
                 data={dataGeneralProductSearch.length <= 0 ? dataGeneralProduct : dataGeneralProductSearch}
-                fixedHeader
                 pagination
+                striped
                 persistTableHead={true}
                 minRows={5}
-                className='px-10'
+    
             />
+            </div>
             <TitleBox title={'จัดการสินค้ากาชาปอง'} name={'เพิ่มสินค้ากาชาปอง'} path={'/add-gacha-product'} status={true} />
             <div className='flex flex-row justify-end px-10 my-3'>
                 <label className="flex items-center self-end gap-2 input input-bordered input-md size-fit">
@@ -214,15 +216,17 @@ const ProductManagement = () => {
                     <input type="text" placeholder="ชื่อสินค้า" onChange={filterDataGachaProduct} />
                 </label>
             </div>
+            <div className='mx-32'>
             <DataTable
                 columns={columnsGachaProduct}
                 data={dataGachaProductSearch.length <= 0 ? dataGachaProduct : dataGachaProductSearch}
-                fixedHeader
                 pagination
+                striped
                 persistTableHead={true}
                 minRows={5}
-                className='px-10'
+    
             />
+            </div>
             <TitleBox title={'จัดการสินค้าประมูล'} name={'เพิ่มสินค้าประมูล'} path={'/add-auction-product'} status={true} />
             <div className='flex flex-row justify-end px-10 my-3'>
                 <label className="flex items-center self-end gap-2 input input-bordered input-md size-fit">
@@ -230,15 +234,17 @@ const ProductManagement = () => {
                     <input type="text" placeholder="ชื่อสินค้า" onChange={filterDataAuctionProduct} />
                 </label>
             </div>
+            <div className='mx-32'>
             <DataTable
                 columns={columnsAuctionProduct}
                 data={dataAuctionProductSearch.length <= 0 ? dataAuctionProduct : dataAuctionProductSearch}
-                fixedHeader
                 pagination
+                striped
                 persistTableHead={true}
                 minRows={5}
-                className='px-10'
+    
             />
+            </div>
         </div>
     )
 }

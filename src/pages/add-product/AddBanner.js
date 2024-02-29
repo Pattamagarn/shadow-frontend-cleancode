@@ -11,6 +11,7 @@ const AddBanner = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
 
+
     useEffect(() => {
         !isLogin.status && navigate('/')
         isLogin.status && isLogin.payload.role !== 1 && navigate('/')
@@ -29,6 +30,7 @@ const AddBanner = () => {
             icon: 'success',
             confirmButtonText: confirmButtonText
         })
+        navigate('/general-management')
     }
 
     const alertError = (title, text, confirmButtonText) => {
@@ -53,6 +55,7 @@ const AddBanner = () => {
         event.preventDefault()
         const formData = new FormData()
         formData.append('file', bannerList.banner)
+        
 
         axios.post(`${process.env.REACT_APP_API}/banner-insert`, formData, {
             headers: {'Content-Type': 'multipart/form-data'},
@@ -66,6 +69,7 @@ const AddBanner = () => {
             }
         })
         .catch((error) => {
+            
             alertError('ผิดพลาด', `เพิ่มแบนเนอร์ล้มเหลว`, 'ตกลง')
         })
     }

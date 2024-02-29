@@ -10,11 +10,21 @@ import axios from 'axios'
 const AddAuctionProduct = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
+    const [data,setData] = useState([])
 
     useEffect(() => {
         !isLogin.status && navigate('/')
         isLogin.status && isLogin.payload.role !== 1 && navigate('/')
     }, [isLogin, navigate])
+
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API}/game-name-select`)
+        .then((response) => {
+            if(response.data.status) {
+                setData(response.data.payload)
+            }
+        })
+    },[])
 
     const [auctionProductList, setAuctionProductList] = useState({
         productId:'', gameName:'',
@@ -131,10 +141,9 @@ const AddAuctionProduct = () => {
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>ชื่อเกม</span>
-                    <select value={auctionProductList.gameName} onChange={setAuctionProductGameName} className="select w-80 bg-shadow-grey text-dshadow-black">
+                    <select onChange={setAuctionProductGameName} className="select w-80 bg-shadow-grey text-dshadow-black">
                         <option disabled selected>เลือกชื่อเกม</option>
-                        <option>Shadow Garden</option>
-                        <option>Shadow Design</option>
+                        {data.map((game) => <option key={game.game_name}>{game.game_name}</option>)}
                     </select>
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
