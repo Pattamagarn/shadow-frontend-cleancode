@@ -11,7 +11,23 @@ import axios from 'axios'
 const TopUp = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
+    const [exchangeRate, setExchangeRate] = useState({baht:'', aysel:''})
     const [giftTrueMoney, setGiftTrueMoney] = useState('')
+    
+    const setExchangeRateBaht = (baht) => {
+        if(isNaN((process.env.REACT_APP_AYSEL/process.env.REACT_APP_BAHT)*baht.target.value)){
+            setExchangeRate({...exchangeRate, baht:'', aysel:''})
+        }else{
+            setExchangeRate({...exchangeRate, baht:baht.target.value, aysel:(process.env.REACT_APP_AYSEL/process.env.REACT_APP_BAHT)*baht.target.value})
+        }
+    }
+    const setExchangeRateAysel = (aysel) => {
+        if(isNaN((process.env.REACT_APP_BAHT/process.env.REACT_APP_AYSEL)*aysel.target.value)){
+            setExchangeRate({...exchangeRate, baht:'', aysel:''})
+        }else{
+            setExchangeRate({...exchangeRate,  baht:(process.env.REACT_APP_BAHT/process.env.REACT_APP_AYSEL)*aysel.target.value, aysel:aysel.target.value})
+        }
+    }
 
     const alertSuccess = (title, text, confirmButtonText) => {
         Swal.fire({
@@ -57,7 +73,21 @@ const TopUp = () => {
                 alertError('ผิดพลาด', `เติม Aysel ล้มเหลว6`, 'ตกลง')
             })
         }else{
-            alertWarning('คำเตือน', 'กรุณาเข้าสู่ระบบ', 'ตกลง')
+            Swal.fire({
+                title: 'คุณต้องการเข้าสู่ระบบไหม?',
+                text: 'จำเป็นต้องเข้าสู่ระบบเพื่อเติม Aysel',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3FC3EE',
+    
+                cancelButtonColor: '#F27474',
+                confirmButtonText: 'ตกลง, ไปเข้าสู่ระบบกัน',
+                cancelButtonText: 'ยกเลิก'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate('/sign-in')
+                }
+              });
         }
     }
 
@@ -66,22 +96,22 @@ const TopUp = () => {
             <MetaHeader title={`เติมเงิน`} />
             <Navigation />
             <TitleBox title={'เติม Aysel'} />
-            <img alt="topup" src="http://localhost:3001/public/images/topup/shadow.png" className='container mx-auto w-5/12' />
-            <div className='text-center text-shadow-error text-xl mt-2'>*** อัตราการแลกเปลี่ยนปัจจุบัน {process.env.REACT_APP_BAHT} บาท = {process.env.REACT_APP_AYSEL} Aysel***</div>
+            <img alt="topup" src="http://localhost:3001/public/images/topup/shadow.png" className='container w-5/12 mx-auto' />
+            <div className='mt-2 text-xl text-center text-shadow-error'>*** อัตราการแลกเปลี่ยนปัจจุบัน {process.env.REACT_APP_BAHT} บาท = {process.env.REACT_APP_AYSEL} Aysel***</div>
             <div className='flex flex-row items-center justify-center mt-10'>
-                <input type={'text'} placeholder={'จำนวนเงิน'} className={'input text-center border-none bg-shadow-grey text-shadow-black'} />
-                <Icon icon={'ic:outline-double-arrow'} className='text-5xl mx-20 text-shadow-accent' />
-                <input type={'text'} placeholder={'จำนวน Aysel'} className={'input text-center border-none bg-shadow-grey text-shadow-black'} />
+                <input value={exchangeRate.baht} onChange={setExchangeRateBaht} type={'text'} placeholder={'จำนวนเงิน (บาท)'} className={'input text-center border-none bg-shadow-grey text-shadow-black'} />
+                <Icon icon={'ic:outline-double-arrow'} className='mx-20 text-5xl text-shadow-accent' />
+                <input value={exchangeRate.aysel} onChange={setExchangeRateAysel} type={'text'} placeholder={'จำนวน Aysel'} className={'input text-center border-none bg-shadow-grey text-shadow-black'} />
             </div>
             <TitleBox title={'วิธีชำระเงิน'} />
             <div className='flex flex-col items-center justify-center mt-10 mx-60'>
                 <input value={giftTrueMoney} onChange={(text) => {setGiftTrueMoney(text.target.value)}} type={'text'} placeholder={'กรุณากรอก URL'} className={'input w-full text-left border-none bg-shadow-grey text-shadow-black'} />
-                <Link to='/transaction' className='link mt-2 self-end text-shadow-accent hover:text-shadow-haccent'>ติดตามสถานะการเติมเงิน</Link>
-                <button type='button' onClick={handleTopUp} className='btn w-full mt-5 border-none bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>ยืนยัน</button>
+                <Link to='/transaction' className='self-end mt-2 link text-shadow-accent hover:text-shadow-haccent'>ติดตามสถานะการเติมเงิน</Link>
+                <button type='button' onClick={handleTopUp} className='w-full mt-5 border-none btn bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>ยืนยัน</button>
             </div>
             <div className='flex flex-row items-center mt-10 justify-evenly'>
-                <button type='button' onClick={()=>document.getElementById('image-payment-method').showModal()} className='btn size-96 text-3xl border-none bg-shadow-primary hover:bg-shadow-primary text-shadow-accent'>ภาพวิธีการชำระเงิน</button>
-                <button type='button' onClick={()=>document.getElementById('video-payment-method').showModal()} className='btn size-96 text-3xl border-none bg-shadow-primary hover:bg-shadow-primary text-shadow-accent'>วิดีโอวิธีการชำระเงิน</button>
+                <button type='button' onClick={()=>document.getElementById('image-payment-method').showModal()} className='text-3xl border-none btn size-96 bg-shadow-primary hover:bg-shadow-primary text-shadow-accent'>ภาพวิธีการชำระเงิน</button>
+                <button type='button' onClick={()=>document.getElementById('video-payment-method').showModal()} className='text-3xl border-none btn size-96 bg-shadow-primary hover:bg-shadow-primary text-shadow-accent'>วิดีโอวิธีการชำระเงิน</button>
             </div>
             <dialog id='image-payment-method' className='modal'>
                 <div className='modal-box'>

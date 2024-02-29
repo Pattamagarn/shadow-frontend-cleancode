@@ -284,7 +284,7 @@ const ProductManagement = () => {
         {
             name: 'แก้ไข',
             selector: row => row.uuid,
-            cell: (row) => [<Link key={row.uuid} to={`/edit-gacha-product/${row.uuid}`} className='border-none btn bg-shadow-warning hover:bg-shadow-hwarning text-shadow-white'>แก้ไข</Link>]
+            cell: (row) => [<Link key={row.uuid} to={`/edit-auction-product/${row.uuid}`} className='border-none btn bg-shadow-warning hover:bg-shadow-hwarning text-shadow-white'>แก้ไข</Link>]
         },
         {
             name: 'ลบ',

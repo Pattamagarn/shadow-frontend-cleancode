@@ -66,13 +66,13 @@ root.render(
           <Route exact path='/add-gacha-product' element={<AddGachaProduct />} />
           <Route exact path='/add-game-name' element={<AddGameName />} />
           <Route exact path='/add-general-product' element={<AddGeneralProduct />} />
-          <Route exact path='/edit-auction-product' element={<EditAuctionProduct />} />
-          <Route exact path='/edit-banner' element={<EditBanner />} />
-          <Route exact path='/edit-gacha-product' element={<EditGachaProduct />} />
-          <Route exact path='/edit-game-name' element={<EditGameName />} />
-          <Route exact path='/edit-general-product' element={<EditGeneralProduct />} />
-          <Route exact path='/edit-image-payment-method' element={<EditImagePaymentMethod />} />
-          <Route exact path='/edit-video-payment-method' element={<EditVideoPaymentMethod />} />
+          <Route exact path='/edit-auction-product/:uuid' element={<EditAuctionProduct />} />
+          <Route exact path='/edit-banner/:uuid' element={<EditBanner />} />
+          <Route exact path='/edit-gacha-product/:uuid' element={<EditGachaProduct />} />
+          <Route exact path='/edit-game-name/:uuid' element={<EditGameName />} />
+          <Route exact path='/edit-general-product/:uuid' element={<EditGeneralProduct />} />
+          <Route exact path='/edit-image-payment-method/:uuid' element={<EditImagePaymentMethod />} />
+          <Route exact path='/edit-video-payment-method/:uuid' element={<EditVideoPaymentMethod />} />
         </Routes>
       </BrowserRouter>
     </Provider>
