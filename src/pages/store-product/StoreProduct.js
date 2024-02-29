@@ -18,7 +18,7 @@ const StoreProduct = () => {
         <div>
             <MetaHeader title={`คลังสินค้าของฉัน`} />
             <Navigation />
-            <TitleBox title={'คลังสินของฉัน'} />
+            <TitleBox title={'คลังสินค้าของฉัน'} />
         </div>
     )
 }

@@ -44,7 +44,7 @@ const GeneralManagement = () => {
             }
         })
         .catch((error) => {})
-    }, [])
+    },[])
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/payment-method-select`)
@@ -61,7 +61,8 @@ const GeneralManagement = () => {
     const columnsBanner = [
         {
             name: 'ลำดับ',
-            selector: row => row.index
+            selector: row => row.index,
+            sortable:true
         },
         {
             name: 'ลิงก์ภาพ',
@@ -83,7 +84,8 @@ const GeneralManagement = () => {
     const columnsGameName = [
         {
             name: 'ลำดับ',
-            selector: row => row.index
+            selector: row => row.index,
+            sortable:true
         },
         {
             name: 'ชื่อเกม',
@@ -97,23 +99,29 @@ const GeneralManagement = () => {
         {
             name: 'ลบ',
             selector: row => row.uuid,
-            cell: (row) => [<button key={row.uuid} type={`button`} className='btn border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>ลบ</button>]
+            cell: (row) => [<button key={row.uuid} onClick={handleDeleteGameName.bind(this,row.uuid)} type={`button`} className='btn border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>ลบ</button>],
+
         }
     ]
 
     const columnsPaymentMethod = [
         {
             name: 'ลำดับ',
-            selector: row => row.index
+            selector: row => row.index,
+            sortable:true
         },
         {
             name: 'วิธีการชำระเงิน',
             selector: row => row.method
         },
+        // {
+        //     selector:row => row.information
+        // },
         {
             name: 'เปลี่ยน',
             selector: row => row.uuid,
-            cell: (row) => [<Link key={row.uuid} to={`${row.method === 'วิดีโอ' ? '/edit-video-payment-method': '/edit-image-payment-method'}/${row.uuid}`} className='btn border-none bg-[#F8BB86] hover:bg-[#cf9c6f] text-[#FFFFFF]'>เปลี่ยน</Link>]
+            cell: (row) => [<Link key={row.uuid} to={`${row.method === 'วิดีโอ' ? '/edit-video-payment-method': '/edit-image-payment-method'}`} className='btn border-none bg-[#F8BB86] hover:bg-[#cf9c6f] text-[#FFFFFF]'>เปลี่ยน</Link>]
+            // cell: (row) => [<Link key={row.uuid} to={`${row.method === 'วิดีโอ' ? '/edit-video-payment-method': '/edit-image-payment-method'}/${row.uuid}`} className='btn border-none bg-[#F8BB86] hover:bg-[#cf9c6f] text-[#FFFFFF]'>เปลี่ยน</Link>]
         },
         {
             name: 'ล้าง',
@@ -128,6 +136,17 @@ const GeneralManagement = () => {
         })
         setDataGameNameSearch(newDataGameName)
     }
+    const handleDeleteGameName = (uuid) => {
+        // console.log(uuid);
+        axios.delete(`${process.env.REACT_APP_API}/game-name-delete/${uuid}`)
+            .then((response) => {
+                console.log('Data deleted successfully');
+            })
+            .catch((error) => {
+                console.error('Error deleting data:', error);
+            });
+    };
+
 
     return (
         <div>

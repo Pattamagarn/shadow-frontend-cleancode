@@ -84,17 +84,17 @@ const ProductManagement = () => {
         {
             name: 'ลดราคา',
             selector: row => row.uuid,
-            cell: (row) => [<button key={row.uuid} type={`button`} className={`btn border-none ${row.special_price_status ? 'bg-[#A5DC86] hover:bg-[#86b36d]' : 'bg-[#F27474] hover:bg-[#ca6161]' } text-[#FFFFFF]`}>{row.special_price_status ? 'เปิด' : 'ปิด' }</button>]
+            cell: (row) => [<button key={row.uuid} type={`button`} className={`btn border-none ${row.special_price_status ? 'bg-shadow-success hover:bg-shadow-hsuccess' : 'bg-shadow-error hover:bg-shadow-herror' } text-shadow-white`}>{row.special_price_status ? 'เปิด' : 'ปิด' }</button>]
         },
         {
             name: 'แก้ไข',
             selector: row => row.uuid,
-            cell: (row) => [<Link key={row.uuid} to={`/edit-general-product/${row.uuid}`} className='btn border-none bg-[#F8BB86] hover:bg-[#cf9c6f] text-[#FFFFFF]'>แก้ไข</Link>]
+            cell: (row) => [<Link key={row.uuid} to={`/edit-general-product/${row.uuid}`} className='btn border-none bg-shadow-warning hover:bg-shadow-hwarning text-shadow-white'>แก้ไข</Link>]
         },
         {
             name: 'ลบ',
             selector: row => row.uuid,
-            cell: (row) => [<button key={row.uuid} type={`button`} className='btn border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>ลบ</button>]
+            cell: (row) => [<button key={row.uuid} type={`button`} className='btn border-none bg-shadow-error hover:bg-shadow-herror text-shadow-white'>ลบ</button>]
         }
     ]
 
@@ -118,17 +118,17 @@ const ProductManagement = () => {
         {
             name: 'การันตี',
             selector: row => row.uuid,
-            cell: (row) => [<button key={row.uuid} type={`button`} className={`btn border-none ${row.guarantee_status ? 'bg-[#A5DC86] hover:bg-[#86b36d]' : 'bg-[#F27474] hover:bg-[#ca6161]' } text-[#FFFFFF]`}>{row.guarantee_status ? 'เปิด' : 'ปิด' }</button>]
+            cell: (row) => [<button key={row.uuid} type={`button`} className={`btn border-none ${row.guarantee_status ? 'bg-shadow-success hover:bg-shadow-hsuccess' : 'bg-shadow-error hover:bg-shadow-herror' } text-shadow-white`}>{row.guarantee_status ? 'เปิด' : 'ปิด' }</button>]
         },
         {
             name: 'แก้ไข',
             selector: row => row.uuid,
-            cell: (row) => [<Link key={row.uuid} to={`/edit-gacha-product/${row.uuid}`} className='btn border-none bg-[#F8BB86] hover:bg-[#cf9c6f] text-[#FFFFFF]'>แก้ไข</Link>]
+            cell: (row) => [<Link key={row.uuid} to={`/edit-gacha-product/${row.uuid}`} className='btn border-none bg-shadow-warning hover:bg-shadow-hwarning text-shadow-white'>แก้ไข</Link>]
         },
         {
             name: 'ลบ',
             selector: row => row.uuid,
-            cell: (row) => [<button key={row.uuid} type={`button`} className='btn border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>ลบ</button>]
+            cell: (row) => [<button key={row.uuid} type={`button`} className='btn border-none bg-shadow-error hover:bg-shadow-herror text-shadow-white'>ลบ</button>]
         }
     ]
 
@@ -157,12 +157,12 @@ const ProductManagement = () => {
         {
             name: 'แก้ไข',
             selector: row => row.uuid,
-            cell: (row) => [<Link key={row.uuid} to={`/edit-gacha-product/${row.uuid}`} className='btn border-none bg-[#F8BB86] hover:bg-[#cf9c6f] text-[#FFFFFF]'>แก้ไข</Link>]
+            cell: (row) => [<Link key={row.uuid} to={`/edit-gacha-product/${row.uuid}`} className='btn border-none bg-shadow-warning hover:bg-shadow-hwarning text-shadow-white'>แก้ไข</Link>]
         },
         {
             name: 'ลบ',
             selector: row => row.uuid,
-            cell: (row) => [<button key={row.uuid} type={`button`} className='btn border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>ลบ</button>]
+            cell: (row) => [<button key={row.uuid} type={`button`} className='btn border-none bg-shadow-error hover:bg-shadow-herror text-shadow-white'>ลบ</button>]
         }
     ]
 

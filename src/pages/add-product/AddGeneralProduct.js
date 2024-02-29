@@ -109,42 +109,42 @@ const AddGeneralProduct = () => {
             <MetaHeader title={`เพิ่มสินค้า`} />
             <Navigation />
             <TitleBox title={'เพิ่มสินค้า'} />
-            <form onSubmit={handleAddGeneralProduct} className='mx-auto mt-10 form-control items-end justify-evenly size-fit'>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>รหัสสินค้า</span>
-                    <input value={generalProductList.productId} type={'text'} placeholder='รหัสสินค้า' onChange={setGeneralProductProductId} className='input w-80 bg-[#D9D9D9] text-[#000000]'/>
+            <form onSubmit={handleAddGeneralProduct} className='items-end mx-auto mt-10 mb-10 form-control justify-evenly size-fit'>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>รหัสสินค้า</span>
+                    <input value={generalProductList.productId} type={'text'} placeholder='รหัสสินค้า' onChange={setGeneralProductProductId} className='input w-80 bg-shadow-grey text-shadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>ชื่อสินค้า</span>
-                    <input value={generalProductList.name} type={'text'} placeholder='ชื่อสินค้า' onChange={setGeneralProductName} className='input w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>ชื่อสินค้า</span>
+                    <input value={generalProductList.name} type={'text'} placeholder='ชื่อสินค้า' onChange={setGeneralProductName} className='input w-80 bg-shadow-grey text-shadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>ชื่อเกม</span>
-                    <select value={generalProductList.gameName} onChange={setGeneralProductGameName} className="select w-80 bg-[#D9D9D9] text-[#000000]">
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>ชื่อเกม</span>
+                    <select value={generalProductList.gameName} onChange={setGeneralProductGameName} className="select w-80 bg-shadow-grey text-shadow-black">
                         <option disabled selected>เลือกชื่อเกม</option>
                         <option>Shadow Garden</option>
                         <option>Shadow Design</option>
                     </select>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>ราคาเต็ม</span>
-                    <input value={generalProductList.normalPrice} type={'text'} placeholder='ราคาเต็ม' onChange={setGeneralProductNormalPrice} className='input w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>ราคาเต็ม</span>
+                    <input value={generalProductList.normalPrice} type={'text'} placeholder='ราคาเต็ม' onChange={setGeneralProductNormalPrice} className='input w-80 bg-shadow-grey text-shadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>ราคาลด</span>
-                    <input value={generalProductList.specialPrice} type={'text'} placeholder='ราคาลด' onChange={setGeneralProductSpecialPrice} className='input w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>ราคาลด</span>
+                    <input value={generalProductList.specialPrice} type={'text'} placeholder='ราคาลด' onChange={setGeneralProductSpecialPrice} className='input w-80 bg-shadow-grey text-shadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>รูปภาพ</span>
-                    <input type={'file'} onChange={setGeneralProductInformation} className='file-input w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>รูปภาพ</span>
+                    <input type={'file'} onChange={setGeneralProductInformation} className='file-input w-80 bg-shadow-grey text-shadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>รายละเอียด</span>
-                    <textarea value={generalProductList.description} type={'text'} placeholder='รายละเอียด' onChange={setGeneralProductDescription} className='textarea w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>รายละเอียด</span>
+                    <textarea value={generalProductList.description} type={'text'} placeholder='รายละเอียด' onChange={setGeneralProductDescription} className='textarea w-80 bg-shadow-grey text-shadow-black'/>
                 </div>
                 <div className='flex flex-row items-center mt-2 size-full'>
-                    <button type='submit' className='btn grow mr-5 border-none bg-[#A5DC86] hover:bg-[#86b36d] text-[#FFFFFF]'>ยืนยันการเพิ่มสินค้า</button>
-                    <Link to='/product-management' className='btn grow border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>ยกเลิกการเพิ่มสินค้า</Link>
+                    <button type='submit' className='mr-5 border-none btn grow bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>ยืนยันการเพิ่มสินค้า</button>
+                    <Link to='/product-management' className='border-none btn grow bg-shadow-error hover:bg-shadow-herror text-shadow-white'>ยกเลิกการเพิ่มสินค้า</Link>
                 </div>
             </form>
         </div>

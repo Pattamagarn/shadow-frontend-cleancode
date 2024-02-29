@@ -35,15 +35,19 @@ const MemberManagement = () => {
     const columnsMember = [
         {
             name: 'ลำดับ',
-            selector: row => row.index
+            selector: row => row.index,
+            sortable:true
+
         },
         {
             name: 'บัญชี',
-            selector: row => row.email
+            selector: row => row.email,
+            sortable:true
         },
         {
             name: 'ชื่อผู้ใช้',
-            selector: row => row.username
+            selector: row => row.username,
+            sortable:true
         },
         {
             name: 'ระงับ',
@@ -53,7 +57,8 @@ const MemberManagement = () => {
         {
             name: 'บทบาท',
             selector: row => row.role,
-            cell: (row) => [row.role ? `ผู้ดูแลระบบ` : `สมาชิก`]
+            cell: (row) => [row.role ? `ผู้ดูแลระบบ` : `สมาชิก`],
+            sortable:true
         }
     ]
 

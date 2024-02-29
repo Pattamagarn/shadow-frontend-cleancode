@@ -70,55 +70,55 @@ const SignIn = () => {
         <div>
             <MetaHeader title={`เข้าสู่ระบบ`} />
             <Navigation />
-            <form onSubmit={handleSignInAccount} className='p-2 bg-[#33007B] form-control sm:hidden min-w-[240px]'>
+            <form onSubmit={handleSignInAccount} className='p-2 bg-shadow-primary form-control sm:hidden min-w-[240px]'>
                 <div className='flex flex-row items-center justify-center flex-nowrap'>
-                    <Icon icon={'game-icons:minerals'} className='size-fit text-[#F000B8] text-2xl sm:text-4xl' />
-                    <span translate='no' className='subpixel-antialiased not-italic size-fit font-normal text-[#FFFFFF] text-xl'>SHADOW</span>
+                    <Icon icon={'game-icons:minerals'} className='text-2xl size-fit text-shadow_pink sm:text-4xl' />
+                    <span translate='no' className='text-xl subpixel-antialiased not-italic font-normal size-fit text-shadow-white'>SHADOW</span>
                 </div>
                 <div className='flex flex-row items-center justify-center flex-nowrap'>
-                    <span translate='no' className='subpixel-antialiased not-italic size-fit font-normal text-[#FFFFFF] text-xl'>ยินดีต้อนรับกลับ</span>
+                    <span translate='no' className='text-xl subpixel-antialiased not-italic font-normal size-fit text-shadow-white'>ยินดีต้อนรับกลับ</span>
                 </div>
-                <input value={account.email} type={'text'} placeholder='อีเมล' onChange={setEmail} className='input mt-4 bg-[#D9D9D9] text-[#000000]'/>
-                <label className='input mt-4 bg-[#D9D9D9] text-[#000000] flex flex-row flex-nowrap items-center'>
+                <input value={account.email} type={'text'} placeholder='อีเมล' onChange={setEmail} className='mt-4 input bg-shadow-grey text-shadow-black'/>
+                <label className='flex flex-row items-center mt-4 input bg-shadow-grey text-shadow-black flex-nowrap'>
                     <input value={account.password} type={hide ? 'password' : 'text'} placeholder='รหัสผ่าน' onChange={setPassword} className='size-full'/>
                     <span className='flex items-center justify-end'>
-                    <Icon icon={hide ? "mdi:hide" : "mdi:show"} className='text-[#000000] size-full' onClick={() => setHide(!hide)}/>
+                    <Icon icon={hide ? "mdi:hide" : "mdi:show"} className='text-shadow-black size-full' onClick={() => setHide(!hide)}/>
                     </span>
                 </label>
-                <button type='submit' className='btn mt-4 border-none bg-[#A5DC86] hover:bg-[#86b36d] text-[#FFFFFF]'>เข้าสู่ระบบ</button>
-                <Link to='/' className='btn mt-4 border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>กลับสู่หน้าหลัก</Link>
-                <Link to='/sign-up' className='btn mt-4 border-none bg-[#3FC3EE] hover:bg-[#46a5c4] text-[#FFFFFF]'>ไปหน้าสมัครสมาชิก</Link>
-                <Link to='/forgot-password' className='btn mt-4 border-none bg-[#FFB302] hover:bg-[#E5A101] text-[#FFFFFF]'>ลืมรหัสผ่าน</Link>
+                <button type='submit' className='mt-4 border-none btn bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>เข้าสู่ระบบ</button>
+                <Link to='/' className='mt-4 border-none btn bg-shadow-error hover:bg-shadow-herror text-shadow-white'>กลับสู่หน้าหลัก</Link>
+                <Link to='/sign-up' className='mt-4 border-none btn bg-shadow-info hover:bg-shadow-hinfo text-shadow-white'>ไปหน้าสมัครสมาชิก</Link>
+                <Link to='/forgot-password' className='btn mt-4 border-none bg-shadow-accent hover:bg-shadow-haccent] text-shadow-white'>ลืมรหัสผ่าน</Link>
             </form>
 
-            <div className='container hidden sm:flex justify-center w-full h-full mx-auto mt-5'>
-                <form onSubmit={handleSignInAccount} className={`p-10 rounded bg-[#33007B]`}>
+            <div className='container justify-center hidden w-full h-full mx-auto mt-5 sm:flex'>
+                <form onSubmit={handleSignInAccount} className={`p-10 rounded bg-shadow-primary`}>
                     <div className='flex justify-center align-middle'>
-                    <Icon icon={"game-icons:minerals"} className='text-[#F000B8]' width={48} height={48} />
-                    <h4 className='text-5xl text-center text-[#FFFFFF]'>SHADOW</h4>
+                    <Icon icon={"game-icons:minerals"} className='text-shadow-pink' width={48} height={48} />
+                    <h4 className='text-5xl text-center text-shadow-white'>SHADOW</h4>
                     </div>
-                    <h4 className='text-3xl text-center text-[#FFFFFF] mt-5'>ยินดีต้อนรับกลับ</h4>
+                    <h4 className='mt-5 text-3xl text-center text-shadow-white'>ยินดีต้อนรับกลับ</h4>
                     <div className='w-full max-w-xs mt-5 form-control'>
-                        <input value={account.email} type={'text'} placeholder='อีเมล' className='input w-full max-w-xs bg-[#D9D9D9] text-[#000000]' onChange={setEmail}/>
+                        <input value={account.email} type={'text'} placeholder='อีเมล' className='w-full max-w-xs input bg-shadow-grey text-shadow-black' onChange={setEmail}/>
                     </div>
                     <div className='w-full max-w-xs mt-5 form-control'>
-                        <label className='input w-full max-w-xs bg-[#D9D9D9] text-[#000000] flex justify-between items-center gap-2'>
+                        <label className='flex items-center justify-between w-full max-w-xs gap-2 input bg-shadow-grey text-shadow-black'>
                             <input value={account.password} type={hide ? 'password' : 'text'} placeholder='รหัสผ่าน' onChange={setPassword}/>
-                            <Icon icon={hide ? "mdi:hide" : "mdi:show"} className='text-[#000000]' width={24} height={24} onClick={() => setHide(!hide)}/>
+                            <Icon icon={hide ? "mdi:hide" : "mdi:show"} className='text-shadow-black' width={24} height={24} onClick={() => setHide(!hide)}/>
                         </label>
                     </div>
                     <div className='flex justify-between mt-1 align-middle'>
-                        <Link to='/sign-up' className='link text-[#3FC3EE] hover:text-[#46a5c4] flex'>
+                        <Link to='/sign-up' className='flex link text-shadow-info hover:text-shadow-hinfo'>
                             <span className='mr-1'>สมัครสมาชิก</span>
-                            <Icon icon={"line-md:account-add"} className='text-[#3FC3EE] hover:text-[#46a5c4]' width={24} height={24} />
+                            <Icon icon={"line-md:account-add"} className='text-shadow-info hover:text-shadow-hinfo' width={24} height={24} />
                         </Link>
-                        <Link to='/forgot-password' className='link text-[#F27474] hover:text-[#ca6161]'>
+                        <Link to='/forgot-password' className='link text-shadow-error hover:text-shadow-herror'>
                             ลืมรหัสผ่าน
                         </Link>
                     </div>
                     <div className='flex flex-col w-full border-opacity-50'>
-                        <button className="btn border-none bg-[#A5DC86] hover:bg-[#86b36d] text-[#FFFFFF] w-full mt-5">เข้าสู่ระบบ</button>
-                        <Link to='/' className="btn border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF] w-full mt-5">
+                        <button className="w-full mt-5 border-none btn bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white">เข้าสู่ระบบ</button>
+                        <Link to='/' className="w-full mt-5 border-none btn bg-shadow-error hover:bg-shadow-herror text-shadow-white">
                             กลับสู่หน้าหลัก
                         </Link>
                     </div>

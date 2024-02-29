@@ -19,7 +19,7 @@ const AddAuctionProduct = () => {
     const [auctionProductList, setAuctionProductList] = useState({
         productId:'', gameName:'',
         name:'', defaultPrice:'',
-        defaultBit:'', startTime: '',
+        defaultBid:'', startTime: '',
         endTime: '', information: '',
         description: ''
     })
@@ -40,8 +40,8 @@ const AddAuctionProduct = () => {
         setAuctionProductList({...auctionProductList, defaultPrice:defaultPrice.target.value})
     }
 
-    const setAuctionProductDefaultBit = (defaultBit) => {
-        setAuctionProductList({...auctionProductList, defaultBit:defaultBit.target.value})
+    const setAuctionProductDefaultBid = (defaultBid) => {
+        setAuctionProductList({...auctionProductList, defaultBid:defaultBid.target.value})
     }
 
     const setAuctionProductStartTime = (startTime) => {
@@ -94,7 +94,7 @@ const AddAuctionProduct = () => {
         formData.append('gameName', auctionProductList.gameName)
         formData.append('name', auctionProductList.name)
         formData.append('defaultPrice', auctionProductList.defaultPrice)
-        formData.append('defaultBit', auctionProductList.defaultBit)
+        formData.append('defaultd', auctionProductList.defaultBid)
         formData.append('startTime', auctionProductList.startTime)
         formData.append('endTime', auctionProductList.endTime)
         formData.append('file', auctionProductList.information)
@@ -120,50 +120,50 @@ const AddAuctionProduct = () => {
             <MetaHeader title={`เพิ่มสินค้าประมูล`} />
             <Navigation />
             <TitleBox title={'เพิ่มสินค้าประมูล'} />
-            <form onSubmit={handleAddAuctionProduct} className='mx-auto mt-10 form-control items-end justify-evenly size-fit'>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>รหัสสินค้า</span>
-                    <input value={auctionProductList.productId} type={'text'} placeholder='รหัสสินค้า' onChange={setAuctionProductProductId} className='input w-80 bg-[#D9D9D9] text-[#000000]'/>
+            <form onSubmit={handleAddAuctionProduct} className='items-end mx-auto mt-10 mb-10 form-control justify-evenly size-fit'>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>รหัสสินค้า</span>
+                    <input value={auctionProductList.productId} type={'text'} placeholder='รหัสสินค้า' onChange={setAuctionProductProductId} className='input w-80 bg-shadow-grey text-dshadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>ชื่อสินค้า</span>
-                    <input value={auctionProductList.name} type={'text'} placeholder='ชื่อสินค้า' onChange={setAuctionProductName} className='input w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>ชื่อสินค้า</span>
+                    <input value={auctionProductList.name} type={'text'} placeholder='ชื่อสินค้า' onChange={setAuctionProductName} className='input w-80 bg-shadow-grey text-dshadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>ชื่อเกม</span>
-                    <select value={auctionProductList.gameName} onChange={setAuctionProductGameName} className="select w-80 bg-[#D9D9D9] text-[#000000]">
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>ชื่อเกม</span>
+                    <select value={auctionProductList.gameName} onChange={setAuctionProductGameName} className="select w-80 bg-shadow-grey text-dshadow-black">
                         <option disabled selected>เลือกชื่อเกม</option>
                         <option>Shadow Garden</option>
                         <option>Shadow Design</option>
                     </select>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>ราคาเริ่มต้น</span>
-                    <input value={auctionProductList.defaultPrice} type={'text'} placeholder='ราคาเริ่มต้น' onChange={setAuctionProductDefaultPrice} className='input w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>ราคาเริ่มต้น</span>
+                    <input value={auctionProductList.defaultPrice} type={'text'} placeholder='ราคาเริ่มต้น' onChange={setAuctionProductDefaultPrice} className='input w-80 bg-shadow-grey text-dshadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>ประมูลพื้นฐานครั้งละ</span>
-                    <input value={auctionProductList.defaultBit} type={'text'} placeholder='ประมูลพื้นฐานครั้งละ' onChange={setAuctionProductDefaultBit} className='input w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>ประมูลพื้นฐานครั้งละ</span>
+                    <input value={auctionProductList.defaultBid} type={'text'} placeholder='ประมูลพื้นฐานครั้งละ' onChange={setAuctionProductDefaultBid} className='input w-80 bg-shadow-grey text-dshadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>เวลาเริ่มต้น</span>
-                    <input type={'datetime-local'} onChange={setAuctionProductStartTime} className='input w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>เวลาเริ่มต้น</span>
+                    <input type={'datetime-local'} onChange={setAuctionProductStartTime} className='input w-80 bg-shadow-grey text-dshadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>เวลาสิ้นสุด</span>
-                    <input type={'datetime-local'} onChange={setAuctionProductEndTime} className='input w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>เวลาสิ้นสุด</span>
+                    <input type={'datetime-local'} onChange={setAuctionProductEndTime} className='input w-80 bg-shadow-grey text-dshadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>รูปภาพ</span>
-                    <input type={'file'} onChange={setAuctionProductInformation} className='file-input w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>รูปภาพ</span>
+                    <input type={'file'} onChange={setAuctionProductInformation} className='file-input w-80 bg-shadow-grey text-dshadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>รายละเอียด</span>
-                    <textarea value={auctionProductList.description} type={'text'} placeholder='รายละเอียด' onChange={setAuctionProductDescription} className='textarea w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>รายละเอียด</span>
+                    <textarea value={auctionProductList.description} type={'text'} placeholder='รายละเอียด' onChange={setAuctionProductDescription} className='textarea w-80 bg-shadow-grey text-dshadow-black'/>
                 </div>
                 <div className='flex flex-row items-center mt-2 size-full'>
-                    <button type='submit' className='btn grow mr-5 border-none bg-[#A5DC86] hover:bg-[#86b36d] text-[#FFFFFF]'>ยืนยันการเพิ่มสินค้าประมูล</button>
-                    <Link to='/product-management' className='btn grow border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>ยกเลิกการเพิ่มสินค้าประมูล</Link>
+                    <button type='submit' className='mr-5 border-none btn grow bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>ยืนยันการเพิ่มสินค้าประมูล</button>
+                    <Link to='/product-management' className='border-none btn grow bg-shadow-error hover:bg-shadow-herror text-shadow-white'>ยกเลิกการเพิ่มสินค้าประมูล</Link>
                 </div>
             </form>
         </div>

@@ -75,11 +75,11 @@ const AddBanner = () => {
             <MetaHeader title={`เพิ่มแบนเนอร์`} />
             <Navigation />
             <TitleBox title={'เพิ่มแบนเนอร์'} />
-            <form onSubmit={handleAddBanner} className='mx-10 mt-10 flex flex-row items-center align-middle justify-start'>
-                <span className='text-2xl mr-2'>ลิงก์ภาพ</span>
-                <input type={'file'} onChange={setBanner} className='file-input mr-2 bg-[#D9D9D9] text-[#000000]'/>
-                <button type='submit' className='btn mr-2 border-none bg-[#A5DC86] hover:bg-[#86b36d] text-[#FFFFFF]'>ยืนยันการเพิ่มภาพแบนเนอร์</button>
-                <Link to='/general-management' className='btn mr-2 border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>ยกเลิกการเพิ่มภาพแบนเนอร์</Link>
+            <form onSubmit={handleAddBanner} className='flex flex-row items-center justify-start mx-10 mt-10 align-middle'>
+                <span className='mr-2 text-2xl'>ลิงก์ภาพ</span>
+                <input type={'file'} onChange={setBanner} className='mr-2 file-input bg-shadow-grey text-shadow-black'/>
+                <button type='submit' className='mr-2 border-none btn bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>ยืนยันการเพิ่มภาพแบนเนอร์</button>
+                <Link to='/general-management' className='mr-2 border-none btn bg-shadow-error hover:bg-shadow-herror text-shadow-white'>ยกเลิกการเพิ่มภาพแบนเนอร์</Link>
             </form>
         </div>
     )

@@ -66,18 +66,18 @@ const ForgotPassword = () => {
             <MetaHeader title={`กู้คืนรหัสผ่าน`} />
             <Navigation />
             <div className='container hidden sm:flex justify-center w-full h-full mx-auto mt-5'>
-                <form onSubmit={recoveryPassword} className={`p-10 rounded bg-[#33007B]`}>
+                <form onSubmit={recoveryPassword} className={`p-10 rounded bg-shadow-primary`}>
                     <div className='flex justify-center align-middle'>
-                    <Icon icon={"game-icons:minerals"} className='text-[#F000B8]' width={48} height={48} />
-                    <h4 className='text-5xl text-center text-[#FFFFFF]'>SHADOW</h4>
+                    <Icon icon={"game-icons:minerals"} className='text-shadow-pink' width={48} height={48} />
+                    <h4 className='text-5xl text-center text-shadow-white'>SHADOW</h4>
                     </div>
-                    <h4 className='text-3xl text-center text-[#FFFFFF] mt-5'>ลืมรหัสผ่านหรือเปล่า?</h4>
+                    <h4 className='text-3xl text-center text-shadow-white mt-5'>ลืมรหัสผ่านหรือเปล่า?</h4>
                     <div className='form-control w-full max-w-xs mt-5'>
                         <input value={account.email} type={'text'} placeholder='อีเมล' className='input w-full max-w-xs bg-[#D9D9D9] text-[#000000]' onChange={setEmail}/>
                     </div>
                     <div className='flex flex-col w-full border-opacity-50'>
-                        <button type='submit' className="btn border-none bg-[#3FC3EE] hover:bg-[#46a5c4] text-[#FFFFFF] w-full mt-5">ยืนยันอีเมล</button>
-                        <Link to='/' className="btn border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF] w-full mt-5">
+                        <button type='submit' className="btn border-none bg-shadow-info hover:bg-shadow-hinfo text-shadow-white w-full mt-5">ยืนยันอีเมล</button>
+                        <Link to='/' className="btn border-none bg-shadow-error hover:bg-shadow-herror text-shadow-white w-full mt-5">
                             กลับสู่หน้าหลัก
                         </Link>
                     </div>

@@ -109,45 +109,45 @@ const AddGachaProduct = () => {
             <MetaHeader title={`เพิ่มสินค้ากาชาปอง`} />
             <Navigation />
             <TitleBox title={'เพิ่มสินค้ากาชาปอง'} />
-            <form onSubmit={handleAddGachaProduct} className='mx-auto mt-10 form-control items-end justify-evenly size-fit'>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>รหัสสินค้า</span>
-                    <input value={gachaProductList.productId} type={'text'} placeholder='รหัสสินค้า' onChange={setGachaProductProductId} className='input w-80 bg-[#D9D9D9] text-[#000000]'/>
+            <form onSubmit={handleAddGachaProduct} className='items-end mx-auto mt-10 mb-10 form-control justify-evenly size-fit'>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>รหัสสินค้า</span>
+                    <input value={gachaProductList.productId} type={'text'} placeholder='รหัสสินค้า' onChange={setGachaProductProductId} className='input w-80 bg-shadow-grey text-shadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>ชื่อสินค้า</span>
-                    <input value={gachaProductList.name} type={'text'} placeholder='ชื่อสินค้า' onChange={setGachaProductName} className='input w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>ชื่อสินค้า</span>
+                    <input value={gachaProductList.name} type={'text'} placeholder='ชื่อสินค้า' onChange={setGachaProductName} className='input w-80 bg-shadow-grey text-shadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>ชื่อเกม</span>
-                    <select value={gachaProductList.gameName} onChange={setGachaProductGameName} className="select w-80 bg-[#D9D9D9] text-[#000000]">
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>ชื่อเกม</span>
+                    <select value={gachaProductList.gameName} onChange={setGachaProductGameName} className="select w-80 bg-shadow-grey text-shadow-black">
                         <option disabled selected>เลือกชื่อเกม</option>
                         <option>Shadow Garden</option>
                         <option>Shadow Design</option>
                     </select>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>เปอร์เซ็นต์การดรอป</span>
-                    <input value={gachaProductList.chance} type={'text'} placeholder='เปอร์เซ็นต์การดรอป' onChange={setGachaProductChance} className='input w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>เปอร์เซ็นต์การดรอป</span>
+                    <input value={gachaProductList.chance} type={'text'} placeholder='เปอร์เซ็นต์การดรอป' onChange={setGachaProductChance} className='input w-80 bg-shadow-grey text-shadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>การันตี</span>
-                    <select value={gachaProductList.guaranteeStatus} onChange={setGachaProductGuaranteeStatus} className="select w-80 bg-[#D9D9D9] text-[#000000]">
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>การันตี</span>
+                    <select value={gachaProductList.guaranteeStatus} onChange={setGachaProductGuaranteeStatus} className="select w-80 bg-shadow-grey text-shadow-black">
                         <option value={false} selected>ปิด</option>
                         <option value={true}>เปิด</option>
                     </select>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>รูปภาพ</span>
-                    <input type={'file'} onChange={setGachaProductInformation} className='file-input w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>รูปภาพ</span>
+                    <input type={'file'} onChange={setGachaProductInformation} className='file-input w-80 bg-shadow-grey text-shadow-black'/>
                 </div>
-                <div className='flex flex-row items-center mt-2 justify-end size-full'>
-                    <span className='text-2xl mr-10 text-nowrap'>รายละเอียด</span>
-                    <textarea value={gachaProductList.description} type={'text'} placeholder='รายละเอียด' onChange={setGachaProductDescription} className='textarea w-80 bg-[#D9D9D9] text-[#000000]'/>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>รายละเอียด</span>
+                    <textarea value={gachaProductList.description} type={'text'} placeholder='รายละเอียด' onChange={setGachaProductDescription} className='textarea w-80 bg-shadow-grey text-shadow-black'/>
                 </div>
                 <div className='flex flex-row items-center mt-2 size-full'>
-                    <button type='submit' className='btn grow mr-5 border-none bg-[#A5DC86] hover:bg-[#86b36d] text-[#FFFFFF]'>ยืนยันการเพิ่มสินค้ากาชาปอง</button>
-                    <Link to='/product-management' className='btn grow border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>ยกเลิกการเพิ่มสินค้ากาชาปอง</Link>
+                    <button type='submit' className='mr-5 border-none btn grow bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>ยืนยันการเพิ่มสินค้ากาชาปอง</button>
+                    <Link to='/product-management' className='border-none btn grow bg-shadow-error hover:bg-shadow-herror text-shadow-white'>ยกเลิกการเพิ่มสินค้ากาชาปอง</Link>
                 </div>
             </form>
         </div>
