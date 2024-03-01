@@ -15,7 +15,7 @@ const Transaction = () => {
     const [record_history_product, setRecord_history_product] = useState([])
     const [history_payment, setHistory_payment] = useState([])
     const [record_history_payment, setRecord_history_payment] = useState([])
-    const [create , setCreate] = useState([])
+    const [time , setTime] = useState(new Date())
 
     useEffect(() => {
         !isLogin.status && navigate('/')
@@ -29,9 +29,9 @@ const Transaction = () => {
                 setHistory_payment(response.data.payload.map((value, index) => {
                     return {...value, index: index+1}
                 }))
-                setCreate(response.data.payload.create_at.map((value) => {
-                    return {...value}
-                }))
+                // setTime(response.data.payload.create_at.map((value) => {
+                //     return {...value}
+                // }))
             }
         })
         .catch(() => {})
@@ -67,7 +67,7 @@ const Transaction = () => {
         },
         {
             name: 'วันที่-เวลา',
-            selector: row => row.create_at.toLocaleString(),
+            selector: row => row.create_at,
             sortable: true
         },
 
@@ -121,8 +121,8 @@ const Transaction = () => {
             <Navigation />
             <TitleBox title={'ธุรกรรมของฉัน'} />
             <div>
-                <div className='text-primary text-xl mx-44 mt-10'>ประวัติการซื้อสินค้า</div>
-                <div className='flex flex-row  justify-end px-36 my-3'>
+                <div className='mt-10 text-xl text-primary mx-44'>ประวัติการซื้อสินค้า</div>
+                <div className='flex flex-row justify-end my-3 px-36'>
                     <label className="flex items-center gap-2 input input-bordered input-md size-fit ">
                         <Icon icon={"material-symbols:search"} className='text-xl' />
                         <input type="text" placeholder="ชื่อสินค้า" onChange={filterHistoryProduct} />
@@ -144,8 +144,8 @@ const Transaction = () => {
             </div>
 
             <div >
-                <div className='text-xl text-primary mx-44 mt-10'>ประวัติการเติมเงิน</div>
-                <div className='flex flex-row  justify-end px-36 my-3'>
+                <div className='mt-10 text-xl text-primary mx-44'>ประวัติการเติมเงิน</div>
+                <div className='flex flex-row justify-end my-3 px-36'>
                     <label className="flex items-center gap-2 input input-bordered input-md size-fit ">
                         <Icon icon={"material-symbols:search"} className='text-xl' />
                         <input type="text" placeholder="วันที่-เวลา หรือ ราคา" onChange={filterHistoryPayment} />
@@ -159,7 +159,6 @@ const Transaction = () => {
                     pagination
                     persistTableHead={true}
                     minRows={5}
-                    className='table px-10'
                 />
                 </div>
                 
