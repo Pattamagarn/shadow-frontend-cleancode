@@ -11,8 +11,8 @@ import axios from 'axios'
 const TopUp = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
+    const [exchangeRate, setExchangeRate] = useState({baht:'', aysel:''})
     const [giftTrueMoney, setGiftTrueMoney] = useState('')
-    
 
     const alertSuccess = (title, text, confirmButtonText) => {
         Swal.fire({
@@ -58,7 +58,21 @@ const TopUp = () => {
                 alertError('ผิดพลาด', `เติม Aysel ล้มเหลว6`, 'ตกลง')
             })
         }else{
-            alertWarning('คำเตือน', 'กรุณาเข้าสู่ระบบ', 'ตกลง')
+            Swal.fire({
+                title: 'คุณต้องการเข้าสู่ระบบไหม?',
+                text: 'จำเป็นต้องเข้าสู่ระบบเพื่อเติม Aysel',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3FC3EE',
+    
+                cancelButtonColor: '#F27474',
+                confirmButtonText: 'ตกลง, ไปเข้าสู่ระบบกัน',
+                cancelButtonText: 'ยกเลิก'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate('/sign-in')
+                }
+              });
         }
     }
 
@@ -70,9 +84,9 @@ const TopUp = () => {
             <img alt="topup" src="http://localhost:3001/public/images/topup/shadow.png" className='container w-5/12 mx-auto' />
             <div className='mt-2 text-xl text-center text-shadow-error'>*** อัตราการแลกเปลี่ยนปัจจุบัน {process.env.REACT_APP_BAHT} บาท = {process.env.REACT_APP_AYSEL} Aysel***</div>
             <div className='flex flex-row items-center justify-center mt-10'>
-                <input type={'text'} value={baht} placeholder={'จำนวนเงิน'} className={'input text-center border-none bg-shadow-grey text-shadow-black'} />
+                <input type={'text'} placeholder={'จำนวนเงิน'} className={'input text-center border-none bg-shadow-grey text-shadow-black'} />
                 <Icon icon={'ic:outline-double-arrow'} className='mx-20 text-5xl text-shadow-accent' />
-                <input type={'text'} value={aysel} placeholder={'จำนวน Aysel'} className={'input text-center border-none bg-shadow-grey text-shadow-black'} />
+                <input type={'text'} placeholder={'จำนวน Aysel'} className={'input text-center border-none bg-shadow-grey text-shadow-black'} />
             </div>
             <TitleBox title={'วิธีชำระเงิน'} />
             <div className='flex flex-col items-center justify-center mt-10 mx-60'>
