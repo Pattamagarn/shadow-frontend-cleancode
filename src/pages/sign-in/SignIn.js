@@ -15,7 +15,10 @@ const SignIn = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        isLogin.status && navigate('/')
+        // isLogin.status && navigate('/')
+        if(isLogin.status){
+            isLogin.payload.role === 1 ? navigate('/analysis') : navigate('/')
+        }
     }, [isLogin, navigate])
 
     const [account, setAccount] = useState({email:'', password:''})

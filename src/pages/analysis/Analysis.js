@@ -12,6 +12,8 @@ const Analysis = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
     const [dataMember, setDataMember] = useState([])
+    const [dataMemberAdmin, setDataMemberAdmin] = useState(0)
+    const [dataMemberUser, setDataMemberUser] = useState(0)
     const [aysel, setAysel] = useState([])
     const [amount, setAmount] = useState([])
     const [product, setProduct] = useState([])
@@ -29,6 +31,8 @@ const Analysis = () => {
                         return { ...value }
 
                     }))
+                    
+                    
                 }
             })
     },[])
@@ -70,11 +74,11 @@ const Analysis = () => {
             <MetaHeader title={`วิเคราะห์ข้อมูล`} />
             <Navigation />
             <TitleBox title={'วิเคราะห์ข้อมูล'} />
-            <div className="hidden lg:flex flex-col">
-                <div className="flex flex-col items-start mx-36  text-lg ">
+            <div className="flex-col hidden lg:flex">
+                <div className="flex flex-col items-start text-lg mx-36 ">
                     <span>จำนวนบัญชีทั้งหมดในระบบ {dataMember.length} บัญชี</span>
-                    <span>จำนวนบัญชีผู้ดูแลระบบทั้งหมดในระบบ { } บัญชี</span>
-                    <span>จำนวนบัญชีสมาชิกทั้งหมดในระบบ { } บัญชี</span>
+                    <span>จำนวนบัญชีผู้ดูแลระบบทั้งหมดในระบบ { dataMemberAdmin} บัญชี</span>
+                    <span>จำนวนบัญชีสมาชิกทั้งหมดในระบบ { dataMemberUser} บัญชี</span>
                     <span>จำนวน Aysel ที่ขายไปทั้งหมด {aysel} Aysel</span>
                     <span>จำนวนเงินที่ได้รับทั้งหมด {amount} บาท</span>
                     <span>จำนวนสินค้าที่ขายไปทั้งหมด {product} ชิ้น</span>
@@ -91,8 +95,8 @@ const Analysis = () => {
                     />
                 </div>
             </div>
-            <div className="flex lg:hidden flex-col">
-                <div className="flex flex-col items-start mx-36  text-lg ">
+            <div className="flex flex-col lg:hidden">
+                <div className="flex flex-col items-start text-lg mx-36 ">
                     <span>จำนวนบัญชีทั้งหมดในระบบ {dataMember.length} บัญชี</span>
                     <span>จำนวนบัญชีผู้ดูแลระบบทั้งหมดในระบบ { } บัญชี</span>
                     <span>จำนวนบัญชีสมาชิกทั้งหมดในระบบ { } บัญชี</span>

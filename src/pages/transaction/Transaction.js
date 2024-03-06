@@ -16,7 +16,10 @@ const Transaction = () => {
     const [history_payment, setHistory_payment] = useState([])
     const [record_history_payment, setRecord_history_payment] = useState([])
     const [time , setTime] = useState(new Date())
+    // const times = new Date()
+    
 
+    // console.log(times.getFullYear())
     useEffect(() => {
         !isLogin.status && navigate('/')
         isLogin.status && isLogin.payload.role !== 0 && navigate('/')
@@ -29,16 +32,14 @@ const Transaction = () => {
                 setHistory_payment(response.data.payload.map((value, index) => {
                     return {...value, index: index+1}
                 }))
-                // setTime(response.data.payload.create_at.map((value) => {
-                //     return {...value}
-                // }))
+                
+                
             }
         })
         .catch(() => {})
 
 
     },[])
-
 
     const columns_history_product = [
         {
@@ -148,7 +149,7 @@ const Transaction = () => {
                 <div className='flex flex-row justify-end my-3 px-36'>
                     <label className="flex items-center gap-2 input input-bordered input-md size-fit ">
                         <Icon icon={"material-symbols:search"} className='text-xl' />
-                        <input type="text" placeholder="วันที่-เวลา หรือ ราคา" onChange={filterHistoryPayment} />
+                        <input type="text" placeholder="วันที่ หรือ ราคา" onChange={filterHistoryPayment} />
                     </label>
                 </div>
                 <div className='mx-32'>

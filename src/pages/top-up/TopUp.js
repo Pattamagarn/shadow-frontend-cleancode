@@ -14,6 +14,21 @@ const TopUp = () => {
     const [exchangeRate, setExchangeRate] = useState({baht:'', aysel:''})
     const [giftTrueMoney, setGiftTrueMoney] = useState('')
 
+    const setExchangeRateBaht = (baht) => {
+        if(isNaN((process.env.REACT_APP_AYSEL/process.env.REACT_APP_BAHT)*baht.target.value)){
+            setExchangeRate({...exchangeRate, baht:'', aysel:''})
+        }else{
+            setExchangeRate({...exchangeRate, baht:baht.target.value, aysel:(process.env.REACT_APP_AYSEL/process.env.REACT_APP_BAHT)*baht.target.value})
+        }
+    }
+    const setExchangeRateAysel = (aysel) => {
+        if(isNaN((process.env.REACT_APP_BAHT/process.env.REACT_APP_AYSEL)*aysel.target.value)){
+            setExchangeRate({...exchangeRate, baht:'', aysel:''})
+        }else{
+            setExchangeRate({...exchangeRate,  baht:(process.env.REACT_APP_BAHT/process.env.REACT_APP_AYSEL)*aysel.target.value, aysel:aysel.target.value})
+        }
+    }
+    
     const alertSuccess = (title, text, confirmButtonText) => {
         Swal.fire({
             title: title,
@@ -84,22 +99,22 @@ const TopUp = () => {
             <img alt="topup" src="http://localhost:3001/public/images/topup/shadow.png" className='container w-5/12 mx-auto' />
             <div className='mt-2 text-xl text-center text-shadow-error'>*** อัตราการแลกเปลี่ยนปัจจุบัน {process.env.REACT_APP_BAHT} บาท = {process.env.REACT_APP_AYSEL} Aysel***</div>
             <div className='flex flex-row items-center justify-center mt-10'>
-                <input type={'text'} placeholder={'จำนวนเงิน'} className={'input text-center border-none bg-shadow-grey text-shadow-black'} />
+                <input value={exchangeRate.baht} onChange={setExchangeRateBaht} type={'text'} placeholder={'จำนวนเงิน (บาท)'} className={'input text-center border-none bg-shadow-grey text-shadow-black'} />
                 <Icon icon={'ic:outline-double-arrow'} className='mx-20 text-5xl text-shadow-accent' />
-                <input type={'text'} placeholder={'จำนวน Aysel'} className={'input text-center border-none bg-shadow-grey text-shadow-black'} />
+                <input value={exchangeRate.aysel} onChange={setExchangeRateAysel} type={'text'} placeholder={'จำนวน Aysel'} className={'input text-center border-none bg-shadow-grey text-shadow-black'} />
             </div>
             <TitleBox title={'วิธีชำระเงิน'} />
             <div className='flex flex-col items-center justify-center mt-10 mx-60'>
                 <input value={giftTrueMoney} onChange={(text) => {setGiftTrueMoney(text.target.value)}} type={'text'} placeholder={'กรุณากรอก URL'} className={'input w-full text-left border-none bg-shadow-grey text-shadow-black'} />
                 <Link to='/transaction' className='self-end mt-2 link text-shadow-accent hover:text-shadow-haccent'>ติดตามสถานะการเติมเงิน</Link>
-                <button type='button' onClick={handleTopUp} className='w-full mt-5 border-none btn bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>ยืนยัน</button>
+                <button type='button' onClick={handleTopUp} className='mt-5 border-none btn w-max bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white rounded-box'>ยืนยัน</button>
             </div>
             <div className='flex flex-row items-center mt-10 justify-evenly'>
                 <button type='button' onClick={()=>document.getElementById('image-payment-method').showModal()} className='text-3xl border-none btn size-96 bg-shadow-primary hover:bg-shadow-primary text-shadow-accent'>ภาพวิธีการชำระเงิน</button>
                 <button type='button' onClick={()=>document.getElementById('video-payment-method').showModal()} className='text-3xl border-none btn size-96 bg-shadow-primary hover:bg-shadow-primary text-shadow-accent'>วิดีโอวิธีการชำระเงิน</button>
             </div>
             <dialog id='image-payment-method' className='modal'>
-                <div className='modal-box'>
+                <div className='max-w-5xl modal-box w-svh'>
                     <span className="text-3xl">ภาพวิธีการชำระเงิน</span>
                     <img src={`${process.env.REACT_APP_PAYMENT_METHOD}payment-method.png`} alt='payment-method' className='size-full h-96' />
                     <div className="modal-action">
@@ -110,7 +125,7 @@ const TopUp = () => {
                 </div>
             </dialog>
             <dialog id='video-payment-method' className='modal'>
-                <div className='modal-box'>
+                <div className='max-w-5xl modal-box w-svh'>
                     <span className="text-3xl">วิดีโอวิธีการชำระเงิน</span>
                     <iframe src='https://www.youtube.com/embed/smdmEhkIRVc?si=mq3E5TZNz1Qi352p' title="payment-method-video" className='size-full h-96' frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                     <div className="modal-action">
