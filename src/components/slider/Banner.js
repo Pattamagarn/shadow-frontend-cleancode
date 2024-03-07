@@ -22,9 +22,10 @@ const Banner = ({ children: banner}) => {
 
 
     return (
-        <div className='relative flex w-full max-w-3xl max-h-full py-5 m-auto overflow-hidden'>
+        //1152px x 480px
+        <div className='relative flex max-w-[1100px] py-5 mx-auto overflow-hidden max-h-[500px]'>
             <div
-                className='flex transition-transform duration-500 ease-out ' 
+                className='flex transition-transform duration-500 ease-out' 
                 style={{transform: `translateX(-${currentBanner * 100}%)`}}
                 >
                     {banner}

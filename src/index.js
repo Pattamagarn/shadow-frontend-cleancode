@@ -12,6 +12,7 @@ import ForgotPassword from './pages/forgot-password/ForgotPassword'
 import Profile from './pages/profile/Profile'
 import EditProfile from './pages/edit-profile/EditProfile'
 import GeneralProduct from './pages/general-product/GeneralProduct'
+import GeneralProductDetail from './pages/general-product/GeneralProductDetail';
 import PromotionProduct from './pages/promotion-product/PromotionProduct'
 import AuctionProduct from './pages/auction-product/AuctionProduct'
 import GachaProduct from './pages/gacha-product/GachaProduct'
@@ -50,6 +51,7 @@ root.render(
           <Route exact path='/profile' element={<Profile />} />
           <Route exact path='/edit-profile' element={<EditProfile />} />
           <Route exact path='/general-product' element={<GeneralProduct />} />
+          <Route exact path='/general-product-item' element={<GeneralProductDetail />} />
           <Route exact path='/promotion-product' element={<PromotionProduct />} />
           <Route exact path='/auction-product' element={<AuctionProduct />} />
           <Route exact path='/gacha-product' element={<GachaProduct />} />
