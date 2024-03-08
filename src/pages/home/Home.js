@@ -27,7 +27,7 @@ const Home = () => {
             .then((response) => {
                 if (response) {
                     setBanner(response.data.payload)
-                    // setBanner(response.data.payload.map((value) => { return { ...value } }))
+
                 }
             })
         axios.get(`${process.env.REACT_APP_API}/read-general-3-product`)
@@ -58,17 +58,29 @@ const Home = () => {
             })
     }, [])
 
-
+    {console.log(banner.length)}
     return (
+
         <div>
             <MetaHeader title={`หน้าหลัก`} />
             <Navigation />
             <div className='max-w-full '  >
-                <Banner>
-                    {banner.map((value) => (
-                        <img key={value.id} src={`${process.env.REACT_APP_BANNER}${value.information}`} alt='banner' />
-                    ))}
-                </Banner>
+                {banner.length === 0 ?
+                    <div className='relative justify-center flex max-w-[1100px] py-5 mx-auto overflow-hidden max-h-[500px] shadow mb-10'>
+                        <div className='flex justify-center ' >
+                            <p>No Banner</p>
+                        </div>
+                    </div  >
+                    :
+                    <div>
+                        <Banner>
+                            {banner.map((value) => (
+                                <img key={value.id} src={`${process.env.REACT_APP_BANNER}${value.information}`} alt='banner' />
+                            ))}
+                        </Banner>
+                    </div>}
+
+
             </div>
 
             <Link to='/general-product' className='flex w-40 gap-2 mx-40' >

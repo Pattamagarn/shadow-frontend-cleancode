@@ -31,12 +31,14 @@ const Analysis = () => {
                         return { ...value }
 
                     }))
+                    // response.data.payload.map((value) => (value.role === 0 ? setDataMemberUser(dataMemberUser+1) : setDataMemberAdmin(dataMemberAdmin+1)))
                     
                     
                 }
             })
     },[])
-
+    
+    
     const [top_product, setTop_product] = ([])
     const columns_top_product = [
         {
@@ -77,7 +79,7 @@ const Analysis = () => {
             <div className="flex-col hidden lg:flex">
                 <div className="flex flex-col items-start text-lg mx-36 ">
                     <span>จำนวนบัญชีทั้งหมดในระบบ {dataMember.length} บัญชี</span>
-                    <span>จำนวนบัญชีผู้ดูแลระบบทั้งหมดในระบบ { dataMemberAdmin} บัญชี</span>
+                    <span>จำนวนบัญชีผู้ดูแลระบบทั้งหมดในระบบ {dataMemberAdmin} บัญชี</span>
                     <span>จำนวนบัญชีสมาชิกทั้งหมดในระบบ { dataMemberUser} บัญชี</span>
                     <span>จำนวน Aysel ที่ขายไปทั้งหมด {aysel} Aysel</span>
                     <span>จำนวนเงินที่ได้รับทั้งหมด {amount} บาท</span>
@@ -98,8 +100,8 @@ const Analysis = () => {
             <div className="flex flex-col lg:hidden">
                 <div className="flex flex-col items-start text-lg mx-36 ">
                     <span>จำนวนบัญชีทั้งหมดในระบบ {dataMember.length} บัญชี</span>
-                    <span>จำนวนบัญชีผู้ดูแลระบบทั้งหมดในระบบ { } บัญชี</span>
-                    <span>จำนวนบัญชีสมาชิกทั้งหมดในระบบ { } บัญชี</span>
+                    <span>จำนวนบัญชีผู้ดูแลระบบทั้งหมดในระบบ { dataMemberAdmin} บัญชี</span>
+                    <span>จำนวนบัญชีสมาชิกทั้งหมดในระบบ { dataMemberUser} บัญชี</span>
                     <span>จำนวน Aysel ที่ขายไปทั้งหมด {aysel} Aysel</span>
                     <span>จำนวนเงินที่ได้รับทั้งหมด {amount} บาท</span>
                     <span>จำนวนสินค้าที่ขายไปทั้งหมด {product} ชิ้น</span>
