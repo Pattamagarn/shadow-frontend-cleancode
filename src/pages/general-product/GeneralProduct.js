@@ -4,15 +4,22 @@ import TitleBox from '../../components/title-box/TitleBox'
 import DropDown from '../../components/drop-down/DropDown'
 import { Icon } from '@iconify/react'
 import Card from '../../components/card/Card'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { combineSlices } from '@reduxjs/toolkit'
 
 const GeneralProduct = () => {
 
     const [dataGeneral, setDataGeneral] = useState([])
     const [dataGeneralSearch, setDataGeneralSearch] = useState([])
-
+    const [dataGeneralNewToOld, setDataGeneralNewToOld] = useState([])
+    const handleNewtoOld = useCallback(()=>{
+        setDataGeneralNewToOld(handleNewtoOld)
+        
+    },[dataGeneralNewToOld])
+    
+    console.log(dataGeneralNewToOld)
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-general-product`)
             .then((response) => {
@@ -39,15 +46,15 @@ const GeneralProduct = () => {
             <Navigation />
             <TitleBox title={'สินค้าทั้งหมด'} />
             <div >
-                <div className='flex flex-row justify-between my-10 px-36 '>
-                    <DropDown />
+                <div className='flex flex-row justify-between my-10 lg:mx-36 md:mx-20'>
+                    <DropDown data={dataGeneral}/>
                     <label className="flex items-center self-center gap-2 input input-bordered input-md size-fit">
                         <Icon icon={"material-symbols:search"} className='text-xl' />
                         <input type="text" placeholder="ชื่อสินค้าหรือชื่อเกม" onChange={filterDataGeneral} />
                     </label>
                 </div>
             </div>
-            <div className='grid grid-flow-col grid-cols-4 gap-5 py-10 mx-40 grid-row-2'>
+            <div className='grid grid-flow-row gap-5 py-10 mx-20 md:grid-cols-2 lg:grid-cols-4 sm:grid-cols-1'>
                 {dataGeneralSearch.length <= 0 ? dataGeneral.map((value) => (
                         <Card
                             name={value.name}
@@ -71,6 +78,8 @@ const GeneralProduct = () => {
                         </Link>
                     ))}
             </div>
+            
+        
 
 
         </div>

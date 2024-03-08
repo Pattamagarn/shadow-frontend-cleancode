@@ -35,7 +35,7 @@ const PromotionProduct = () => {
             <TitleBox title={'สินค้าโปรโมชัน'} />
             <div>
                 <div className='flex flex-row justify-between my-10 px-36 '>
-                    <DropDown />
+                    <DropDown data={dataPromotion}/>
                     <label className="flex items-center self-center gap-2 input input-bordered input-md size-fit">
                         <Icon icon={"material-symbols:search"} className='text-xl' />
                         <input type="text" placeholder="ชื่อสินค้าหรือชื่อเกม" onChange={filterDataPromotion} />
