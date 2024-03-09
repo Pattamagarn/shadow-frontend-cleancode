@@ -4,7 +4,7 @@ import TitleBox from '../../components/title-box/TitleBox'
 import DropDown from '../../components/drop-down/DropDown'
 import Card from '../../components/card/Card'
 import { Icon } from '@iconify/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState , useCallback} from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
@@ -12,6 +12,11 @@ const AuctionProduct = () => {
 
     const [dataAuction, setDataAuction] = useState([])
     const [dataAuctionSearch, setDataAuctionSearch] = useState([])
+    const [dataFilter, setDataFilter] = useState([])
+
+    const handlefilter = useCallback((text) => {
+        setDataFilter(text)
+    }, [dataFilter])
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-auction-product`)
@@ -36,7 +41,7 @@ const AuctionProduct = () => {
             <TitleBox title={'สินค้าประมูล'} />
             <div>
                 <div className='flex flex-row justify-between my-10 px-36 '>
-                    <DropDown data={dataAuction} />
+                    <DropDown data={dataAuction} select={handlefilter}/>
                     <label className="flex items-center self-center gap-2 input input-bordered input-md size-fit">
                         <Icon icon={"material-symbols:search"} className='text-xl' />
                         <input type="text" placeholder="ชื่อเกม" />
@@ -44,7 +49,8 @@ const AuctionProduct = () => {
                 </div>
             </div>
             <div className='grid grid-flow-col grid-cols-4 gap-5 py-10 mx-40 grid-row-2'>
-                {dataAuctionSearch.length <= 0 ? dataAuction.map((value) => (
+                {dataAuctionSearch.length === 0 && dataFilter.length === 0 ? dataAuction.map((value) => (
+                    <div>
                         <Card
                             name={value.name}
                             game_name={value.game_name}
@@ -53,9 +59,10 @@ const AuctionProduct = () => {
                             promotion_status={value.special_price_status}
                             promotion={value.special_price}
                             path='auction' />
-                )) :
-                    dataAuctionSearch.map((value) => (
-                        <Link key={value.uuid} to={`/auction-product-item/${value.uuid}`}>
+                    </div>
+                )) : dataAuctionSearch.length === 0 ?
+                    dataFilter.map((value) => (
+                        <div>
                             <Card
                                 name={value.name}
                                 game_name={value.game_name}
@@ -64,7 +71,22 @@ const AuctionProduct = () => {
                                 promotion_status={value.special_price_status}
                                 promotion={value.special_price}
                                 path='auction' />
-                        </Link>
+                        </div>
+
+                    ))
+                    :
+                    dataAuctionSearch.map((value) => (
+                        <div>
+                            <Card
+                                name={value.name}
+                                game_name={value.game_name}
+                                aysel={value.normal_price}
+                                information={value.information}
+                                promotion_status={value.special_price_status}
+                                promotion={value.special_price}
+                                path='auction' />
+                        </div>
+
                     ))}
             </div>
 
