@@ -82,11 +82,11 @@ const Home = () => {
 
             </div>
 
-            <Link to='/general-product' className='flex w-40 gap-2 mx-40' >
+            <Link to='/general-product' className='flex w-40 gap-2 lg:mx-40 md:mx-20' >
                 <div className='text-xl'>สินค้าทั้งหมด</div>
                 <Icon icon={"ic:outline-double-arrow"} width={30} />
             </Link>
-            <div className='grid grid-flow-col grid-cols-3 grid-rows-1 gap-2 py-10 mx-40' >
+            <div className='grid grid-flow-col grid-rows-1 gap-2 py-10 lg:mx-40 lg:grid-cols-3 md:mx-20' >
                 {dataGeneral.map((value) => (
                     <Link to='/general-product-item'><div className="w-auto h-48 shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary " >
                         <figure className='flex flex-col w-32 px-5 '>
@@ -106,11 +106,11 @@ const Home = () => {
                     
                 ))}
             </div>
-            <Link to='./promotion-product' className='flex w-40 gap-2 mx-40' >
+            <Link to='./promotion-product' className='flex w-40 gap-2 lg:mx-40 md:mx-20' >
                 <div className='text-xl'>สินค้าโปรโมชั่น</div>
                 <Icon icon={"ic:outline-double-arrow"} width={30} />
             </Link>
-            <div className='grid grid-flow-col grid-cols-3 grid-rows-1 gap-5 py-10 mx-40'>
+            <div className='grid grid-flow-col grid-rows-1 gap-5 py-10 lg:mx-40 lg:grid-cols-3 md:mx-20'>
                 {dataPromotion.map((value) => (
                     <Link to='#'><div className="h-48 shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
                         <figure className='flex flex-col w-32 px-5 '>
@@ -137,11 +137,11 @@ const Home = () => {
 
                 ))}
             </div>
-            <Link to='./auction-product' className='flex w-40 gap-2 mx-40' >
+            <Link to='./auction-product' className='flex w-40 gap-2 lg:mx-40 md:mx-20' >
                 <div className='text-xl'>สินค้าประมูล</div>
                 <Icon icon={"ic:outline-double-arrow"} width={30} />
             </Link>
-            <div className='grid grid-flow-col grid-cols-3 grid-rows-1 gap-5 py-10 mx-40'>
+            <div className='grid grid-flow-col grid-rows-1 gap-5 py-10 lg:mx-40 lg:grid-cols-3 md:mx-20 md:grid-cols-3'>
                 {dataAuction.map((value) => (
                     <Link to='#'><div className="h-48 shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
                         <figure className='flex flex-col w-32 px-5 '>
@@ -163,11 +163,11 @@ const Home = () => {
 
                 ))}
             </div>
-            <Link to='./gacha-product' className='flex w-40 gap-2 mx-40' >
+            <Link to='./gacha-product' className='flex w-40 gap-2 lg:mx-40 md:mx-20' >
                 <div className='text-xl'>สินค้าสุ่มกาชา</div>
                 <Icon icon={"ic:outline-double-arrow"} width={30} />
             </Link>
-            <div className='grid grid-flow-col grid-cols-3 grid-rows-1 gap-2 py-10 mx-40'>
+            <div className='grid grid-flow-col grid-rows-1 gap-2 py-10 lg:mx-40 lg:grid-cols-3 md:mx-20 md:grid-cols-3'>
                 {dataGacha.map((value) => (
                     <Link to='#'><div className="w-auto h-40 shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
                         <figure className='flex flex-col w-32 px-5'>

@@ -58,8 +58,6 @@ const GeneralProduct = () => {
             <div className='grid grid-flow-row gap-5 py-10 mx-20 md:grid-cols-2 lg:grid-cols-4 sm:grid-cols-1'>
                 {dataGeneralSearch.length === 0 && dataFilter.length === 0 ? dataGeneral.map((value) => (
                     <div>
-                        {/* {console.log(dataFilter.length)} */}
-                        {console.log('general')}
                         <Card
                             name={value.name}
                             game_name={value.game_name}
@@ -72,7 +70,6 @@ const GeneralProduct = () => {
                 )) : dataGeneralSearch.length === 0 ? dataFilter.map((value) => (
                     // <Link key={value.uuid} to={`/general-product-item/${value.uuid}`}>
                     <div>
-                        {console.log('sort')}
                         <Card
                             name={value.name}
                             game_name={value.game_name}
@@ -85,7 +82,6 @@ const GeneralProduct = () => {
                     // </Link>
                 )) : dataGeneralSearch.map((value) => (
                     <div>
-                    {console.log('search')}
                         <Card
                             name={value.name}
                             game_name={value.game_name}
