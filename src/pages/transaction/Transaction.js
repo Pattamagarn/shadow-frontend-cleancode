@@ -4,7 +4,7 @@ import TitleBox from '../../components/title-box/TitleBox'
 import DataTable from 'react-data-table-component';
 import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import axios from 'axios';
 
@@ -15,7 +15,7 @@ const Transaction = () => {
     const [record_history_product, setRecord_history_product] = useState([])
     const [history_payment, setHistory_payment] = useState([])
     const [record_history_payment, setRecord_history_payment] = useState([])
-    const [time , setTime] = useState(new Date())
+    // const [time , setTime] = useState(new Date())
     // const times = new Date()
     
 

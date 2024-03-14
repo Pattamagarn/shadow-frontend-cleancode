@@ -12,11 +12,13 @@ import ForgotPassword from './pages/forgot-password/ForgotPassword'
 import Profile from './pages/profile/Profile'
 import EditProfile from './pages/edit-profile/EditProfile'
 import GeneralProduct from './pages/general-product/GeneralProduct'
-import GeneralProductDetail from './pages/general-product/GeneralProductDetail';
 import PromotionProduct from './pages/promotion-product/PromotionProduct'
 import AuctionProduct from './pages/auction-product/AuctionProduct'
 import GachaProduct from './pages/gacha-product/GachaProduct'
-import ProductDetails from './pages/product-details/ProductDetails'
+import GeneralProductDetail from './pages/general-product/GeneralProductDetail';
+import GachaProductDetail from './pages/gacha-product/GachaProductDetail';
+import AuctionProductDetail from './pages/auction-product/AuctionProductDetail';
+import PromotionProductDetail from './pages/promotion-product/PromotionProductDatial';
 import TopUp from './pages/top-up/TopUp'
 import StoreProduct from './pages/store-product/StoreProduct'
 import Transaction from './pages/transaction/Transaction'
@@ -53,9 +55,11 @@ root.render(
           <Route exact path='/general-product' element={<GeneralProduct />} />
           <Route exact path='/general-product-item' element={<GeneralProductDetail />} />
           <Route exact path='/promotion-product' element={<PromotionProduct />} />
+          <Route exact path='/promotion-product-item' element={<PromotionProductDetail />} />
           <Route exact path='/auction-product' element={<AuctionProduct />} />
+          <Route exact path='/auction-product-item' element={<AuctionProductDetail />} />
           <Route exact path='/gacha-product' element={<GachaProduct />} />
-          <Route exact path='/product-details' element={<ProductDetails />} />
+          <Route exact path='/gacha-product-item' element={<GachaProductDetail />} />
           <Route exact path='/top-up' element={<TopUp />} />
           <Route exact path='/store-product' element={<StoreProduct />} />
           <Route exact path='/transaction' element={<Transaction />} />
