@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 import axios from 'axios'
 
 
-const GeneralProductDetail = ({ title }) => {
+const GeneralProductDetail = () => {
     return (
         <div>
             <MetaHeader title={`สินค้า - sword`} />

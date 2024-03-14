@@ -29,9 +29,19 @@ const Analysis = () => {
                 if (response.data.status) {
                     setDataMember(response.data.payload.map((value) => {
                         return { ...value }
-
                     }))
-                    // response.data.payload.map((value) => (value.role === 0 ? setDataMemberUser(dataMemberUser+1) : setDataMemberAdmin(dataMemberAdmin+1)))
+                    let countAdmin = 0
+                    let countMember = 0
+                    response.data.payload.forEach(element => {
+                        if(element.role === 1){
+                            countAdmin++
+                        }
+                        else{
+                            countMember++
+                        }
+                    })
+                    setDataMemberAdmin(countAdmin)
+                    setDataMemberUser(countMember)
                     
                     
                 }
