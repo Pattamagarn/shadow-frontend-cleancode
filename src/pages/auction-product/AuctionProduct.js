@@ -51,6 +51,7 @@ const AuctionProduct = () => {
             <div className='grid grid-flow-col grid-cols-4 gap-5 py-10 mx-40 grid-row-2'>
                 {dataAuctionSearch.length === 0 && dataFilter.length === 0 ? dataAuction.map((value) => (
                     <div>
+                         
                         <Card
                             name={value.name}
                             game_name={value.game_name}

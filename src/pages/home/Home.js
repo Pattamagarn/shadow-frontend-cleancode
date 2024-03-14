@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import MetaHeader from '../../components/meta-header/MetaHeader'
 import Navigation from '../../components/navigation/Navigation'
 import Banner from '../../components/slider/Banner'
+import { setProduct } from '../../redux/productSlice'
 import axios from 'axios'
 import { Icon } from '@iconify/react'
 
 const Home = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
+    const product = useSelector((state) => state.product)
     const navigate = useNavigate()
-    const list = [0, 1, 2]
+    const dispatch = useDispatch()
     const [banner, setBanner] = useState([])
     const [dataGeneral, setDataGeneral] = useState([])
     const [dataPromotion, setDataPromotion] = useState([])
@@ -57,8 +59,8 @@ const Home = () => {
             })
     }, [])
 
-    const handleProductItem = () => {
-        navigate('/general-product-item')
+    const handleProductItem = (item) => {
+        dispatch(setProduct({status: true,item}))
     }
 
     return (
@@ -112,7 +114,7 @@ const Home = () => {
             </Link>
             <div className='grid grid-flow-col grid-cols-3 grid-rows-1 gap-5 py-10 mx-40'>
                 {dataPromotion.map((value) => (
-                    <Link to='#'><div className="h-48 shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
+                    <Link to='/promotion-product-item'><div className="h-48 shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
                         <figure className='flex flex-col w-32 px-5 '>
                             <div className='flex w-28 h-28'>
                                 <img src={`${process.env.REACT_APP_GENERAL_PRODUCT}${value.information}`} alt={`{product general}`} key={value.id} className='flex w-full h-full' />
@@ -143,12 +145,12 @@ const Home = () => {
             </Link>
             <div className='grid grid-flow-col grid-cols-3 grid-rows-1 gap-5 py-10 mx-40'>
                 {dataAuction.map((value) => (
-                    <Link to='#'><div className="h-48 shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
+                    <Link to='/auction-product-item'><div className="h-48 shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" onClick={() => {handleProductItem(value.uuid)}}>
                         <figure className='flex flex-col w-32 px-5 '>
                             <div className='flex w-28 h-28'>
                                 <img src={`${process.env.REACT_APP_AUCTION_PRODUCT}${value.information}`} alt={`{product general ${value}}`} key={value.id} className='flex w-full h-full' />
                             </div>
-
+                            
                         </figure>
                         <div className="flex items-center card-body">
                             <h2 className="justify-start card-title ">{value.name}</h2>
@@ -160,7 +162,6 @@ const Home = () => {
                         </div>
                     </div></Link>
 
-
                 ))}
             </div>
             <Link to='./gacha-product' className='flex w-40 gap-2 mx-40' >
@@ -169,7 +170,7 @@ const Home = () => {
             </Link>
             <div className='grid grid-flow-col grid-cols-3 grid-rows-1 gap-2 py-10 mx-40'>
                 {dataGacha.map((value) => (
-                    <Link to='#'><div className="w-auto h-40 shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
+                    <Link to='/gacha-product-item'><div className="w-auto h-40 shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
                         <figure className='flex flex-col w-32 px-5'>
                             <div className='flex h-24 w-28' >
                                 <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value.information}`} alt={`{product gacha ${value}}`} key={value.id} className='flex w-full h-full' />
