@@ -53,13 +53,13 @@ root.render(
           <Route exact path='/profile' element={<Profile />} />
           <Route exact path='/edit-profile' element={<EditProfile />} />
           <Route exact path='/general-product' element={<GeneralProduct />} />
-          <Route exact path='/general-product-item' element={<GeneralProductDetail />} />
+          <Route exact path='/general-product-item/:uuid' element={<GeneralProductDetail />} />
           <Route exact path='/promotion-product' element={<PromotionProduct />} />
-          <Route exact path='/promotion-product-item' element={<PromotionProductDetail />} />
+          <Route exact path='/promotion-product-item/:uuid' element={<PromotionProductDetail />} />
           <Route exact path='/auction-product' element={<AuctionProduct />} />
-          <Route exact path='/auction-product-item' element={<AuctionProductDetail />} />
+          <Route exact path='/auction-product-item/:uuid' element={<AuctionProductDetail />} />
           <Route exact path='/gacha-product' element={<GachaProduct />} />
-          <Route exact path='/gacha-product-item' element={<GachaProductDetail />} />
+          <Route exact path='/gacha-product-item/:uuid' element={<GachaProductDetail />} />
           <Route exact path='/top-up' element={<TopUp />} />
           <Route exact path='/store-product' element={<StoreProduct />} />
           <Route exact path='/transaction' element={<Transaction />} />

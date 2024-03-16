@@ -32,7 +32,6 @@ const Card = ({ name, game_name, aysel, information, promotion_status = 0, promo
                             </div>
 
                             : <div>
-
                                 <p className="flex justify-center ">{`${aysel} Aysel`}</p>
                             </div>}
 

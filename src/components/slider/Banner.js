@@ -18,7 +18,7 @@ const Banner = ({ children: banner}) => {
         if (!autoSlide) return
         const slideInterval = setInterval(next, autoSlideInterval)
         return () => clearInterval(slideInterval)
-    }, [])
+    }, [autoSlide])
 
 
     return (
@@ -44,7 +44,7 @@ const Banner = ({ children: banner}) => {
             <div className='absolute left-0 right-0 bottom-4'>
                 <div className='flex items-center justify-center gap-2'>
                     {banner.map((_,id) => (
-                        <div className={`w-3 h-3 transition-all rounded-full bg-shadow-white ${currentBanner === id ? "p-2" : "bg-opacity-50"}`} />
+                        <div className={`w-3 h-3 transition-all rounded-full bg-shadow-white ${currentBanner === id ? "p-2" : "bg-opacity-50"}` } key={id}/>
                     ))}
                 </div>
                 
@@ -71,7 +71,7 @@ const Banner = ({ children: banner}) => {
             <div className='absolute left-0 right-0 bottom-4'>
                 <div className='flex items-center justify-center gap-2'>
                     {banner.map((_,id) => (
-                        <div className={`w-3 h-3 transition-all rounded-full bg-shadow-white ${currentBanner === id ? "p-2" : "bg-opacity-50"}`} />
+                        <div className={`w-3 h-3 transition-all rounded-full bg-shadow-white ${currentBanner === id ? "p-2" : "bg-opacity-50"}`} key={id}/>
                     ))}
                 </div>
                 
@@ -99,7 +99,7 @@ const Banner = ({ children: banner}) => {
             <div className='absolute left-0 right-0 bottom-4'>
                 <div className='flex items-center justify-center gap-2'>
                     {banner.map((_,id) => (
-                        <div className={`w-3 h-3 transition-all rounded-full bg-shadow-white ${currentBanner === id ? "p-2" : "bg-opacity-50"}`} />
+                        <div className={`w-3 h-3 transition-all rounded-full bg-shadow-white ${currentBanner === id ? "p-2" : "bg-opacity-50"}`} key={id}/>
                     ))}
                 </div>
                 

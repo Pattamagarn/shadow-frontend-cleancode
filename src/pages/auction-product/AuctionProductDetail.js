@@ -1,203 +1,233 @@
-import MetaHeader from '../../components/meta-header/MetaHeader'
-import Navigation from '../../components/navigation/Navigation'
-import TitleBox from '../../components/title-box/TitleBox'
-import CountdownTimer from '../../components/countdown-time/CountDownTimer'
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { Icon } from '@iconify/react'
-import axios from 'axios'
-import Swal from 'sweetalert2'
-import Card from '../../components/card/Card'
+// import MetaHeader from '../../components/meta-header/MetaHeader'
+// import Navigation from '../../components/navigation/Navigation'
+// import TitleBox from '../../components/title-box/TitleBox'
+// import CountdownTimer from '../../components/countdown-time/CountDownTimer'
+// import { useEffect, useState } from 'react'
+// import { useNavigate } from 'react-router-dom'
+// import { useSelector} from 'react-redux'
+// import { Icon } from '@iconify/react'
+// import axios from 'axios'
+// import Swal from 'sweetalert2'
+// import Card from '../../components/card/Card'
 
 
 const AuctionProductDetail = () => {
-    const isLogin = useSelector((state) => state.isLogin.isLogin)
-    const product = useSelector((state) => state.product.product)
-    const navigate = useNavigate()
-    const [dataProduct, setDataProduct] = useState([])
-    const [offer,setOffer] = useState('')
-    const [latestBidder,setLatestBidder] = useState('')
-    
+//     const isLogin = useSelector((state) => state.isLogin.isLogin)
+//     const navigate = useNavigate()
+//     const [dataProduct, setDataProduct] = useState([])
+//     const [offer, setOffer] = useState('')
 
-    useEffect(() => {
-        // isLogin.status && isLogin.payload.role !== 0 && navigate('/')
-    }, [isLogin, navigate])
 
-    useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API}/read-auction-product`)
-            .then((response) => {
-                if (response.data.status) {
-                    let count = 0
-                    let check = false
-                    response.data.payload.forEach(element => {
-                        if (element.uuid === product.item && !check) {
-                            check = true
-                        }
-                        else if (element.uuid !== product.item && !check) {
-                            count++
-                        }
-                    })
-                    setDataProduct(response.data.payload[count])
-                }
-            })
-            .catch((error) => { })
-    }, [])
+//     useEffect(() => {
+//         // isLogin.status && isLogin.payload.role !== 0 && navigate('/')
+//     }, [isLogin, navigate])
 
-    const handleInputChange = (event) => {
-       const value = event.target.value
-       if(!isNaN(value)){
-        setOffer(parseFloat(value))
-       }
-       else{
-        setOffer('')
-       }
-    }
+//     useEffect(() => {
+//         axios.get(`${process.env.REACT_APP_API}/read-auction-product`)
+//             .then((response) => {
+//                 if (response.data.status) {
+//                     let count = 0
+//                     let check = false
+//                     response.data.payload.forEach(element => {
+//                         if (element.uuid === product.item && !check) {
+//                             check = true
+//                         }
+//                         else if (element.uuid !== product.item && !check) {
+//                             count++
+//                         }
+//                     })
+//                     setDataProduct(response.data.payload[count])
+//                 }
+//             })
+//             .catch((error) => { })
+//     }, [])
 
-    const handlePlus = () => {
-        setOffer(parseFloat(offer + dataProduct.default_bid))
-    }
+//     const handleInputChange = (event) => {
+//         const value = event.target.value
+//         if (!isNaN(value)) {
+//             setOffer(parseFloat(value))
+//         }
+//         else {
+//             setOffer('')
+//         }
+//     }
 
-    const handleMinus = () => {
-        if(parseFloat(offer - dataProduct.default_bid) < 0){
-            setOffer(0)
-        }
-        else{
-            setOffer(parseFloat(offer - dataProduct.default_bid))
-        }
-        
-    }
+//     const handlePlus = () => {
+//         setOffer(parseFloat(offer + dataProduct.default_bid))
+//     }
 
-    const handleBid = (event,default_price,uuid) => {
-        event.preventDefault()
-        const productId = uuid
-        const defaultPrice = default_price
-        const bid = offer
-        const newPrice = parseInt(defaultPrice) + parseInt(bid)
-        const ayselAmount = isLogin.payload.aysel_amount
-        const user = isLogin.payload.username
-        Swal.fire({
-            title: 'คุณแน่ใจใช่ไหม?',
-            text: `คุณต้องการจ่าย ${newPrice} Aysel`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3FC3EE',
+//     const handleMinus = () => {
+//         if (parseFloat(offer - dataProduct.default_bid) < 0) {
+//             setOffer(0)
+//         }
+//         else {
+//             setOffer(parseFloat(offer - dataProduct.default_bid))
+//         }
 
-            cancelButtonColor: '#F27474',
-            confirmButtonText: 'ตกลง, ฉันต้องการจ่าย',
-            cancelButtonText: 'ยกเลิก'
-          }).then((result) => {
-            if(result.isConfirmed){
-                if(newPrice <= parseInt(ayselAmount)){
-                    axios.patch(`${process.env.REACT_APP_API}/update-bid`,{
-                        uuid: productId,
-                        default_price: newPrice,
-                        latest_bidder:user
-                    },{withCredential: true})
-                    .then((response) => {
-                        if(response.data.status){
-                            alertSuccess('สำเร็จ',response.data.payload,'ตกลง')
-                        }else{
-                            alertWarning('คำเตือน',response.data.payload,'ตกลง')
-                        }
-                    })
-                    .catch((error) => {
-                        alertError('ผิดพลาด','ประมูลสินค้าล้มเหลว','ตกลง')
-                    })
-                }
-                else{
-                    alertError('ผิดพลาด','Aysel ไม่เพียงพอ','ตกลง')
-                }
-            }
-        })
-    }
+//     }
 
-    const alertSuccess = (title, text, confirmButtonText) => {
-        Swal.fire({
-            title: title,
-            text: text,
-            icon: 'success',
-            confirmButtonText: confirmButtonText
-        })
-    }
+//     const handleBid = (event, default_price, uuid) => {
+//         if (!isLogin.status) {
+//             Swal.fire({
+//                 title: 'กรุณาเข้าสู่ระบบ',
+//                 text: 'คุณยังไม่ได้เข้าสู่ระบบ',
+//                 icon: 'error',
+//                 showCancelButton: true,
+//                 confirmButtonColor: '#3FC3EE',
 
-    const alertError = (title, text, confirmButtonText) => {
-        Swal.fire({
-            title: title,
-            text: text,
-            icon: 'error',
-            confirmButtonText: confirmButtonText
-        })
-    }
+//                 cancelButtonColor: '#F27474',
+//                 confirmButtonText: 'ตกลง, ไปหน้าเข้าสู่ระบบ',
+//                 cancelButtonText: 'ยกเลิก'
+//             })
+//                 .then((result) => {
+//                     if (result.isConfirmed) {
+//                         dispatch(setProduct({ status: false }))
+//                         navigate('/sign-in')
+//                     }
+//                 })
+//         }
+//         else {
+//             event.preventDefault()
+//             const productId = uuid
+//             const defaultPrice = default_price
+//             const bid = offer
+//             const newPrice = parseInt(defaultPrice) + parseInt(bid)
+//             const ayselAmount = isLogin.payload.aysel_amount
+//             const user = isLogin.payload.username
+//             if (bid === '') {
+//                 Swal.fire({
+//                     title: 'กรุณาใส่จำนวนที่ต้องการประมูล?',
+//                     text: 'คุณยังไม่ได้ใส่จำนวนAyselที่ต้องการประมูล',
+//                     icon: 'warning',
+//                     showCancelButton: false,
+//                     confirmButtonColor: '#3FC3EE',
+//                     confirmButtonText: 'ตกลง',
+//                 })
+//             } else {
+//                 Swal.fire({
+//                     title: 'คุณแน่ใจใช่ไหม?',
+//                     text: `คุณต้องการจ่าย ${newPrice} Aysel`,
+//                     icon: 'warning',
+//                     showCancelButton: true,
+//                     confirmButtonColor: '#3FC3EE',
 
-    const alertWarning = (title, text, confirmButtonText) => {
-        Swal.fire({
-            title: title,
-            text: text,
-            icon: 'warning',
-            confirmButtonText: confirmButtonText
-        })
-    }
+//                     cancelButtonColor: '#F27474',
+//                     confirmButtonText: 'ตกลง, ฉันต้องการจ่าย',
+//                     cancelButtonText: 'ยกเลิก'
+//                 }).then((result) => {
+//                     if (result.isConfirmed) {
+//                         if (newPrice <= parseInt(ayselAmount)) {
+//                             axios.patch(`${process.env.REACT_APP_API}/update-bid`, {
+//                                 uuid: productId,
+//                                 default_price: newPrice,
+//                                 latest_bidder: user
+//                             }, { withCredential: true })
+//                                 .then((response) => {
+//                                     if (response.data.status) {
+//                                         alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
+//                                     } else {
+//                                         alertWarning('คำเตือน', response.data.payload, 'ตกลง')
+//                                     }
+//                                 })
+//                                 .catch((error) => {
+//                                     alertError('ผิดพลาด', 'ประมูลสินค้าล้มเหลว', 'ตกลง')
+//                                 })
+//                         }
+//                         else {
+//                             alertError('ผิดพลาด', 'Aysel ไม่เพียงพอ', 'ตกลง')
+//                         }
+//                     }
+//                 })
+//             }
+//         }
+//     }
 
-    
-    return (
-        <div >
-            <MetaHeader title={`สินค้าประมูล`} />
-            <Navigation />
-            <TitleBox title={'สินค้าประมูล'} />
-            <div className='flex flex-col w-full h-full' >
-                <div className='flex items-center justify-center w-full h-full my-5'>
-                    <CountdownTimer
-                        start_time={dataProduct.start_time}
-                        end_time={dataProduct.end_time}
-                        email={isLogin.payload.email}
-                        ayselAmount={isLogin.payload.aysel_amount - dataProduct.default_price}
-                    />
-                </div>
-                <div className='flex justify-center my-5'>
-                    <Card
-                        name={dataProduct.name}
-                        game_name={dataProduct.game_name}
-                        aysel={dataProduct.normal_price}
-                        information={dataProduct.information}
-                        promotion_status={dataProduct.special_price_status}
-                        promotion={dataProduct.special_price}
-                        detail={true}
-                        path='auction' />
-                </div>
-                <div className='flex flex-row w-full h-full mb-10'>
-                    <div className='flex flex-col w-full h-full my-5 px-[15rem] '>
-                        <div className='flex gap-5 my-2'>
-                            <span className='text-3xl text-shadow-primary '>ราคาปัจจุบัน</span>
-                            <span className='text-3xl font-semibold text-shadow-primary'>{dataProduct.default_price}</span>
-                            <Icon icon={"game-icons:minerals"} className="text-3xl size-fit text-shadow-pink sm:text-4xl" />
-                        </div>
-                        <div className='flex gap-5'>
-                            <span className='text-3xl text-shadow-primary'>โดย</span>
-                            <span className='text-3xl font-semibold text-shadow-primary'>{dataProduct.latest_bidder}</span>
-                        </div>
-                    </div>
-                    <div className='flex flex-col w-full h-full '>
-                        <div className='flex flex-col w-full h-full my-5'>
-                            <div className='flex gap-5 my-2'>
-                                <span className='text-3xl text-shadow-primary '>ประมูลพื้นฐานครั้งละ</span>
-                                <span className='text-3xl font-semibold text-shadow-primary'>{dataProduct.default_bid}</span>
-                                <Icon icon={"game-icons:minerals"} className="text-3xl size-fit text-shadow-pink sm:text-4xl" />
-                            </div>
-                            <div className='flex'>
-                                <button className='text-2xl btn btn-ghost rounded-box hover:bg-shadow-white' onClick={handleMinus}> — </button>
-                                <input value={offer} onChange={handleInputChange} placeholder="Your bid" className='w-40 px-5 border border-shadow-accent rounded-xl'></input>
-                                <button className='text-3xl btn btn-ghost rounded-box hover:bg-shadow-white' onClick={handlePlus}> + </button>
-                                <button className='text-2xl btn bg-shadow-accent w-28 hover:bg-shadow-haccent/60' onClick={(event) => handleBid(event,dataProduct.default_price,dataProduct.uuid)}> บิด </button>
-                            </div>
-                        </div>
+//     const alertSuccess = (title, text, confirmButtonText) => {
+//         Swal.fire({
+//             title: title,
+//             text: text,
+//             icon: 'success',
+//             confirmButtonText: confirmButtonText
+//         })
+//     }
 
-                    </div>
-                </div>
-            </div>
+//     const alertError = (title, text, confirmButtonText) => {
+//         Swal.fire({
+//             title: title,
+//             text: text,
+//             icon: 'error',
+//             confirmButtonText: confirmButtonText
+//         })
+//     }
 
-        </div>
-    )
+//     const alertWarning = (title, text, confirmButtonText) => {
+//         Swal.fire({
+//             title: title,
+//             text: text,
+//             icon: 'warning',
+//             confirmButtonText: confirmButtonText
+//         })
+//     }
+
+
+//     return (
+//         <div >
+//             <MetaHeader title={`สินค้าประมูล`} />
+//             <Navigation />
+//             <TitleBox title={'สินค้าประมูล'} />
+//             <div className='flex flex-col w-full h-full' >
+//                 <div className='flex items-center justify-center w-full h-full my-5'>
+//                     <CountdownTimer
+//                         start_time={dataProduct.start_time}
+//                         end_time={dataProduct.end_time}
+//                         email={isLogin.payload.email}
+//                         ayselAmount={isLogin.payload.aysel_amount - dataProduct.default_price}
+//                     />
+//                 </div>
+//                 <div className='flex justify-center my-5'>
+//                     <Card
+//                         name={dataProduct.name}
+//                         game_name={dataProduct.game_name}
+//                         aysel={dataProduct.normal_price}
+//                         information={dataProduct.information}
+//                         promotion_status={dataProduct.special_price_status}
+//                         promotion={dataProduct.special_price}
+//                         detail={true}
+//                         path='auction' />
+//                 </div>
+//                 <div className='flex flex-row w-full h-full mb-10'>
+//                     <div className='flex flex-col w-full h-full my-5 px-[15rem] '>
+//                         <div className='flex gap-5 my-2'>
+//                             <span className='text-3xl text-shadow-primary '>ราคาปัจจุบัน</span>
+//                             <span className='text-3xl font-semibold text-shadow-primary'>{dataProduct.default_price}</span>
+//                             <Icon icon={"game-icons:minerals"} className="text-3xl size-fit text-shadow-pink sm:text-4xl" />
+//                         </div>
+//                         <div className='flex gap-5'>
+//                             <span className='text-3xl text-shadow-primary'>โดย</span>
+//                             <span className='text-3xl font-semibold text-shadow-primary'>{dataProduct.latest_bidder}</span>
+//                         </div>
+//                     </div>
+//                     <div className='flex flex-col w-full h-full '>
+//                         <div className='flex flex-col w-full h-full my-5'>
+//                             <div className='flex gap-5 my-2'>
+//                                 <span className='text-3xl text-shadow-primary '>ประมูลพื้นฐานครั้งละ</span>
+//                                 <span className='text-3xl font-semibold text-shadow-primary'>{dataProduct.default_bid}</span>
+//                                 <Icon icon={"game-icons:minerals"} className="text-3xl size-fit text-shadow-pink sm:text-4xl" />
+//                             </div>
+//                             <div className='flex'>
+//                                 <button className='text-2xl btn btn-ghost rounded-box hover:bg-shadow-white' onClick={handleMinus}> — </button>
+//                                 <input value={offer} onChange={handleInputChange} placeholder="Your bid" className='w-40 px-5 border border-shadow-accent rounded-xl'></input>
+//                                 <button className='text-3xl btn btn-ghost rounded-box hover:bg-shadow-white' onClick={handlePlus}> + </button>
+//                                 <button className='text-2xl btn bg-shadow-accent w-28 hover:bg-shadow-haccent/60' onClick={(event) => handleBid(event, dataProduct.default_price, dataProduct.uuid)}> บิด </button>
+//                             </div>
+//                         </div>
+
+//                     </div>
+//                 </div>
+//             </div>
+
+//         </div>
+//     )
 }
 
 export default AuctionProductDetail

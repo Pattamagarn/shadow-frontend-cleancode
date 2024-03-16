@@ -29,7 +29,7 @@ const NavigationAdmin = () => {
     return (
         <nav className="navbar bg-shadow-primary flex flex-row justify-between min-w-[240px] sm:py-5 lg:px-10 lg:justify-evenly">
             <div className="navbar-start">
-                <Link to={"/"} className="flex flex-row items-center justify-center flex-nowrap">
+                <Link to={"/analysis"} className="flex flex-row items-center justify-center flex-nowrap">
                     <Icon icon={"game-icons:minerals"} className="text-2xl size-fit text-shadow-pink sm:text-4xl" />
                     <span translate="no" className="text-lg subpixel-antialiased not-italic font-normal size-fit text-shadow-white sm:text-2xl">SHADOW</span>
                 </Link>

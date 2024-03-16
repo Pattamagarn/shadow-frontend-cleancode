@@ -1,70 +1,152 @@
-import { configureStore } from "@reduxjs/toolkit"
-import { useState, useEffect, useCallback} from "react"
-import { Link } from "react-router-dom"
-import Card from "../card/Card"
 import axios from "axios"
 
 
 
-const DropDown = ({ data,select }) => {
-    
-    
-    const [NewtoOld, setNewtoOld] = useState([])
-    const [OldtoNew, setOldtoNew] = useState(0)
-    const [HightoLow, setHightoLow] = useState(0)
-    const [LowtoHigh, setLowtoHigh] = useState(0)
+const DropDown = ({ data,type,setData }) => {
 
 
     const handleNewToOld = () => {
-        if (data.length != 0) {
+        if (type === 'general' && data.length !== 0) {
             axios.get(`${process.env.REACT_APP_API}/read-general-product-new-to-old`)
                 .then((response) => {
                     if (response.status) {
-                        setNewtoOld(response.data.payload)
+                        setData(response.data.payload)
+                    }
+                })
+                .catch((error) => { })
+        }else if (type === 'auction' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-auction-product-new-to-old`)
+                .then((response) => {
+                    if (response.status) {
+                        setData(response.data.payload)
+                    }
+                })
+                .catch((error) => { })
+        }else if (type === 'promotion' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-promotion-product-new-to-old`)
+                .then((response) => {
+                    if (response.status) {
+                        setData(response.data.payload)
+                    }
+                })
+                .catch((error) => { })
+        }else if (type === 'gacha' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-gacha-product-new-to-old`)
+                .then((response) => {
+                    if (response.status) {
+                        setData(response.data.payload)
                     }
                 })
                 .catch((error) => { })
         }
-        return <div>{select(NewtoOld)}</div>
     }
 
     const handleOldToNew = () => {
-        if (data.length != 0) {
-            axios.get(`${process.env.REACT_APP_API}/read-general-product-new-to-old`)
+        if (type === 'general' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-general-product-old-to-new`)
                 .then((response) => {
                     if (response.status) {
-                        setOldtoNew(response.data.payload)
+                        setData(response.data.payload)
+                    }
+                })
+                .catch((error) => { })
+        }else if (type === 'auction' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-auction-product-old-to-new`)
+                .then((response) => {
+                    if (response.status) {
+                        setData(response.data.payload)
+                    }
+                })
+                .catch((error) => { })
+        }else if (type === 'promotion' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-promotion-product-old-to-new`)
+                .then((response) => {
+                    if (response.status) {
+                        setData(response.data.payload)
+                    }
+                })
+                .catch((error) => { })
+        }else if (type === 'gacha' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-gacha-product-old-to-new`)
+                .then((response) => {
+                    if (response.status) {
+                        setData(response.data.payload)
                     }
                 })
                 .catch((error) => { })
         }
-        return <div>{select(OldtoNew)}</div>
     }
     
     const handleHighToLow = () => {
-        if (data.length != 0) {
-            axios.get(`${process.env.REACT_APP_API}/read-general-product-new-to-old`)
+        if (type === 'general' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-general-product-expensive-to-cheap`)
                 .then((response) => {
                     if (response.status) {
-                        setHightoLow(response.data.payload)
+                        setData(response.data.payload)
+                    }
+                })
+                .catch((error) => { })
+        }else if (type === 'auction' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-auction-product-expensive-to-cheap`)
+                .then((response) => {
+                    if (response.status) {
+                        setData(response.data.payload)
+                    }
+                })
+                .catch((error) => { })
+        }else if (type === 'promotion' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-promotion-product-expensive-to-cheap`)
+                .then((response) => {
+                    if (response.status) {
+                        setData(response.data.payload)
+                    }
+                })
+                .catch((error) => { })
+        }else if (type === 'gacha' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-gacha-product-expensive-to-cheap`)
+                .then((response) => {
+                    if (response.status) {
+                        setData(response.data.payload)
                     }
                 })
                 .catch((error) => { })
         }
-        return <div>{select(HightoLow)}</div>
     }
     
     const handleLowToHigh = () => {
-        if (data.length != 0) {
-            axios.get(`${process.env.REACT_APP_API}/read-general-product-new-to-old`)
+        if (type === 'general' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-general-product-cheap-to-expensive`)
                 .then((response) => {
                     if (response.status) {
-                        setLowtoHigh(response.data.payload)
+                        setData(response.data.payload)
+                    }
+                })
+                .catch((error) => { })
+        }else if (type === 'auction' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-auction-product-cheap-to-expensive`)
+                .then((response) => {
+                    if (response.status) {
+                        setData(response.data.payload)
+                    }
+                })
+                .catch((error) => { })
+        }else if (type === 'promotion' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-promotion-product-cheap-to-expensive`)
+                .then((response) => {
+                    if (response.status) {
+                        setData(response.data.payload)
+                    }
+                })
+                .catch((error) => { })
+        }else if (type === 'gacha' && data.length !== 0) {
+            axios.get(`${process.env.REACT_APP_API}/read-gacha-product-cheap-to-expensive`)
+                .then((response) => {
+                    if (response.status) {
+                        setData(response.data.payload)
                     }
                 })
                 .catch((error) => { })
         }
-        return <div>{select(LowtoHigh)}</div>
     }
 
     return (

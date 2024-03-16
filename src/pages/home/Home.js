@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import MetaHeader from '../../components/meta-header/MetaHeader'
 import Navigation from '../../components/navigation/Navigation'
 import Banner from '../../components/slider/Banner'
-import { setProduct } from '../../redux/productSlice'
 import axios from 'axios'
 import { Icon } from '@iconify/react'
 
 const Home = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
-    const product = useSelector((state) => state.product)
     const navigate = useNavigate()
-    const dispatch = useDispatch()
     const [banner, setBanner] = useState([])
     const [dataGeneral, setDataGeneral] = useState([])
     const [dataPromotion, setDataPromotion] = useState([])
@@ -59,10 +56,6 @@ const Home = () => {
             })
     }, [])
 
-    const handleProductItem = (item) => {
-        dispatch(setProduct({status: true,item}))
-    }
-
     return (
 
         <div>
@@ -71,12 +64,11 @@ const Home = () => {
             <div className='max-w-full '  >
                 {banner.length === 0 ?
                     <div className='my-10' />
-
                     :
                     <div>
                         <Banner>
-                            {banner.map((value) => (
-                                <img key={value.id} src={`${process.env.REACT_APP_BANNER}${value.information}`} alt='banner' />
+                            {banner.map((value, id) => (
+                                <img key={id} src={`${process.env.REACT_APP_BANNER}${value.information}`} alt='banner' />
                             ))}
                         </Banner>
                     </div>}
@@ -85,51 +77,58 @@ const Home = () => {
             </div>
 
             <Link to='/general-product' className='flex w-40 gap-2 lg:mx-40 md:mx-20' >
-                <div className='text-xl'>สินค้าทั้งหมด</div>
+                <div className='text-xl'>ดูสินค้าทั้งหมด</div>
                 <Icon icon={"ic:outline-double-arrow"} width={30} />
             </Link>
             <div className='grid grid-flow-col grid-rows-1 gap-2 py-10 lg:mx-40 lg:grid-cols-3 md:mx-20' >
-                {dataGeneral.map((value) => (
-                    <Link to='/general-product-item'><div className="w-auto h-48 shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary " >
-                        <figure className='flex flex-col w-32 px-5 '>
-                            <div className='flex w-28 h-28' >
+                {dataGeneral.map((value, id) => (
+                    <div className="w-auto h-auto shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary " key={id}>
+                        <figure className='flex flex-col px-5 md:py-5'>
+                            <div className='flex h-36 w-36 ' >
                                 <img src={`${process.env.REACT_APP_GENERAL_PRODUCT}${value.information}`} alt={`{product general ${value}}`} key={value.id} className='flex w-full h-full' />
                             </div>
                         </figure>
-                        <div className="flex items-center card-body ">
-                            <h2 className="justify-start card-title ">{value.name}</h2>
-                            <span className="text-md">{`( ${value.game_name} )`}</span>
-                            <p>{value.special_price_status ? `${value.special_price} Aysel` : `${value.normal_price} Aysel`}</p>
-                            <div className='flex items-end justify-center flex-1 mb-5' onClick={handleProductItem}>
-                                <p className='flex h-fit btn bg-shadow-white border-shadow-primary hover:bg-shadow-primary/20 text-shadow-primary'>ดูรายละเอียด</p>
-                            </div>
+                        <div className="flex items-center card-body">
+                            <h2 className="justify-start card-title line-clamp-1" title={value.name}>{value.name}</h2>
+                            <span className="text-md line-clamp-1" title={value.game_name}>{`( ${value.game_name} )`}</span>
+                            <div>{value.special_price_status ?
+                                <div className='flex'>
+                                    <p>{`${value.special_price} Aysel`}</p>
+                                    <span className="line-through text-[#7d7d84] text-xs">{`${value.normal_price} Aysel`}</span>
+                                </div>
+                                : `${value.normal_price} Aysel`}</div>
+                            <Link className='flex items-end justify-center mb-5' to={`/general-product-item/${value.uuid}`}>
+                                <p className='flex h-fit btn bg-shadow-white border-shadow-primary hover:bg-shadow-primary/20 text-shadow-primary lg:text-sm'>ดูรายละเอียด</p>
+                            </Link>
                         </div>
-                    </div></Link>
-                    
+                        
+                    </div>
+
                 ))}
             </div>
-            <Link to='./promotion-product' className='flex w-40 gap-2 lg:mx-40 md:mx-20' >
-                <div className='text-xl'>สินค้าโปรโมชั่น</div>
+            <Link to='./promotion-product' className='flex w-56 gap-2 lg:mx-40 md:mx-20' >
+                <div className='text-xl'>ดูสินค้าโปรโมชัน</div>
                 <Icon icon={"ic:outline-double-arrow"} width={30} />
             </Link>
             <div className='grid grid-flow-col grid-rows-1 gap-5 py-10 lg:mx-40 lg:grid-cols-3 md:mx-20'>
-                {dataPromotion.map((value) => (
-                    <Link to='/promotion-product-item'><div className="h-48 shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
-                        <figure className='flex flex-col w-32 px-5 '>
-                            <div className='flex w-28 h-28'>
+                {dataPromotion.map((value, id) => (
+                    <Link to='/promotion-product-item' key={id}><div className="w-auto h-auto shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
+                        <figure className='flex flex-col px-5 md:py-5'>
+                            <div className='flex w-36 h-36'>
                                 <img src={`${process.env.REACT_APP_GENERAL_PRODUCT}${value.information}`} alt={`{product general}`} key={value.id} className='flex w-full h-full' />
                             </div>
 
                         </figure>
                         <div className="flex items-center card-body">
-                            <h2 className="justify-start card-title ">{value.name}</h2>
-                            <span className="text-md">{`( ${value.game_name} )`}</span>
-                            <p>{value.special_price_status ? <div className='flex w-full'>
-                                <p>{`${value.special_price} Aysel`}</p>
-                                <span className="line-through text-[#7d7d84] text-xs">{`${value.normal_price} Aysel`}</span>
-
-                            </div> : `${value.normal_price} Aysel`}</p>
-                            <div className='flex items-end justify-center flex-1 mb-5' onClick={handleProductItem}>
+                            <h2 className="justify-start card-title line-clamp-1" title={value.name}>{value.name}</h2>
+                            <span className="text-md line-clamp-1" title={value.game_name}>{`( ${value.game_name} )`}</span>
+                            <div>{value.special_price_status ?
+                                <div className='flex'>
+                                    <p>{`${value.special_price} Aysel`}</p>
+                                    <span className="line-through text-[#7d7d84] text-xs">{`${value.normal_price} Aysel`}</span>
+                                </div>
+                                : `${value.normal_price} Aysel`}</div>
+                            <div className='flex items-end justify-center flex-1 mb-5' >
                                 <p className='flex h-fit btn bg-shadow-white border-shadow-primary hover:bg-shadow-primary/20 text-shadow-primary'>ดูรายละเอียด</p>
                             </div>
                         </div>
@@ -140,23 +139,23 @@ const Home = () => {
                 ))}
             </div>
             <Link to='./auction-product' className='flex w-40 gap-2 lg:mx-40 md:mx-20' >
-                <div className='text-xl'>สินค้าประมูล</div>
+                <div className='text-xl'>ดูสินค้าประมูล</div>
                 <Icon icon={"ic:outline-double-arrow"} width={30} />
             </Link>
             <div className='grid grid-flow-col grid-rows-1 gap-5 py-10 lg:mx-40 lg:grid-cols-3 md:mx-20 md:grid-cols-3'>
-                {dataAuction.map((value) => (
-                    <Link to='/auction-product-item'><div className="h-48 shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" onClick={() => {handleProductItem(value.uuid)}}>
-                        <figure className='flex flex-col w-32 px-5 '>
-                            <div className='flex w-28 h-28'>
+                {dataAuction.map((value, id) => (
+                    <Link to='/auction-product-item' key={id}><div className="w-auto h-auto shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary">
+                        <figure className='flex flex-col px-5 md:py-5'>
+                            <div className='flex w-36 h-36'>
                                 <img src={`${process.env.REACT_APP_AUCTION_PRODUCT}${value.information}`} alt={`{product general ${value}}`} key={value.id} className='flex w-full h-full' />
                             </div>
-                            
+
                         </figure>
                         <div className="flex items-center card-body">
-                            <h2 className="justify-start card-title ">{value.name}</h2>
-                            <span className="text-md">{`( ${value.game_name} )`}</span>
+                            <h2 className="justify-start card-title line-clamp-1" title={value.name}>{value.name}</h2>
+                            <span className="text-md line-clamp-1" title={value.game_name}>{`( ${value.game_name} )`}</span>
                             <p>{`${value.default_price} Aysel`}</p>
-                            <div className='flex items-end justify-center flex-1 mb-5' onClick={handleProductItem}>
+                            <div className='flex items-end justify-center flex-1 mb-5' >
                                 <p className='flex h-fit btn bg-shadow-white border-shadow-primary hover:bg-shadow-primary/20 text-shadow-primary'>ดูรายละเอียด</p>
                             </div>
                         </div>
@@ -164,23 +163,23 @@ const Home = () => {
 
                 ))}
             </div>
-            <Link to='./gacha-product' className='flex w-40 gap-2 lg:mx-40 md:mx-20' >
-                <div className='text-xl'>สินค้าสุ่มกาชา</div>
+            <Link to='./gacha-product' className='flex w-56 gap-2 lg:mx-40 md:mx-20' >
+                <div className='text-xl'>ดูสินค้าสุ่มกาชา</div>
                 <Icon icon={"ic:outline-double-arrow"} width={30} />
             </Link>
             <div className='grid grid-flow-col grid-rows-1 gap-2 py-10 lg:mx-40 lg:grid-cols-3 md:mx-20 md:grid-cols-3'>
-                {dataGacha.map((value) => (
-                    <Link to='/gacha-product-item'><div className="w-auto h-40 shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
-                        <figure className='flex flex-col w-32 px-5'>
-                            <div className='flex h-24 w-28' >
+                {dataGacha.map((value, id) => (
+                    <Link to='/gacha-product-item' key={id}><div className="w-auto h-auto shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
+                        <figure className='flex flex-col px-5 md:py-5'>
+                            <div className='flex h-36 w-36' >
                                 <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value.information}`} alt={`{product gacha ${value}}`} key={value.id} className='flex w-full h-full' />
                             </div>
 
                         </figure>
                         <div className="flex items-center card-body">
-                            <h2 className="justify-start card-title ">{value.name}</h2>
-                            <span className="text-md">{`( ${value.game_name} )`}</span>
-                            <div className='flex items-end justify-center flex-1 mb-5' onClick={handleProductItem}>
+                            <h2 className="justify-start card-title line-clamp-1" title={value.name}>{value.name}</h2>
+                            <span className="text-md line-clamp-1" title={value.game_name}>{`( ${value.game_name} )`}</span>
+                            <div className='flex items-end justify-center flex-1 mb-5' >
                                 <p className='flex h-fit btn bg-shadow-white border-shadow-primary hover:bg-shadow-primary/20 text-shadow-primary'>ดูรายละเอียด</p>
                             </div>
                         </div>
