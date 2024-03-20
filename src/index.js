@@ -16,7 +16,6 @@ import PromotionProduct from './pages/promotion-product/PromotionProduct'
 import AuctionProduct from './pages/auction-product/AuctionProduct'
 import GachaProduct from './pages/gacha-product/GachaProduct'
 import GeneralProductDetail from './pages/general-product/GeneralProductDetail';
-import GachaProductDetail from './pages/gacha-product/GachaProductDetail';
 import AuctionProductDetail from './pages/auction-product/AuctionProductDetail';
 import PromotionProductDetail from './pages/promotion-product/PromotionProductDatial';
 import TopUp from './pages/top-up/TopUp'
@@ -59,7 +58,6 @@ root.render(
           <Route exact path='/auction-product' element={<AuctionProduct />} />
           <Route exact path='/auction-product-item/:uuid' element={<AuctionProductDetail />} />
           <Route exact path='/gacha-product' element={<GachaProduct />} />
-          <Route exact path='/gacha-product-item/:uuid' element={<GachaProductDetail />} />
           <Route exact path='/top-up' element={<TopUp />} />
           <Route exact path='/store-product' element={<StoreProduct />} />
           <Route exact path='/transaction' element={<Transaction />} />

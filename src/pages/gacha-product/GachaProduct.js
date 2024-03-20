@@ -2,16 +2,20 @@ import MetaHeader from '../../components/meta-header/MetaHeader'
 import Navigation from '../../components/navigation/Navigation'
 import TitleBox from '../../components/title-box/TitleBox'
 import { Icon } from '@iconify/react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
 
 const GachaProduct = () => {
-
+    const navigate = useNavigate()
+    const isLogin = useSelector((state) => state.isLogin.isLogin)
     const [dataGacha, setDataGacha] = useState([])
-    const [dataGachaSearch, setDataGachaSearch] = useState([])
-    const list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
+    useEffect(() => {
+        !isLogin.status && navigate('/')
+        isLogin.status && isLogin.payload.role !== 1 && navigate('/')
+    }, [isLogin, navigate])
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-gacha-product`)
             .then((response) => {
