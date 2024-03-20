@@ -111,4 +111,4 @@ const Banner = ({ children: banner}) => {
     )
 }
 
-export default Banner
+export default Banner;

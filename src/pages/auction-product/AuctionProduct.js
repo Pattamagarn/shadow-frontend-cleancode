@@ -12,12 +12,7 @@ const AuctionProduct = () => {
 
     const [dataAuction, setDataAuction] = useState([])
     const [dataAuctionSearch, setDataAuctionSearch] = useState([])
-    const [dataFilter, setDataFilter] = useState([])
-
-    const handlefilter = useCallback((text) => {
-        setDataFilter(text)
-    }, [dataFilter])
-
+    
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-auction-product`)
             .then((response) => {
@@ -41,50 +36,34 @@ const AuctionProduct = () => {
             <TitleBox title={'สินค้าประมูล'} />
             <div>
                 <div className='flex flex-row justify-between my-10 px-36 '>
-                    <DropDown data={dataAuction} select={handlefilter}/>
+                    <DropDown data={dataAuction} type={'auction'} setData={setDataAuction}/>
                     <label className="flex items-center self-center gap-2 input input-bordered input-md size-fit">
                         <Icon icon={"material-symbols:search"} className='text-xl' />
-                        <input type="text" placeholder="ชื่อเกม" />
+                        <input type="text" placeholder="ชื่อเกม" onChange={filterDataAuction} />
                     </label>
                 </div>
             </div>
             <div className='grid grid-flow-col grid-cols-4 gap-5 py-10 mx-40 grid-row-2'>
-                {dataAuctionSearch.length === 0 && dataFilter.length === 0 ? dataAuction.map((value) => (
-                    <div>
-                         
+                {dataAuctionSearch.length === 0 ? dataAuction.map((value,id) => (
+                    <div key={id}>
                         <Card
+                            uuid={value.uuid}
                             name={value.name}
                             game_name={value.game_name}
-                            aysel={value.normal_price}
                             information={value.information}
-                            promotion_status={value.special_price_status}
-                            promotion={value.special_price}
+                            start_time={value.start_time}
+                            end_time={value.end_time}
                             path='auction' />
                     </div>
-                )) : dataAuctionSearch.length === 0 ?
-                    dataFilter.map((value) => (
-                        <div>
+                )) :    dataAuctionSearch.map((value,id) => (
+                        <div key={id}>
                             <Card
+                                uuid={value.uuid}
                                 name={value.name}
                                 game_name={value.game_name}
-                                aysel={value.normal_price}
                                 information={value.information}
-                                promotion_status={value.special_price_status}
-                                promotion={value.special_price}
-                                path='auction' />
-                        </div>
-
-                    ))
-                    :
-                    dataAuctionSearch.map((value) => (
-                        <div>
-                            <Card
-                                name={value.name}
-                                game_name={value.game_name}
-                                aysel={value.normal_price}
-                                information={value.information}
-                                promotion_status={value.special_price_status}
-                                promotion={value.special_price}
+                                start_time={value.start_time}
+                                end_time={value.end_time}
                                 path='auction' />
                         </div>
 

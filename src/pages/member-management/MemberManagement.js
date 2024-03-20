@@ -14,7 +14,6 @@ const MemberManagement = () => {
 
     useEffect(() => {
         !isLogin.status && navigate('/')
-        isLogin.status && isLogin.payload.role !== 1 && navigate('/')
     }, [isLogin, navigate])
 
     const [dataMember, setDataMember] = useState([])
@@ -52,7 +51,7 @@ const MemberManagement = () => {
         {
             name: 'ระงับ',
             selector: row => row.suspended_status,
-            cell: (row) => [row.suspended_status ? <Icon icon={"solar:user-block-bold"} className='text-3xl' /> : <Icon icon={"solar:user-bold"} className='text-3xl' />]
+            cell: (row) => [<div key={row.uuid} className={``}>{row.suspended_status ? <Icon icon={"solar:user-block-bold"} className='text-3xl text-shadow-primary' /> : <Icon icon={"solar:user-bold"} className='text-3xl text-shadow-primary' /> }</div>]
         },
         {
             name: 'บทบาท',

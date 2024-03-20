@@ -187,6 +187,36 @@ const ProductManagement = () => {
           });
     }
 
+    const handleDiscountGeneralProduct = (uuid,status) => {
+        axios.patch(`${process.env.REACT_APP_API}/update-status-price/${uuid}`,{
+            special_price_status : status
+        })
+        .then((response) => {
+            if(response.data.status){
+                Swal.fire({
+                    title: 'สำเร็จ',
+                    text: response.data.payload,
+                    icon: 'success'
+                  });
+                setDataGeneralProductActive(!dataGeneralProductActive)
+            }else{
+                Swal.fire({
+                    title: 'ผิดพลาด',
+                    text: response.data.payload,
+                    icon: 'error'
+                  });
+            }
+        })
+        .catch((error) => {
+            Swal.fire({
+                title: 'ผิดพลาด',
+                text: 'แก้ไขสถานะล้มเหลว',
+                icon: 'error'
+              });
+        })
+        
+    }
+
     const columnsGeneralProduct = [
         {
             name: 'ลำดับ',
@@ -211,7 +241,7 @@ const ProductManagement = () => {
         {
             name: 'ลดราคา',
             selector: row => row.uuid,
-            cell: (row) => [<button key={row.uuid} type={`button`} className={`btn border-none ${row.special_price_status ? 'bg-shadow-success hover:bg-shadow-hsuccess' : 'bg-shadow-error hover:bg-shadow-herror' } text-shadow-white`}>{row.special_price_status ? 'เปิด' : 'ปิด' }</button>]
+            cell: (row) => [<button key={row.uuid} type={`button`} onClick={() => {handleDiscountGeneralProduct(row.uuid,row.special_price_status)}} className={`btn border-none ${row.special_price_status ? 'bg-shadow-success hover:bg-shadow-hsuccess' : 'bg-shadow-error hover:bg-shadow-herror' } text-shadow-white`}>{row.special_price_status ? 'เปิด' : 'ปิด' }</button>]
         },
         {
             name: 'แก้ไข',
@@ -279,7 +309,7 @@ const ProductManagement = () => {
         {
             name: 'สถานะ',
             selector: row => row.auction_status,
-            cell: (row) => [row.auction_status ? 'เปิด' : 'ปิด']
+            cell: (row) => [<button key={row.uuid} type={`button`} className={`btn border-none ${row.auction_status ? 'bg-shadow-success hover:bg-shadow-hsuccess' : 'bg-shadow-error hover:bg-shadow-herror' } text-shadow-white`}>{row.auction_status ? 'เปิด' : 'ปิด' }</button>]
         },
         {
             name: 'แก้ไข',

@@ -14,7 +14,6 @@ const AddAuctionProduct = () => {
 
     useEffect(() => {
         !isLogin.status && navigate('/')
-        isLogin.status && isLogin.payload.role !== 1 && navigate('/')
     }, [isLogin, navigate])
 
     useEffect(() => {
@@ -116,6 +115,7 @@ const AddAuctionProduct = () => {
         .then((response) => {
             if(response.data.status){
                 alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
+                navigate('/product-management')
             }else{
                 alertWarning('คำเตือน', response.data.payload, 'ตกลง')
             }
@@ -141,8 +141,8 @@ const AddAuctionProduct = () => {
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>ชื่อเกม</span>
-                    <select onChange={setAuctionProductGameName} className="select w-80 bg-shadow-grey text-dshadow-black">
-                        <option disabled selected>เลือกชื่อเกม</option>
+                    <select defaultValue='เลือกชื่อเกม' onChange={setAuctionProductGameName} className="select w-80 bg-shadow-grey text-dshadow-black">
+                        <option disabled>เลือกชื่อเกม</option>
                         {data.map((game) => <option key={game.game_name}>{game.game_name}</option>)}
                     </select>
                 </div>

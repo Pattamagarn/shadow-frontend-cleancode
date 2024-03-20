@@ -50,12 +50,11 @@ const Home = () => {
         axios.get(`${process.env.REACT_APP_API}/read-gacha-3-product`)
             .then((response) => {
                 if (response) {
-                    setDataGacha(response.data.payload)
+                    setDataGacha(response.data.payload[0])
 
                 }
             })
     }, [])
-
     return (
 
         <div>
@@ -101,7 +100,7 @@ const Home = () => {
                                 <p className='flex h-fit btn bg-shadow-white border-shadow-primary hover:bg-shadow-primary/20 text-shadow-primary lg:text-sm'>ดูรายละเอียด</p>
                             </Link>
                         </div>
-                        
+
                     </div>
 
                 ))}
@@ -128,9 +127,9 @@ const Home = () => {
                                     <span className="line-through text-[#7d7d84] text-xs">{`${value.normal_price} Aysel`}</span>
                                 </div>
                                 : `${value.normal_price} Aysel`}</div>
-                            <div className='flex items-end justify-center flex-1 mb-5' >
+                            <Link className='flex items-end justify-center flex-1 mb-5' to={`/promotion-product-item/${value.uuid}`} >
                                 <p className='flex h-fit btn bg-shadow-white border-shadow-primary hover:bg-shadow-primary/20 text-shadow-primary'>ดูรายละเอียด</p>
-                            </div>
+                            </Link>
                         </div>
                     </div></Link>
 
@@ -155,38 +154,26 @@ const Home = () => {
                             <h2 className="justify-start card-title line-clamp-1" title={value.name}>{value.name}</h2>
                             <span className="text-md line-clamp-1" title={value.game_name}>{`( ${value.game_name} )`}</span>
                             <p>{`${value.default_price} Aysel`}</p>
-                            <div className='flex items-end justify-center flex-1 mb-5' >
+                            <Link className='flex items-end justify-center flex-1 mb-5' to={`/auction-product-item/${value.uuid}`}>
                                 <p className='flex h-fit btn bg-shadow-white border-shadow-primary hover:bg-shadow-primary/20 text-shadow-primary'>ดูรายละเอียด</p>
-                            </div>
+                            </Link>
                         </div>
                     </div></Link>
 
                 ))}
             </div>
-            <Link to='./gacha-product' className='flex w-56 gap-2 lg:mx-40 md:mx-20' >
-                <div className='text-xl'>ดูสินค้าสุ่มกาชา</div>
-                <Icon icon={"ic:outline-double-arrow"} width={30} />
-            </Link>
-            <div className='grid grid-flow-col grid-rows-1 gap-2 py-10 lg:mx-40 lg:grid-cols-3 md:mx-20 md:grid-cols-3'>
-                {dataGacha.map((value, id) => (
-                    <Link to='/gacha-product-item' key={id}><div className="w-auto h-auto shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
-                        <figure className='flex flex-col px-5 md:py-5'>
-                            <div className='flex h-36 w-36' >
-                                <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value.information}`} alt={`{product gacha ${value}}`} key={value.id} className='flex w-full h-full' />
-                            </div>
 
-                        </figure>
-                        <div className="flex items-center card-body">
-                            <h2 className="justify-start card-title line-clamp-1" title={value.name}>{value.name}</h2>
-                            <span className="text-md line-clamp-1" title={value.game_name}>{`( ${value.game_name} )`}</span>
-                            <div className='flex items-end justify-center flex-1 mb-5' >
-                                <p className='flex h-fit btn bg-shadow-white border-shadow-primary hover:bg-shadow-primary/20 text-shadow-primary'>ดูรายละเอียด</p>
-                            </div>
+            <div className='max-w-full mb-5'>
+                <Link className='lg:flex md:hidden sm:hidden relative  max-w-[1200px] py-10 mx-auto overflow-hidden max-h-[500px] hidden bg-gradient-to-r from-shadow-primary to-[#9d09cf]' to={`/gacha-product`}>
+                    <div className='flex w-full' >
+                        <div className='flex w-full h-44'>
+                            <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${dataGacha.information}`} alt={`{product general }`} className='flex w-full h-full' />
                         </div>
-                    </div></Link>
-
-
-                ))}
+                        <div className='flex items-center w-full '>
+                            <div className='text-5xl font-bold text-shadow-white'>ไปสุ่มกาชา</div>
+                        </div>
+                    </div>
+                </Link>
             </div>
 
 

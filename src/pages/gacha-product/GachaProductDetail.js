@@ -4,11 +4,18 @@ import TitleBox from '../../components/title-box/TitleBox'
 import Card from '../../components/card/Card'
 import { useState, useEffect } from 'react'
 import { Icon } from '@iconify/react'
+import { useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import axios from 'axios'
+import { useNavigate, useParams } from 'react-router-dom'
 
 
-const GachaProductDetail = ({ title }) => {
+const GachaProductDetail = () => {
+    const { uuid } = useParams()
+    const navigate = useNavigate()
+    const isLogin = useSelector((state) => state.isLogin.isLogin)
+    const [dataGacha,setDataGacha] = useState([])
+    
     return (
         <div>
             <MetaHeader title={`สินค้า - sword`} />

@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 
-const CountdownTimer = ({ start_time, end_time, email, ayselAmount }) => {
+const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail }) => {
+  const countTime = false
   const [countdown, setCountdown] = useState('');
   const [day, setDay] = useState('');
   const [hour, seHour] = useState('');
   const [minute, setMinute] = useState('');
   const [second, setSecond] = useState('');
   useEffect(() => {
-
-
     const targetDateTime = new Date(end_time);
-
+    
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const distance = targetDateTime - now;
@@ -29,7 +28,6 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount }) => {
           const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
           const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-          setCountdown(`${days}d ${hours}h ${minutes}m ${seconds}s`);
           setDay(days)
           seHour(hours)
           setMinute(minutes)
@@ -43,9 +41,9 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount }) => {
           })
             .then((response) => {
               if (response.data.status) {
-                console.log("Update Aysel finish")
+                // console.log("Update Aysel finish")
               } else {
-                console.log("Warning")
+                // console.log("Warning")
               }
             })
             .catch((error) => {
@@ -62,32 +60,61 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount }) => {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  });
+
+  
   return (
     <div>
-      <div className='text-xl'>เวลาที่เหลือ :</div>
-      <div className='grid grid-flow-col gap-5 text-center auto-cols-max'>
-        <div className='flex flex-col p-2 bg-shadow-info/40 rounded-box text-neutral-content'>
-          <span className='countdown font-mono text-5xl font-semibold text-shadow-primary'>
-            <span style={{"--value":day}}></span>
-          </span>
-        </div>
-        <div className='flex flex-col p-2 bg-shadow-info/40 rounded-box text-neutral-content'>
-          <span className='countdown font-mono text-5xl font-semibold text-shadow-primary'>
-            <span style={{"--value":hour}}></span>
-          </span>
-        </div>
-        <div className='flex flex-col p-2 bg-shadow-info/40 rounded-box text-neutral-content'>
-          <span className='countdown font-mono text-5xl font-semibold text-shadow-primary'>
-            <span style={{"--value":minute}}></span>
-          </span>
-        </div>
-        <div className='flex flex-col p-2 bg-shadow-info/40 rounded-box text-neutral-content'>
-          <span className='countdown font-mono text-5xl font-semibold text-shadow-primary'>
-            <span style={{"--value":second}}></span>
-          </span>
-        </div>
-      </div>
+      {detail ?
+        <div><div className='text-md'>เวลาที่เหลือ :</div>
+          <div className='grid grid-flow-col gap-2 text-center auto-cols-max'>
+            <div className='flex flex-col p-2 bg-shadow-info/40 rounded-box text-neutral-content'>
+              <span className='font-mono text-xl font-semibold countdown text-shadow-primary'>
+                <span style={{ "--value": day }}></span>
+              </span>
+            </div>
+            <div className='flex flex-col p-2 bg-shadow-info/40 rounded-box text-neutral-content'>
+              <span className='font-mono text-xl font-semibold countdown text-shadow-primary'>
+                <span style={{ "--value": hour }}></span>
+              </span>
+            </div>
+            <div className='flex flex-col p-2 bg-shadow-info/40 rounded-box text-neutral-content'>
+              <span className='font-mono text-xl font-semibold countdown text-shadow-primary'>
+                <span style={{ "--value": minute }}></span>
+              </span>
+            </div>
+            <div className='flex flex-col p-2 bg-shadow-info/40 rounded-box text-neutral-content'>
+              <span className='font-mono text-xl font-semibold countdown text-shadow-primary'>
+                <span style={{ "--value": second }}></span>
+              </span>
+            </div>
+          </div>
+        </div> :
+        <div><div className='text-xl'>เวลาที่เหลือ :</div>
+          <div className='grid grid-flow-col gap-5 text-center auto-cols-max'>
+            <div className='flex flex-col p-2 bg-shadow-info/40 rounded-box text-neutral-content'>
+              <span className='font-mono text-5xl font-semibold countdown text-shadow-primary'>
+                <span style={{ "--value": day }}></span>
+              </span>
+            </div>
+            <div className='flex flex-col p-2 bg-shadow-info/40 rounded-box text-neutral-content'>
+              <span className='font-mono text-5xl font-semibold countdown text-shadow-primary'>
+                <span style={{ "--value": hour }}></span>
+              </span>
+            </div>
+            <div className='flex flex-col p-2 bg-shadow-info/40 rounded-box text-neutral-content'>
+              <span className='font-mono text-5xl font-semibold countdown text-shadow-primary'>
+                <span style={{ "--value": minute }}></span>
+              </span>
+            </div>
+            <div className='flex flex-col p-2 bg-shadow-info/40 rounded-box text-neutral-content'>
+              <span className='font-mono text-5xl font-semibold countdown text-shadow-primary'>
+                <span style={{ "--value": second }}></span>
+              </span>
+            </div>
+          </div>
+        </div>}
+
     </div>
   );
 };
