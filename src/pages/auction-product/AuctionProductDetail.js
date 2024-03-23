@@ -174,7 +174,7 @@ const AuctionProductDetail = () => {
                         end_time={dataAuction.end_time}
                         detail={false}
                         email={account.email}
-                        ayselAmount={account.amount - dataAuction.default_price}
+                        ayselAmount={parseFloat(account.amount) - parseFloat(dataAuction.default_price)}
                     />
                 </div>
                 <div className='flex items-center justify-center md:grid-cols-2 lg:w-full sm:grid-cols-1'>
