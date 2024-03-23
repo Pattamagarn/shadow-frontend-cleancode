@@ -37,9 +37,8 @@ const AuctionProductDetail = () => {
     }, [uuid])
 
     const handleInputChange = (event) => {
-        const value = event.target.value
-        if (!isNaN(value)) {
-            setOffer(parseFloat(value))
+        if (!isNaN(event.target.value)) {
+            setOffer(parseInt(event.target.value))
         }
         else {
             setOffer('')
@@ -243,7 +242,7 @@ const AuctionProductDetail = () => {
                             </div>
                             <div className='flex'>
                                 <button className='text-2xl btn btn-ghost rounded-box hover:bg-shadow-white' onClick={handleMinus}> — </button>
-                                <input value={offer} onChange={handleInputChange} placeholder="Your bid" className='w-40 px-5 border border-shadow-accent rounded-xl'></input>
+                                <input value={offer} onChange={handleInputChange} type={'text'} placeholder="ใส่จำนวนบิด" className='w-40 px-5 border border-shadow-accent rounded-xl'></input>
                                 <button className='text-3xl btn btn-ghost rounded-box hover:bg-shadow-white' onClick={handlePlus}> + </button>
                                 <button className='text-2xl btn bg-shadow-accent w-28 hover:bg-shadow-haccent/60' onClick={(event) => handleBid(event, dataAuction.default_price, dataAuction.uuid)}> บิด </button>
                             </div>
