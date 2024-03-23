@@ -27,7 +27,7 @@ const NavigationMember = () => {
     }
     
     return (
-        <nav className="navbar bg-shadow-primary flex flex-row justify-between min-w-[240px] sm:py-5 lg:px-10 lg:justify-evenly">
+        <nav className="navbar bg-gradient-to-b from-shadow-primary to-[#9d09cf] flex flex-row justify-between min-w-[240px] sm:py-5 lg:px-10 lg:justify-evenly">
             <div className="navbar-start">
                 <Link to={"/"} className="flex flex-row items-center justify-center flex-nowrap">
                     <Icon icon={"game-icons:minerals"} className="text-2xl size-fit text-shadow-pink sm:text-4xl" />

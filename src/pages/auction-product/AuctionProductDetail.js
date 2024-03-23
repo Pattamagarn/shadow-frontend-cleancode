@@ -8,7 +8,6 @@ import { useSelector} from 'react-redux'
 import { Icon } from '@iconify/react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import Card from '../../components/card/Card'
 
 
 const AuctionProductDetail = () => {
@@ -22,10 +21,10 @@ const AuctionProductDetail = () => {
 
     useEffect(() => {
         isLogin.status && isLogin.payload.role !== 0 && navigate('/')
-        if(isLogin.status && isLogin.payload.role !== 0) {
+        if(isLogin.status && isLogin.payload.role === 0) {
             setAccount({...account,email:isLogin.payload.email,amount:isLogin.payload.aysel_amount})
         }
-    }, [isLogin, navigate])
+    }, [account,isLogin, navigate])
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-auction-product-uuid/${uuid}`)
@@ -35,7 +34,7 @@ const AuctionProductDetail = () => {
                 }
             })
             .catch((error) => { })
-    }, [])
+    }, [uuid])
 
     const handleInputChange = (event) => {
         const value = event.target.value
@@ -162,7 +161,7 @@ const AuctionProductDetail = () => {
             confirmButtonText: confirmButtonText
         })
     }
-
+    
     return (
         <div >
             <MetaHeader title={`สินค้าประมูล`} />
