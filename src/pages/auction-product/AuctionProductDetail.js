@@ -22,7 +22,7 @@ const AuctionProductDetail = () => {
 
     useEffect(() => {
         isLogin.status && isLogin.payload.role !== 0 && navigate('/')
-        if(isLogin.status && isLogin.payload.role !== 0) {
+        if(isLogin.status && isLogin.payload.role === 0) {
             setAccount({...account,email:isLogin.payload.email,amount:isLogin.payload.aysel_amount})
         }
     }, [isLogin, navigate])
@@ -162,7 +162,7 @@ const AuctionProductDetail = () => {
             confirmButtonText: confirmButtonText
         })
     }
-
+    
     return (
         <div >
             <MetaHeader title={`สินค้าประมูล`} />
@@ -175,7 +175,7 @@ const AuctionProductDetail = () => {
                         end_time={dataAuction.end_time}
                         detail={false}
                         email={account.email}
-                        ayselAmount={account.amount - dataAuction.default_price}
+                        ayselAmount={parseFloat(account.amount) - parseFloat(dataAuction.default_price)}
                     />
                 </div>
                 <div className='flex items-center justify-center md:grid-cols-2 lg:w-full sm:grid-cols-1'>
