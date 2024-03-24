@@ -162,7 +162,7 @@ const AuctionProductDetail = () => {
             confirmButtonText: confirmButtonText
         })
     }
-    
+
     return (
         <div >
             <MetaHeader title={`สินค้าประมูล`} />
@@ -176,6 +176,12 @@ const AuctionProductDetail = () => {
                         detail={false}
                         email={account.email}
                         ayselAmount={parseFloat(account.amount) - parseFloat(dataAuction.default_price)}
+
+                        uuid = {dataAuction.uuid}
+                        game_name = {dataAuction.game_name}
+                        product_name = {dataAuction.name}
+                        product_price = {dataAuction.default_price}
+                        buy_method = "auction"
                     />
                 </div>
                 <div className='flex items-center justify-center md:grid-cols-2 lg:w-full sm:grid-cols-1'>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 
-const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail }) => {
+const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid, game_name, product_name, product_price, buy_method }) => {
   const countTime = false
   const [countdown, setCountdown] = useState('');
   const [day, setDay] = useState('');
@@ -49,6 +49,32 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail }) =>
             .catch((error) => {
               console.log(error)
             })
+            console.log(uuid)
+            console.log(email)
+            console.log(game_name)
+            console.log(product_name)
+            console.log(product_price)
+            console.log(buy_method)
+            axios.post(`${process.env.REACT_APP_API}/create-history-product`, {
+              uuid: uuid,
+              email: email,
+              game_name: game_name,
+              product_name: product_name,
+              product_price: product_price,
+              buy_method: buy_method
+            }, {
+              withCredentials: true
+            })
+              .then((response) => {
+                if (response.data.status) {
+                  console.log("Success")
+                } else {
+                  console.log("Error")
+                }
+              })
+              .catch((error) => {
+                console.log(error)
+              })
         }
         if (distance <= 0) {
           clearInterval(interval);

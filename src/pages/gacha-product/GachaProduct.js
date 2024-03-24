@@ -13,7 +13,6 @@ const GachaProduct = () => {
     const [dataGacha, setDataGacha] = useState([])
 
     useEffect(() => {
-        !isLogin.status && navigate('/')
         isLogin.status && isLogin.payload.role !== 1 && navigate('/')
     }, [isLogin, navigate])
     useEffect(() => {
