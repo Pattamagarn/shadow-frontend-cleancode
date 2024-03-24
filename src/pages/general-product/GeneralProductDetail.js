@@ -115,7 +115,7 @@ const GeneralProductDetail = () => {
                                 method_uuid: dataGeneral.product_id,
                                 game_name: dataGeneral.game_name,
                                 product_name: dataGeneral.name,
-                                used_status: 1
+                                used_status: 0
                             }, { withCredentials: true })
                                 .then((response) => {
                                     if (response.data.status) {

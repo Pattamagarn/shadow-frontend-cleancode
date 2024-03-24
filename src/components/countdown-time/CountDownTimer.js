@@ -32,11 +32,6 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid
           icon: 'success',
           confirmButtonText: confirmButtonText
         })
-          .then((result) => {
-            if (result.isConfirmed) {
-              navigate('/transaction')
-            }
-          })
       }
 
       const alertError = (title, text, confirmButtonText) => {
@@ -92,7 +87,7 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid
             method_uuid: product_id,
             game_name: game_name,
             product_name: product_name,
-            used_status: 1
+            used_status: 0
           }, { withCredentials: true })
             .then((response) => {
               if (response.data.status) {

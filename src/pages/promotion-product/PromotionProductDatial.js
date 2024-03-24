@@ -115,7 +115,7 @@ const PromotionProductDetail = () => {
                                 method_uuid: dataPromotion.product_id,
                                 game_name: dataPromotion.game_name,
                                 product_name: dataPromotion.name,
-                                used_status: 1
+                                used_status: 0
                             }, { withCredentials: true })
                                 .then((response) => {
                                     if (response.data.status) {

@@ -13,63 +13,57 @@ const StoreProduct = () => {
     const navigate = useNavigate()
     const [data_product, setData_product] = useState([])
     const [record_product,setRecord_product] = useState([])
+    const [hide,setHide] = useState(false)
 
     useEffect(() => {
         !isLogin.status && navigate('/')
         isLogin.status && isLogin.payload.role !== 0 && navigate('/')
     }, [isLogin, navigate])
 
-    // useEffect(() => {
-    //     axios.get(`${process.env.REACT_APP_API}/`, { withCredentials: true })
-    //     .then((response) => {
-    //         if(response.data.status){
-    //             setData_product(response.data.payload)
-    //         }
-    //     })
-    //     .catch(() => {})
-    // })
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API}/read-store-product`, { withCredentials: true })
+        .then((response) => {
+            if(response.data.status){
+                setData_product(response.data.payload.map((value,index) => {
+                    return {...value,index:index+1}
+                }))
+            }
+        })
+        .catch(() => {})
+    },[])
 
     const columns_data_product = [
         {
+            name: 'ลำดับ',
+            selector: row => row.index,
+            sortable: true
+        },
+        {
             name: 'ชื่อเกม',
-            selector: row => row.game_name
+            selector: row => row.game_name,
+            sortable: true
         },
         {
             name: 'ชื่อสินค้า',
-            selector: row => row.product,
+            selector: row => row.product_name,
 
         },
         {
             name: 'สถานะ',
-            selector: row => row.amount,
+            selector: row => row.used_status,
+            cell : (row) => [row.used_status ? 'ใช้งานแล้ว' : 'ยังไม่ได้ใช้งาน']
 
         },
         {
             name: 'โค้ดสินค้า',
-            selector: row => row.auction,
+            selector: row => row.method_uuid,
+            cell : (row) => [hide ? <div key={row.uuid}>{row.method_uuid}</div> : <div>xxx-xxx-xxx</div>]
 
         },
         {
             name: 'ซ่อน',
-            selector: row => row.hide,
-            cell: (d) => [<button
-                key={d.title}>[d.hide ?
-                 <p
-                  key={d.title}
-                  onClick={handleClick.bind(this, d.title)}
-                  className="btn btn-success btn-sm w-5/12 "
-                  
-                ><Icon icon={"mdi:show"} className='text-[#000000]' width={25} height={25} /></p> :
-                <p
-                  key={d.title}
-                  onClick={handleClick.bind(this, d.title)}
-                  className="btn btn-success btn-sm w-5/12 "
-                  
-                ><Icon icon={"mdi:hide"} className='text-[#000000]' width={25} height={25} /></p>
-                
-                ]
-            </button>
-            ]
+            selector: hide,
+            cell: (row) => [<div key={row.uuid} className='btn btn-ghost' onClick={() => {setHide(!hide)}}>{hide ? <Icon icon={"mdi:show"} className='text-3xl text-shadow-primary' /> : <Icon icon={"mdi:hide"} className='text-3xl text-shadow-primary' /> }</div>]
         },
     ]
 
@@ -89,7 +83,7 @@ const StoreProduct = () => {
             <MetaHeader title={`คลังสินค้าของฉัน`} />
             <Navigation />
             <TitleBox title={'คลังสินค้าของฉัน'} />
-            <div className='flex flex-row  justify-end px-36 my-3'>
+            <div className='flex flex-row justify-end my-3 px-36'>
                     <label className="flex items-center gap-2 input input-bordered input-md size-fit ">
                         <Icon icon={"material-symbols:search"} className='text-xl' />
                         <input type="text" placeholder="ชื่อสินค้าหรือชื่อเกม" onChange={filterData} />
