@@ -44,7 +44,7 @@ const Card = ({ uuid, name, game_name, aysel, information, promotion_status = 0,
                             </div>
                             : <div className="flex flex-col justify-center ">
                                 <div className="flex justify-center my-2">
-                                    <span>{`${promotion} Aysel`}</span>
+                                    <span>{`${aysel} Aysel`}</span>
                                 </div>
                                 <div className="justify-center card-actions">
                                     <Link className="btn btn-primary" to={`/general-product-item/${uuid}`} >ดูรายละเอียด/สั่งซื้อ</Link>
