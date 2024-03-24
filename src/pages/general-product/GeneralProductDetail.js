@@ -109,6 +109,24 @@ const GeneralProductDetail = () => {
                                 .catch((error) => {
                                     console.log(error)
                                 })
+                            axios.post(`${process.env.REACT_APP_API}/create-store-product`, {
+                                uuid: dataGeneral.uuid,
+                                email: isLogin.payload.email,
+                                method_uuid: dataGeneral.product_id,
+                                game_name: dataGeneral.game_name,
+                                product_name: dataGeneral.name,
+                                used_status: 1
+                            }, { withCredentials: true })
+                                .then((response) => {
+                                    if (response.data.status) {
+                                        // navigate('transaction')
+                                    } else {
+                                        // console.log("Error")
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(error)
+                                })
                             axios.post(`${process.env.REACT_APP_API}/create-history-product`, {
                                 uuid: dataGeneral.uuid,
                                 email: isLogin.payload.email,

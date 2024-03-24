@@ -186,6 +186,7 @@ const AuctionProductDetail = () => {
                         product_name = {dataAuction.name}
                         product_price = {dataAuction.default_price}
                         buy_method = "สินค้าประมูล"
+                        product_id = {dataAuction.product_id}
                     />
                 </div>
                 <div className='flex items-center justify-center md:grid-cols-2 lg:w-full sm:grid-cols-1'>

@@ -4,7 +4,7 @@ import Swal from 'sweetalert2'
 import { useParams, useNavigate } from "react-router-dom"
 import Navigation from '../../components/navigation/Navigation'
 
-const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid, game_name, product_name, product_price, buy_method }) => {
+const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid, game_name, product_name, product_price, buy_method, product_id }) => {
   const [day, setDay] = useState('');
   const [hour, seHour] = useState('');
   const [minute, setMinute] = useState('');
@@ -68,7 +68,7 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid
           seHour(hours)
           setMinute(minutes)
           setSecond(seconds)
-        } 
+        }
         if (count === finish) {
           axios.patch(`${process.env.REACT_APP_API}/update-aysel`, {
             email: email,
@@ -81,6 +81,24 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid
                 // console.log("Update Aysel finish")
               } else {
                 // console.log("Warning")
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+          axios.post(`${process.env.REACT_APP_API}/create-store-product`, {
+            uuid: uuid,
+            email: email,
+            method_uuid: product_id,
+            game_name: game_name,
+            product_name: product_name,
+            used_status: 1
+          }, { withCredentials: true })
+            .then((response) => {
+              if (response.data.status) {
+                // navigate('transaction')
+              } else {
+                // console.log("Error")
               }
             })
             .catch((error) => {
