@@ -37,11 +37,12 @@ const AuctionProductDetail = () => {
     }, [uuid])
 
     const handleInputChange = (event) => {
-        if (!isNaN(event.target.value)) {
-            setOffer(parseInt(event.target.value))
+        if (isNaN(event.target.value)) {
+            setOffer('')
+            
         }
         else {
-            setOffer('')
+            setOffer(parseInt(event.target.value))
         }
     }
 
