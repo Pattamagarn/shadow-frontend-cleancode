@@ -13,7 +13,7 @@ const GachaProduct = () => {
     const [dataGacha, setDataGacha] = useState([])
 
     useEffect(() => {
-        isLogin.status && isLogin.payload.role !== 1 && navigate('/')
+        // isLogin.status && isLogin.payload.role !== 1 && navigate('/')
     }, [isLogin, navigate])
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-gacha-product`)
@@ -45,11 +45,11 @@ const GachaProduct = () => {
                         <div className='flex flex-col px-12 my-5'>
                             <div className='flex justify-end my-3 text-shadow-info'>วางลูกศรค้างเพื่อดูชื่อ</div>
                             <div className='grid justify-center grid-flow-row grid-cols-4 gap-5'>
-                                
+
                                 {dataGacha.map((value, id) => (
                                     <div key={id} className='flex '>
                                         <div className='flex border-x-8 border-y-8 rounded-xl border-shadow-primary w-[200px] h-[180px] justify-center bg-'>
-                                            <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value.information}`} alt='gacha-product' title={value.name}/>
+                                            <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value.information}`} alt='gacha-product' title={value.name} />
                                         </div>
                                     </div>
                                 ))}
@@ -64,7 +64,7 @@ const GachaProduct = () => {
                     </div>
                 </dialog>
                 <div className='max-w-full mb-5'>
-                    <div className='lg:flex md:hidden sm:hidden relative  max-w-[1200px] py-10 mx-auto overflow-hidden max-h-[500px] hidden bg-gradient-to-r from-shadow-primary to-[#9d09cf] ' >
+                    <div className='flex relative  max-w-[1200px] py-10 mx-auto overflow-hidden max-h-[500px] bg-gradient-to-r from-shadow-primary to-[#9d09cf] ' >
                         <div className='flex justify-center w-full ' >
                             <div className='flex items-center'>
                                 <Icon icon={"game-icons:perspective-dice-six-faces-random"} width={125} className='text-shadow-white' />

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { Icon } from '@iconify/react'
 import axios from 'axios'
 
+
 const Profile = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
@@ -25,7 +26,6 @@ const Profile = () => {
                 }
             })
     }, [])
-
     return (
         <div>
             <MetaHeader title={`โปรไฟล์ของฉัน`} />
@@ -36,7 +36,7 @@ const Profile = () => {
                     <button className='w-64 btn btn-outline border-info text-info rounded-box hover:bg-info hover:border-info'>แก้ไขข้อมูลส่วนตัว</button>
                 </Link>
             </div>
-            <div className='flex flex-row w-auto justify-evenly gap-10 '>
+            <div className='flex flex-row w-auto gap-10 justify-evenly '>
                 <div className='flex w-auto '>
                     <div className='w-[350px] h-[350px] rounded-full'>
                         <img src={`${process.env.REACT_APP_AVATAR}${account.avatar}`} alt='profile' className='w-full h-full rounded-full ' />
