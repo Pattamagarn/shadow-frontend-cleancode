@@ -152,11 +152,11 @@ const DropDown = ({ data,type,setData }) => {
 
     return (
         <div className="dropdown dropdown-hover ">
-            <select className="m-1 text-md select w-52 btn bg-shadow-white border-shadow-pink text-shadow-pink hover:border-shadow-pink/80 hover:bg-shadow-white" onChange={setSelectOptions}>
-                <option className="flex items-center p-2 align-middle text-md btn bg-shadow-white text-shadow-pink hover:text-shadow-white hover:bg-shadow-pink" >เรียงสินค้าใหม่ - เก่า</option>
-                <option className="flex items-center p-2 align-middle text-md btn bg-shadow-white text-shadow-pink hover:text-shadow-white hover:bg-shadow-pink" >เรียงสินค้าเก่า - ใหม่</option>
-                <option className="flex items-center p-2 align-middle text-md btn bg-shadow-white text-shadow-pink hover:text-shadow-white hover:bg-shadow-pink" >เรียงราคาสูง - ต่ำ</option>
-                <option className="flex items-center p-2 align-middle text-md btn bg-shadow-white text-shadow-pink hover:text-shadow-white hover:bg-shadow-pink" >เรียงราคาต่ำ - สูง</option>
+            <select className="m-1 text-md select w-52 btn bg-shadow-white border-shadow-pink text-shadow-pink hover:border-shadow-pink/80 hover:bg-shadow-white " onChange={setSelectOptions}>
+                <option className="btn bg-shadow-white border-shadow-pink text-shadow-pink hover:border-shadow-pink/80 hover:bg-shadow-white  " >เรียงสินค้าใหม่ - เก่า</option>
+                <option className="btn bg-shadow-white border-shadow-pink text-shadow-pink hover:border-shadow-pink/80 hover:bg-shadow-white  " >เรียงสินค้าเก่า - ใหม่</option>
+                <option className="btn bg-shadow-white border-shadow-pink text-shadow-pink hover:border-shadow-pink/80 hover:bg-shadow-white  " >เรียงราคาสูง - ต่ำ</option>
+                <option className="btn bg-shadow-white border-shadow-pink text-shadow-pink hover:border-shadow-pink/80 hover:bg-shadow-white  " >เรียงราคาต่ำ - สูง</option>
                 
             </select>
             

@@ -15,7 +15,8 @@ const EditProfile = () => {
     const [account, setAccount] = useState([])
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' })
-    // const [profileAvatar, setProfileAvatar] = useState('')
+    const [profileAvatar, setProfileAvatar] = useState('')
+    const [dataProfile,setDataProfile] = useState('')
     const [hide1, setHide1] = useState(true)
     const [hide2, setHide2] = useState(true)
     const [hide3, setHide3] = useState(true)
@@ -48,9 +49,10 @@ const EditProfile = () => {
         setPassword({ ...password, confirmPassword: event.target.value })
     }
 
-    // const setProfileAvatars = (information) => {
-    //     setProfileAvatar(information.target.files[0])
-    // }
+    const setProfileAvatars = (information) => {
+        setDataProfile(URL.createObjectURL(information.target.files[0]))
+        setProfileAvatar(information.target.files[0])
+    }
 
     const alertSuccess = (title, text, confirmButtonText) => {
         Swal.fire({
@@ -59,11 +61,11 @@ const EditProfile = () => {
             icon: 'success',
             confirmButtonText: confirmButtonText
         })
-        .then((result) => {
-            if(result.isConfirmed) {
-                navigate('/profile')
-            }
-        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    navigate('/profile')
+                }
+            })
     }
 
     const alertError = (title, text, confirmButtonText) => {
@@ -85,9 +87,31 @@ const EditProfile = () => {
     }
 
     const handleSubmit = (event) => {
-        if (username !== account.username && username !== '') {
-            //change username
-            Swal.fire({
+        if(username !== '' || profileAvatar !== '' || password.newPassword !== ''){
+            if ((password.newPassword) === (password.confirmPassword) && (password.newPassword !== '')) {
+                //change password
+                if (password.oldPassword === '') {  //not yet input old password
+                    Swal.fire({
+                        title: "เกิดข้อผิดพลาด",
+                        text: "กรุณาใส่รหัสผ่านเก่า",
+                        icon: 'warning',
+                        confirmButtonText: "ตกลง"
+                    })
+                } else { // already input old password
+                    event.preventDefault()
+                    updatePasswordAccount(account.email, password.oldPassword, password.newPassword, alertSuccess, alertError, alertWarning)
+                }
+            }
+            else if((password.newPassword) !== (password.confirmPassword) && (password.newPassword !== '')){
+                Swal.fire({
+                    title: "เกิดข้อผิดพลาด",
+                    text: "การยืนยันรหัสผ่านใหม่ไม่ตรงกัน",
+                    icon: 'warning',
+                    confirmButtonText: "ตกลง"
+                })
+            }
+            else{
+                Swal.fire({
                 title: "ตรวจสอบอีกที",
                 text: "คุณแน่ใจว่าต้องการเปลี่ยนข้อมูลส่วนตัว?",
                 icon: 'warning',
@@ -99,28 +123,67 @@ const EditProfile = () => {
                 cancelButtonText: 'ยกเลิก'
             })
             .then((result) => {
-                if (result.isConfirmed) {
-                    navigate('/profile')
+                if(result.isConfirmed){
+                    if (username !== account.username && username !== ''){
+                        axios.patch(`${process.env.REACT_APP_API}/update-username/${account.email}`, {
+                            username: username
+                        })
+                        .then((response) => {
+                            if (response.data.status) {
+                                Swal.fire({
+                                    title: 'สำเร็จ',
+                                    text: response.data.payload,
+                                    icon: 'success'
+                                })
+                                    .then((result) => {
+                                        if (result.isConfirmed) {
+                                            navigate('/profile')
+                                        }
+                                    })
+                            } else {
+                                Swal.fire({
+                                    title: 'ผิดพลาด',
+                                    text: response.data.payload,
+                                    icon: 'error'
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            Swal.fire({
+                                title: 'ผิดพลาด',
+                                text: 'แก้ไขชื่อล้มเหลว',
+                                icon: 'error'
+                            });
+                        });
+                    }
+                }
+                if((profileAvatar !== account.avatar) && (profileAvatar !== '')){
+                    event.preventDefault()
+                    const formData = new FormData()
+                    formData.append('file', profileAvatar)
+                    formData.append('email',account.email)
+                    axios.patch(`${process.env.REACT_APP_API}/update-avatar`,formData,{
+                        headers : {'Content-Type' : 'multipart/form-data'},
+                        withCredentials : true
+                    })
+                    .then((response) => {
+                        if(response.data.status){
+                            alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
+                        }else{
+                            alertWarning('คำเตือน', response.data.payload, 'ตกลง')
+                        }
+                    })
+                    .catch((error) => {
+                        alertError('ผิดพลาด', `${error} แก้ไขรูปโปรไฟล์ล้มเหลว`, 'ตกลง')
+                    })
                 }
             })
-        }
-        else if ((password.newPassword) === (password.confirmPassword) && (password.newPassword !== '')) {
-            //change password
-            if (password.oldPassword === '') {  //not yet input old password
-                Swal.fire({
-                    title: "เกิดข้อผิดพลาด",
-                    text: "กรุณาใส่รหัสผ่านเก่า",
-                    icon: 'warning',
-                    confirmButtonText: "ตกลง"
-                })
-            } else { // already input old password
-                event.preventDefault()
-                updatePasswordAccount(account.email,password.oldPassword,password.newPassword,alertSuccess,alertError,alertWarning)
             }
+            
         }
-    
-
-
+        else{
+            console.log('nothing')
+        }
     }
     return (
         <div>
@@ -150,10 +213,21 @@ const EditProfile = () => {
 
 
                 </div>
-                <div className='flex flex-col justify-center'>
-                    <img src={`${process.env.REACT_APP_AVATAR}${account.avatar}`} alt={`profile ${account.username}`} width={256} height={256} className='rounded-full' title={`${account.username}`}></img>
+                <div className='flex flex-col justify-center items-center '>
+                    {dataProfile !== '' ?
+                        <div className='w-[256px] h-[256px] rounded-full'>
+                            <img src={dataProfile} alt={`profile ${account.username}`} title={`${account.username}`} className='w-full h-full rounded-full'></img>
+                        </div>
+                        :
+                        
+                        <div className='w-[256px] h-[256px] rounded-full'>
+                            <img src={`${process.env.REACT_APP_AVATAR}${account.avatar}`} alt={`profile ${account.username}`} width={256} height={256} className='w-full h-full rounded-full ' title={`${account.username}`}></img>
+                        </div>
+
+                    }
+
                     <div className='flex justify-center mt-5'>
-                        <input type={'file'}  className='w-[85px] file-input bg-shadow-grey text-shadow-black' />
+                        <input type={'file'} className='w-full file-input bg-shadow-grey text-shadow-black' onChange={setProfileAvatars} />
                     </div>
                 </div>
 

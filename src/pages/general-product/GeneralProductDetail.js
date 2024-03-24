@@ -1,7 +1,7 @@
 import MetaHeader from '../../components/meta-header/MetaHeader'
 import Navigation from '../../components/navigation/Navigation'
 import TitleBox from '../../components/title-box/TitleBox'
-import { useParams,useNavigate } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useState, useEffect } from 'react'
 import { Icon } from '@iconify/react'
 import Swal from 'sweetalert2'
@@ -14,6 +14,7 @@ const GeneralProductDetail = () => {
     const navigate = useNavigate()
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const [dataGeneral, setDataGeneral] = useState([])
+    const [dataGeneralProductActive, setDataGeneralProductActive] = useState(true)
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-general-product-uuid/${uuid}`)
@@ -26,6 +27,38 @@ const GeneralProductDetail = () => {
                 console.log(error)
             })
     }, [uuid])
+
+    const alertSuccess = (title, text, confirmButtonText) => {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: 'success',
+            confirmButtonText: confirmButtonText
+        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    navigate('/transaction')
+                }
+            })
+    }
+
+    const alertError = (title, text, confirmButtonText) => {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: 'error',
+            confirmButtonText: confirmButtonText
+        })
+    }
+
+    const alertWarning = (title, text, confirmButtonText) => {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: 'warning',
+            confirmButtonText: confirmButtonText
+        })
+    }
 
     const handleBuyProduct = (event) => {
         if (!isLogin.status) {
@@ -46,8 +79,101 @@ const GeneralProductDetail = () => {
                     }
                 })
         }
-    }
+        else {
+            Swal.fire({
+                title: 'แจ้งเตือน',
+                text: `คุณต้องการจ่าย ${dataGeneral.normal_price} สำหรับ ${dataGeneral.name}`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3FC3EE',
 
+                cancelButtonColor: '#F27474',
+                confirmButtonText: 'ตกลง',
+                cancelButtonText: 'ยกเลิก'
+            })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        if (parseFloat(isLogin.payload.aysel_amount) >= parseFloat(dataGeneral.normal_price)) {
+                            axios.patch(`${process.env.REACT_APP_API}/update-aysel`, {
+                                email: isLogin.payload.email,
+                                aysel_amount: parseFloat(isLogin.payload.aysel_amount) - parseFloat(dataGeneral.normal_price)
+                            }, { withCredentials: true })
+                                .then((response) => {
+                                    if (response.data.status) {
+                                        //    alertSuccess('สำเร็จ','การซื้อสำเร็จ','ตกลง')
+                                        navigate('/transaction')
+                                    } else {
+                                        alertSuccess('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(error)
+                                })
+                            axios.post(`${process.env.REACT_APP_API}/create-history-product`, {
+                                uuid: dataGeneral.uuid,
+                                email: isLogin.payload.email,
+                                game_name: dataGeneral.game_name,
+                                product_name: dataGeneral.name,
+                                product_price: dataGeneral.normal_price,
+                                buy_method: "สินค้าทั่วไป"
+                            }, { withCredentials: true })
+                                .then((response) => {
+                                    if (response.data.status) {
+                                        // navigate('transaction')
+                                    } else {
+                                        // console.log("Error")
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(error)
+                                })
+                            axios.delete(`${process.env.REACT_APP_API}/delete-general-product/${uuid}`)
+                                .then((response) => {
+                                    if (response.data.status) {
+                                        Swal.fire({
+                                            title: 'สำเร็จ',
+                                            text: "ซื้อสินค้าสำเร็จ",
+                                            icon: 'success'
+                                        });
+                                        setDataGeneralProductActive(!dataGeneralProductActive)
+                                    } else {
+                                        Swal.fire({
+                                            title: 'ผิดพลาด',
+                                            text: "เกิดข้อผิดพลาดในการซื้อ",
+                                            icon: 'error'
+                                        });
+                                    }
+                                })
+                                .catch((error) => {
+                                    Swal.fire({
+                                        title: 'ผิดพลาด',
+                                        text: 'เกิดข้อผิดพลาดในการซื้อ',
+                                        icon: 'error'
+                                    });
+                                })
+                        }
+                        else if (parseFloat(isLogin.payload.aysel_amount) < parseFloat(dataGeneral.normal_price)) {
+                            Swal.fire({
+                                title: 'ผิดพลาด',
+                                text: `จำนวนAyselไม่เพียงพอต่อการซื้อ`,
+                                icon: 'error',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3FC3EE',
+
+                                cancelButtonColor: '#F27474',
+                                confirmButtonText: 'ตกลง, ไปเติมAysel',
+                                cancelButtonText: 'ยกเลิก'
+                            })
+                                .then((result) => {
+                                    if (result.isConfirmed) {
+                                        navigate('/top-up')
+                                    }
+                                })
+                        }
+                    }
+                })
+        }
+    }
     return (
         <div>
             <MetaHeader title={`สินค้า - ${dataGeneral.name}`} />

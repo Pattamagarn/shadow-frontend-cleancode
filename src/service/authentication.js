@@ -72,12 +72,10 @@ export const updatePasswordAccount = (email,oldPass,newPass,alertSuccess, alertE
         const user = userCredential.user
         updatePassword(user,newPass)
         .then(() => {
-            console.log(oldPass)
-            console.log(newPass)
             alertSuccess('สำเร็จ','แก้ไขรหัสผ่านเสร็จสิ้น','ตกลง')
         })
         .catch((error) => {
-            alertError('ล้มเหลว', 'การแก้ไขรหัสผ่านล้มเหลว', 'ตกลง')
+            alertError('ล้มเหลว', 'การแก้ไขรหัสผ่านล้มเหลว ควรใส่รหัสผ่านอย่างน้อย 6 ตัวอักษร', 'ตกลง')
         })
     })
     .catch(() => {

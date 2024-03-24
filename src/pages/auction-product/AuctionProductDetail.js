@@ -24,7 +24,7 @@ const AuctionProductDetail = () => {
         if(isLogin.status && isLogin.payload.role === 0) {
             setAccount({...account,email:isLogin.payload.email,amount:isLogin.payload.aysel_amount})
         }
-    }, [account,isLogin, navigate])
+    }, [isLogin, navigate.setAccount])
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-auction-product-uuid/${uuid}`)
@@ -117,9 +117,9 @@ const AuctionProductDetail = () => {
                             }, { withCredential: true })
                                 .then((response) => {
                                     if (response.data.status) {
-                                        alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
+                                        alertSuccess('สำเร็จ', 'ประมูลสินค้าสำเร็จ', 'ตกลง')
                                     } else {
-                                        alertWarning('คำเตือน', response.data.payload, 'ตกลง')
+                                        alertWarning('คำเตือน', 'ประมูลสินค้าล้มเหลว', 'ตกลง')
                                     }
                                 })
                                 .catch((error) => {
@@ -142,6 +142,11 @@ const AuctionProductDetail = () => {
             icon: 'success',
             confirmButtonText: confirmButtonText
         })
+        .then((result) => {
+            if (result.isConfirmed) {
+                navigate('/transaction')
+            }
+        })
     }
 
     const alertError = (title, text, confirmButtonText) => {
@@ -161,7 +166,7 @@ const AuctionProductDetail = () => {
             confirmButtonText: confirmButtonText
         })
     }
-    
+
     return (
         <div >
             <MetaHeader title={`สินค้าประมูล`} />
@@ -175,6 +180,12 @@ const AuctionProductDetail = () => {
                         detail={false}
                         email={account.email}
                         ayselAmount={parseFloat(account.amount) - parseFloat(dataAuction.default_price)}
+
+                        uuid = {dataAuction.uuid}
+                        game_name = {dataAuction.game_name}
+                        product_name = {dataAuction.name}
+                        product_price = {dataAuction.default_price}
+                        buy_method = "สินค้าประมูล"
                     />
                 </div>
                 <div className='flex items-center justify-center md:grid-cols-2 lg:w-full sm:grid-cols-1'>
