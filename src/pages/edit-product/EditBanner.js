@@ -66,8 +66,7 @@ const EditBanner = () => {
             }
         })
         .catch((error) => {
-            console.log(error)
-            alertError('ผิดพลาด', `แก้ไขแบนเนอร์ล้มเหลว1`, 'ตกลง')
+            alertError('ผิดพลาด', `แก้ไขแบนเนอร์ล้มเหลว`, 'ตกลง')
         })
     }
 

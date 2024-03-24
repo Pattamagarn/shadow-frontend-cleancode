@@ -1,5 +1,5 @@
 import app from './connection'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updatePassword } from 'firebase/auth'
 import axios from 'axios'
 
 const authentication = getAuth(app)
@@ -64,4 +64,22 @@ export const resetPasswordAccount = (email, alertSuccess, alertError, alertWarni
     .catch(() => {
         alertError('ล้มเหลว', 'การกู้คืนรหัสผ่านล้มเหลว', 'ตกลง')
     })
+}
+
+export const updatePasswordAccount = (email,oldPass,newPass,alertSuccess, alertError, alertWarning) => {
+    signInWithEmailAndPassword(authentication,email,oldPass)
+    .then((userCredential) => {
+        const user = userCredential.user
+        updatePassword(user,newPass)
+        .then(() => {
+            alertSuccess('สำเร็จ','แก้ไขรหัสผ่านเสร็จสิ้น','ตกลง')
+        })
+        .catch((error) => {
+            alertError('ล้มเหลว', 'การแก้ไขรหัสผ่านล้มเหลว ควรใส่รหัสผ่านอย่างน้อย 6 ตัวอักษร', 'ตกลง')
+        })
+    })
+    .catch(() => {
+        alertWarning('ล้มเหลว', 'รหัสผ่านเก่าไม่ถูกต้อง', 'ตกลง')
+    })
+    
 }

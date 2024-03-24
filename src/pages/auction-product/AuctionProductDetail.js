@@ -8,7 +8,6 @@ import { useSelector} from 'react-redux'
 import { Icon } from '@iconify/react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import Card from '../../components/card/Card'
 
 
 const AuctionProductDetail = () => {
@@ -25,7 +24,7 @@ const AuctionProductDetail = () => {
         if(isLogin.status && isLogin.payload.role === 0) {
             setAccount({...account,email:isLogin.payload.email,amount:isLogin.payload.aysel_amount})
         }
-    }, [isLogin, navigate])
+    }, [isLogin, navigate.setAccount])
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-auction-product-uuid/${uuid}`)
@@ -35,12 +34,11 @@ const AuctionProductDetail = () => {
                 }
             })
             .catch((error) => { })
-    }, [])
+    }, [uuid])
 
     const handleInputChange = (event) => {
-        const value = event.target.value
-        if (!isNaN(value)) {
-            setOffer(parseFloat(value))
+        if (!isNaN(event.target.value)) {
+            setOffer(parseInt(event.target.value))
         }
         else {
             setOffer('')
@@ -118,9 +116,9 @@ const AuctionProductDetail = () => {
                             }, { withCredential: true })
                                 .then((response) => {
                                     if (response.data.status) {
-                                        alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
+                                        alertSuccess('สำเร็จ', 'ประมูลสินค้าสำเร็จ', 'ตกลง')
                                     } else {
-                                        alertWarning('คำเตือน', response.data.payload, 'ตกลง')
+                                        alertWarning('คำเตือน', 'ประมูลสินค้าล้มเหลว', 'ตกลง')
                                     }
                                 })
                                 .catch((error) => {
@@ -142,6 +140,11 @@ const AuctionProductDetail = () => {
             text: text,
             icon: 'success',
             confirmButtonText: confirmButtonText
+        })
+        .then((result) => {
+            if (result.isConfirmed) {
+                navigate('/transaction')
+            }
         })
     }
 
@@ -181,7 +184,7 @@ const AuctionProductDetail = () => {
                         game_name = {dataAuction.game_name}
                         product_name = {dataAuction.name}
                         product_price = {dataAuction.default_price}
-                        buy_method = "auction"
+                        buy_method = "สินค้าประมูล"
                     />
                 </div>
                 <div className='flex items-center justify-center md:grid-cols-2 lg:w-full sm:grid-cols-1'>
@@ -250,7 +253,7 @@ const AuctionProductDetail = () => {
                             </div>
                             <div className='flex'>
                                 <button className='text-2xl btn btn-ghost rounded-box hover:bg-shadow-white' onClick={handleMinus}> — </button>
-                                <input value={offer} onChange={handleInputChange} placeholder="Your bid" className='w-40 px-5 border border-shadow-accent rounded-xl'></input>
+                                <input value={offer} onChange={handleInputChange} type={'text'} placeholder="ใส่จำนวนบิด" className='w-40 px-5 border border-shadow-accent rounded-xl'></input>
                                 <button className='text-3xl btn btn-ghost rounded-box hover:bg-shadow-white' onClick={handlePlus}> + </button>
                                 <button className='text-2xl btn bg-shadow-accent w-28 hover:bg-shadow-haccent/60' onClick={(event) => handleBid(event, dataAuction.default_price, dataAuction.uuid)}> บิด </button>
                             </div>

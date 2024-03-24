@@ -18,7 +18,7 @@ const Home = () => {
 
     useEffect(() => {
         !isLogin.status && navigate('/')
-        isLogin.status && isLogin.payload.role !== 1 && navigate('/')
+        isLogin.status && isLogin.payload.role === 1 && navigate('/analysis')
     }, [isLogin, navigate])
 
     useEffect(() => {
@@ -90,15 +90,27 @@ const Home = () => {
                         <div className="flex items-center card-body">
                             <h2 className="justify-start card-title line-clamp-1" title={value.name}>{value.name}</h2>
                             <span className="text-md line-clamp-1" title={value.game_name}>{`( ${value.game_name} )`}</span>
-                            <div>{value.special_price_status ?
-                                <div className='flex'>
-                                    <p>{`${value.special_price} Aysel`}</p>
-                                    <span className="line-through text-[#7d7d84] text-xs">{`${value.normal_price} Aysel`}</span>
+                            {value.special_price_status ?
+                                <div>
+                                    <div className='flex'>
+                                        <p>{`${value.special_price} Aysel`}</p>
+                                        <span className="line-through text-[#7d7d84] text-xs">{`${value.normal_price} Aysel`}</span>
+                                    </div>
+                                    <Link className='flex items-end justify-center my-5' to={`/promotion-product-item/${value.uuid}`}>
+                                        <p className='flex h-fit btn bg-shadow-white border-shadow-primary hover:bg-shadow-primary/20 text-shadow-primary lg:text-sm'>ดูรายละเอียด</p>
+                                    </Link>
                                 </div>
-                                : `${value.normal_price} Aysel`}</div>
-                            <Link className='flex items-end justify-center mb-5' to={`/general-product-item/${value.uuid}`}>
-                                <p className='flex h-fit btn bg-shadow-white border-shadow-primary hover:bg-shadow-primary/20 text-shadow-primary lg:text-sm'>ดูรายละเอียด</p>
-                            </Link>
+
+                                : <div>
+                                    <div>
+                                        <div>{`${value.normal_price} Aysel`}</div>
+                                    </div>
+                                    <Link className='flex items-end justify-center my-5' to={`/general-product-item/${value.uuid}`}>
+                                        <p className='flex h-fit btn bg-shadow-white border-shadow-primary hover:bg-shadow-primary/20 text-shadow-primary lg:text-sm'>ดูรายละเอียด</p>
+                                    </Link>
+                                </div>
+                            }
+
                         </div>
 
                     </div>
@@ -111,7 +123,7 @@ const Home = () => {
             </Link>
             <div className='grid grid-flow-col grid-rows-1 gap-5 py-10 lg:mx-40 lg:grid-cols-3 md:mx-20'>
                 {dataPromotion.map((value, id) => (
-                    <Link to='/promotion-product-item' key={id}><div className="w-auto h-auto shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
+                    <div key={id}><div className="w-auto h-auto shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary" >
                         <figure className='flex flex-col px-5 md:py-5'>
                             <div className='flex w-36 h-36'>
                                 <img src={`${process.env.REACT_APP_GENERAL_PRODUCT}${value.information}`} alt={`{product general}`} key={value.id} className='flex w-full h-full' />
@@ -131,7 +143,7 @@ const Home = () => {
                                 <p className='flex h-fit btn bg-shadow-white border-shadow-primary hover:bg-shadow-primary/20 text-shadow-primary'>ดูรายละเอียด</p>
                             </Link>
                         </div>
-                    </div></Link>
+                    </div></div>
 
 
 
@@ -143,7 +155,7 @@ const Home = () => {
             </Link>
             <div className='grid grid-flow-col grid-rows-1 gap-5 py-10 lg:mx-40 lg:grid-cols-3 md:mx-20 md:grid-cols-3'>
                 {dataAuction.map((value, id) => (
-                    <Link to='/auction-product-item' key={id}><div className="w-auto h-auto shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary">
+                    <div key={id}><div className="w-auto h-auto shadow-xl border-x-4 border-y-4 card lg:card-side border-shadow-primary">
                         <figure className='flex flex-col px-5 md:py-5'>
                             <div className='flex w-36 h-36'>
                                 <img src={`${process.env.REACT_APP_AUCTION_PRODUCT}${value.information}`} alt={`{product general ${value}}`} key={value.id} className='flex w-full h-full' />
@@ -158,7 +170,7 @@ const Home = () => {
                                 <p className='flex h-fit btn bg-shadow-white border-shadow-primary hover:bg-shadow-primary/20 text-shadow-primary'>ดูรายละเอียด</p>
                             </Link>
                         </div>
-                    </div></Link>
+                    </div></div>
 
                 ))}
             </div>

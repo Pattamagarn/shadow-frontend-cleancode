@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import DataTable from 'react-data-table-component'
 import axios from 'axios'
 import { Icon } from '@iconify/react'
+import Swal from 'sweetalert2'
 
 const MemberManagement = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
@@ -18,6 +19,7 @@ const MemberManagement = () => {
 
     const [dataMember, setDataMember] = useState([])
     const [dataMemberSearch, setDataMemberSearch] = useState([])
+    const [dataUserActive,setDataUserActive] = useState(true)
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/select-account`)
@@ -29,7 +31,7 @@ const MemberManagement = () => {
             }
         })
         .catch((error) => {})
-    }, [])
+    }, [dataUserActive])
 
     const columnsMember = [
         {
@@ -51,7 +53,7 @@ const MemberManagement = () => {
         {
             name: 'ระงับ',
             selector: row => row.suspended_status,
-            cell: (row) => [<div key={row.uuid} className={``}>{row.suspended_status ? <Icon icon={"solar:user-block-bold"} className='text-3xl text-shadow-primary' /> : <Icon icon={"solar:user-bold"} className='text-3xl text-shadow-primary' /> }</div>]
+            cell: (row) => [<div key={row.email} className='btn btn-ghost' onClick={() => {handleStatusAccount(row.email,row.suspended_status)}}>{row.suspended_status ? <Icon icon={"solar:user-block-bold"} className='text-3xl text-shadow-primary' /> : <Icon icon={"solar:user-bold"} className='text-3xl text-shadow-primary' /> }</div>]
         },
         {
             name: 'บทบาท',
@@ -60,6 +62,96 @@ const MemberManagement = () => {
             sortable:true
         }
     ]
+
+    const handleStatusAccount = (email,status) => {
+        if(status === 0){
+            Swal.fire({
+                title: 'แจ้งเตือน!',
+                text: `คุณต้องการที่จะระงับการใช้งานผู้ใช้ ${email} ใช่หรือไม่`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3FC3EE',
+    
+                cancelButtonColor: '#F27474',
+                confirmButtonText: 'ตกลง, ระงับได้เลย',
+                cancelButtonText: 'ยกเลิก'
+            })
+            .then((result) => {
+                if(result.isConfirmed){
+                    axios.patch(`${process.env.REACT_APP_API}/update-status-account/${email}` ,{
+                        suspended_status:status
+                    })
+                    .then((response) => {
+                        if(response.data.status){
+                            Swal.fire({
+                                title: 'สำเร็จ',
+                                text: response.data.payload,
+                                icon: 'success'
+                              });
+                            setDataUserActive(!dataUserActive)
+                        }else{
+                            Swal.fire({
+                                title: 'ผิดพลาด',
+                                text: response.data.payload,
+                                icon: 'error'
+                              });
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire({
+                            title: 'ผิดพลาด',
+                            text: 'การระงับล้มเหลว',
+                            icon: 'error'
+                          });
+                });
+                }
+            })
+        }
+        else{
+            Swal.fire({
+                title: 'แจ้งเตือน!',
+                text: `คุณต้องการที่จะปลดระงับการใช้งานผู้ใช้ ${email} ใช่หรือไม่`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3FC3EE',
+    
+                cancelButtonColor: '#F27474',
+                confirmButtonText: 'ตกลง, ปลดระงับได้เลย',
+                cancelButtonText: 'ยกเลิก'
+            })
+            .then((result) => {
+                if(result.isConfirmed){
+                    axios.patch(`${process.env.REACT_APP_API}/update-status-account/${email}` ,{
+                        suspended_status:status
+                    })
+                    .then((response) => {
+                        if(response.data.status){
+                            Swal.fire({
+                                title: 'สำเร็จ',
+                                text: response.data.payload,
+                                icon: 'success'
+                              });
+                            setDataUserActive(!dataUserActive)
+                        }else{
+                            Swal.fire({
+                                title: 'ผิดพลาด',
+                                text: response.data.payload,
+                                icon: 'error'
+                              });
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire({
+                            title: 'ผิดพลาด',
+                            text: 'การปลดระงับล้มเหลว',
+                            icon: 'error'
+                          });
+                });
+                }
+            })
+        }
+        
+    }
 
     const filterDataMember = (event) => {
         const newDataMember = dataMember.filter((row) => {
