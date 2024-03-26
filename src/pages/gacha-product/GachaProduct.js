@@ -48,9 +48,20 @@ const GachaProduct = () => {
 
                                 {dataGacha.map((value, id) => (
                                     <div key={id} className='flex '>
-                                        <div className='flex border-x-8 border-y-8 rounded-xl border-shadow-primary w-[200px] h-[180px] justify-center bg-'>
-                                            <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value.information}`} alt='gacha-product' title={value.name} />
-                                        </div>
+                                        {
+                                            value.guarantee_status ?
+                                                <div>
+                                                    <div className='flex border-x-8 border-y-8 rounded-xl border-shadow-accent w-[200px] h-[180px] justify-center bg-'>
+                                                        <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value.information}`} alt='gacha-product' title={value.name} />
+                                                    </div>
+                                                </div> :
+                                                <div>
+                                                    <div className='flex border-x-8 border-y-8 rounded-xl border-shadow-primary w-[200px] h-[180px] justify-center bg-'>
+                                                        <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value.information}`} alt='gacha-product' title={value.name} />
+                                                    </div>
+                                                </div>
+                                        }
+
                                     </div>
                                 ))}
 

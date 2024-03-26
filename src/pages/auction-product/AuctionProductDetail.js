@@ -4,7 +4,7 @@ import TitleBox from '../../components/title-box/TitleBox'
 import CountdownTimer from '../../components/countdown-time/CountDownTimer'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Icon } from '@iconify/react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
@@ -15,16 +15,16 @@ const AuctionProductDetail = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
     const [dataAuction, setDataAuction] = useState([])
-    const [account,setAccount] = useState({ email:'',amount:''})
+    const [account, setAccount] = useState({ email: '', amount: '' })
     const [offer, setOffer] = useState('')
 
 
     useEffect(() => {
         isLogin.status && isLogin.payload.role !== 0 && navigate('/')
-        if(isLogin.status && isLogin.payload.role === 0) {
-            setAccount({...account,email:isLogin.payload.email,amount:isLogin.payload.aysel_amount})
+        if (isLogin.status && isLogin.payload.role === 0) {
+            setAccount({ ...account, email: isLogin.payload.email, amount: isLogin.payload.aysel_amount })
         }
-    }, [isLogin, navigate.setAccount])
+    }, [isLogin, navigate,account])
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-auction-product-uuid/${uuid}`)
@@ -37,13 +37,18 @@ const AuctionProductDetail = () => {
     }, [uuid])
 
     const handleInputChange = (event) => {
-        if (isNaN(event.target.value)) {
-            setOffer('')
-            
+        try {
+            if (isNaN(parseInt(event.target.value))) {
+                setOffer('')
+            }
+            else {
+                setOffer(parseInt(event.target.value))
+            }
         }
-        else {
-            setOffer(parseInt(event.target.value))
+        catch(error) {
+            setOffer(event.target.value)
         }
+        
     }
 
     const handlePlus = () => {
@@ -142,11 +147,11 @@ const AuctionProductDetail = () => {
             icon: 'success',
             confirmButtonText: confirmButtonText
         })
-        .then((result) => {
-            if (result.isConfirmed) {
-                navigate('/transaction')
-            }
-        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    navigate('/transaction')
+                }
+            })
     }
 
     const alertError = (title, text, confirmButtonText) => {
@@ -181,59 +186,59 @@ const AuctionProductDetail = () => {
                         email={account.email}
                         ayselAmount={parseFloat(account.amount) - parseFloat(dataAuction.default_price)}
 
-                        uuid = {dataAuction.uuid}
-                        game_name = {dataAuction.game_name}
-                        product_name = {dataAuction.name}
-                        product_price = {dataAuction.default_price}
-                        buy_method = "สินค้าประมูล"
-                        product_id = {dataAuction.product_id}
+                        uuid={dataAuction.uuid}
+                        game_name={dataAuction.game_name}
+                        product_name={dataAuction.name}
+                        product_price={dataAuction.default_price}
+                        buy_method="สินค้าประมูล"
+                        product_id={dataAuction.product_id}
                     />
                 </div>
                 <div className='flex items-center justify-center md:grid-cols-2 lg:w-full sm:grid-cols-1'>
-                <div className="flex-row border shadow-xl lg:w-[740px] h-[280px] border-x-4 border-y-4 border-shadow-primary card lg:card-compact bg-base-100">
-                    <div className="flex w-[245px] ">
-                        <figure className="flex mx-auto my-auto border rounded-lg border-shadow-primary border-x-4 border-y-4">
-                            <div className='flex w-[200px] h-[180px] '>
-                                <img src={`${process.env.REACT_APP_AUCTION_PRODUCT}${dataAuction.information}`} alt='product' className='flex w-full h-full' />
-                            </div>
-                        </figure>
-                    </div>
-                    <div className="card-body ">
-                        <div className="flex-col justify-center pt-5 ">
-                            <div className="flex justify-center">
-                                <div className="text-3xl card-title">{dataAuction.name}</div>
-                            </div>
-                            <div className="flex justify-center pb-16">
-                                <div className="text-2xl card-title">{`( ${dataAuction.game_name} )`}</div>
-                            </div>
-                           
+                    <div className="flex-row border shadow-xl lg:w-[740px] h-[280px] border-x-4 border-y-4 border-shadow-primary card lg:card-compact bg-base-100">
+                        <div className="flex w-[245px] ">
+                            <figure className="flex mx-auto my-auto border rounded-lg border-shadow-primary border-x-4 border-y-4">
+                                <div className='flex w-[200px] h-[180px] '>
+                                    <img src={`${process.env.REACT_APP_AUCTION_PRODUCT}${dataAuction.information}`} alt='product' className='flex w-full h-full' />
+                                </div>
+                            </figure>
                         </div>
-                        <div className="flex justify-end card-action ">
-                            <button className="btn" onClick={() => document.getElementById('detail-product').showModal()}>ดูรายละเอียด</button>
-                        </div>
-                        <dialog id='detail-product' className='modal'>
-                            <div className='flex flex-col justify-center modal-box border-x-4 border-y-4 border-shadow-info'>
-                                <div className='flex justify-center '>
-                                    <div className='flex border-x-8 border-y-8 rounded-xl border-shadow-primary w-[200px] h-[180px] justify-center bg-'>
-                                        <img src={`${process.env.REACT_APP_AUCTION_PRODUCT}${dataAuction.information}`} alt='auction-product' className='' />
-                                    </div>
+                        <div className="card-body ">
+                            <div className="flex-col justify-center pt-5 ">
+                                <div className="flex justify-center">
+                                    <div className="text-3xl card-title">{dataAuction.name}</div>
                                 </div>
-                                <div className='flex justify-center px-12 my-5'>
-                                    <div className='flex justify-center '>
-                                        <div className='text-xl text-shadow-info'>{dataAuction.description}  </div>
-                                    </div>
+                                <div className="flex justify-center pb-16">
+                                    <div className="text-2xl card-title">{`( ${dataAuction.game_name} )`}</div>
                                 </div>
-                                <div className="flex justify-center modal-action">
-                                    <form method='dialog'>
-                                        <button className="btn bg-shadow-info hover:bg-shadow-hinfo text-shadow-white " >ตกลง</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </dialog>
 
+                            </div>
+                            <div className="flex justify-end card-action ">
+                                <button className="btn" onClick={() => document.getElementById('detail-product').showModal()}>ดูรายละเอียด</button>
+                            </div>
+                            <dialog id='detail-product' className='modal'>
+                                <div className='flex flex-col justify-center modal-box border-x-4 border-y-4 border-shadow-info'>
+                                    <div className='flex justify-center '>
+                                        <div className='flex border-x-8 border-y-8 rounded-xl border-shadow-primary w-[200px] h-[180px] justify-center bg-'>
+                                            <img src={`${process.env.REACT_APP_AUCTION_PRODUCT}${dataAuction.information}`} alt='auction-product' className='' />
+                                        </div>
+                                    </div>
+                                    <div className='flex justify-center px-12 my-5'>
+                                        <div className='flex justify-center '>
+                                            <div className='text-xl text-shadow-info'>{dataAuction.description}  </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-center modal-action">
+                                        <form method='dialog'>
+                                            <button className="btn bg-shadow-info hover:bg-shadow-hinfo text-shadow-white " >ตกลง</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </dialog>
+
+                        </div>
                     </div>
                 </div>
-            </div>
                 <div className='flex flex-row w-full h-full mb-10'>
                     <div className='flex flex-col w-full h-full my-5 px-[15rem] '>
                         <div className='flex gap-5 my-2'>
