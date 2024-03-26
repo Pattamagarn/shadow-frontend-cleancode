@@ -176,11 +176,11 @@ const GeneralManagement = () => {
             name: 'ชื่อเกม',
             selector: row => row.game_name
         },
-        {
-            name: 'แก้ไข',
-            selector: row => row.uuid,
-            cell: (row) => [<Link key={row.uuid} to={`/edit-game-name/${row.uuid}`} className='btn border-none bg-[#F8BB86] hover:bg-[#cf9c6f] text-[#FFFFFF]'>แก้ไข</Link>]
-        },
+        // {
+        //     name: 'แก้ไข',
+        //     selector: row => row.uuid,
+        //     cell: (row) => [<Link key={row.uuid} to={`/edit-game-name/${row.uuid}`} className='btn border-none bg-[#F8BB86] hover:bg-[#cf9c6f] text-[#FFFFFF]'>แก้ไข</Link>]
+        // },
         {
             name: 'ลบ',
             selector: row => row.uuid,
@@ -199,14 +199,10 @@ const GeneralManagement = () => {
             name: 'วิธีการชำระเงิน',
             selector: row => row.method
         },
-        // {
-        //     selector:row => row.information
-        // },
         {
             name: 'เปลี่ยน',
             selector: row => row.uuid,
             cell: (row) => [<Link key={row.uuid} to={`${row.method === 'วิดีโอ' ? '/edit-video-payment-method': '/edit-image-payment-method'}`} className='btn border-none bg-[#F8BB86] hover:bg-[#cf9c6f] text-[#FFFFFF]'>เปลี่ยน</Link>]
-            // cell: (row) => [<Link key={row.uuid} to={`${row.method === 'วิดีโอ' ? '/edit-video-payment-method': '/edit-image-payment-method'}/${row.uuid}`} className='btn border-none bg-[#F8BB86] hover:bg-[#cf9c6f] text-[#FFFFFF]'>เปลี่ยน</Link>]
         },
         {
             name: 'ล้าง',
@@ -239,7 +235,7 @@ const GeneralManagement = () => {
                 
             />
             </div>
-            <TitleBox title={'จัดการชื่อเกม'} name={'เพิ่มชื่อเกม'} path={'/add-game-name'} status={true} />
+            <TitleBox title={'จัดการชื่อเกม'} name={'เพิ่มชื่อเกม'} path={'/add-game-name'} status={false} />
             <div className='flex flex-row justify-end my-3 px-36'>
                 <label className="flex items-center self-end gap-2 input input-bordered input-md size-fit">
                     <Icon icon={"material-symbols:search"} className='text-xl' />
