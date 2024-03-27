@@ -82,7 +82,6 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid
               console.log(error)
             })
           axios.post(`${process.env.REACT_APP_API}/create-store-product`, {
-            uuid: uuid,
             email: email,
             method_uuid: product_id,
             game_name: game_name,
@@ -91,58 +90,38 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid
           }, { withCredentials: true })
             .then((response) => {
               if (response.data.status) {
-                // navigate('transaction')
+                // console.log("สร้างสินค้าในคลังสำเร็จ")
+                axios.get(`${process.env.REACT_APP_API}/read-lasted-store-product`, { withCredentials: true })
+                  .then((response) => {
+                    if (response.data.status) {
+                      axios.post(`${process.env.REACT_APP_API}/create-history-product`, {
+                        email: email,
+                        game_name: game_name,
+                        product_name: product_name,
+                        product_price: product_price,
+                        buy_method: buy_method
+                      }, { withCredentials: true })
+                        .then((response) => {
+                          if (response.data.status) {
+                            // navigate('/transaction')
+                          } else {
+                            // console.log("Error")
+                          }
+                        })
+                        .catch((error) => {
+                          console.log(error)
+                        })
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                  })
               } else {
-                // console.log("Error")
+                console.log("สร้างสินค้าในไม่คลังสำเร็จ")
               }
             })
             .catch((error) => {
               console.log(error)
-            })
-          axios.post(`${process.env.REACT_APP_API}/create-history-product`, {
-            uuid: uuid,
-            email: email,
-            game_name: game_name,
-            product_name: product_name,
-            product_price: product_price,
-            buy_method: buy_method
-          }, {
-            withCredentials: true
-          })
-            .then((response) => {
-              if (response.data.status) {
-                console.log("Success")
-              } else {
-                console.log("Error")
-              }
-            })
-            .catch((error) => {
-              console.log(error)
-            })
-          axios.delete(`${process.env.REACT_APP_API}/delete-auction-product/${uuid}`)
-            .then((response) => {
-              if (response.data.status) {
-                // Swal.fire({
-                //   title: 'สำเร็จ',
-                //   text: response.data.payload,
-                //   icon: 'success'
-                // });
-                // console.log("h")
-                setDataAuctionProductActive(!dataAuctionProductActive)
-              } else {
-                Swal.fire({
-                  title: 'ผิดพลาด',
-                  text: response.data.payload,
-                  icon: 'error'
-                });
-              }
-            })
-            .catch((error) => {
-              Swal.fire({
-                title: 'ผิดพลาด',
-                // text: 'ลบสินค้าประมูลล้มเหลว',
-                icon: 'error'
-              });
             })
         }
         if (distance <= 0) {

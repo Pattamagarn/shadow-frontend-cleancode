@@ -101,7 +101,6 @@ const GeneralProductDetail = () => {
                                 .then((response) => {
                                     if (response.data.status) {
                                         //    alertSuccess('สำเร็จ','การซื้อสำเร็จ','ตกลง')
-                                        navigate('/transaction')
                                     } else {
                                         alertSuccess('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
                                     }
@@ -110,64 +109,47 @@ const GeneralProductDetail = () => {
                                     console.log(error)
                                 })
                             axios.post(`${process.env.REACT_APP_API}/create-store-product`, {
-                                uuid: dataGeneral.uuid,
                                 email: isLogin.payload.email,
-                                method_uuid: dataGeneral.product_id,
+                                method_uuid: dataGeneral.uuid,
                                 game_name: dataGeneral.game_name,
                                 product_name: dataGeneral.name,
                                 used_status: 0
                             }, { withCredentials: true })
                                 .then((response) => {
                                     if (response.data.status) {
-                                        // navigate('transaction')
+                                        // console.log("สร้างสินค้าในคลังสำเร็จ")
+                                        axios.get(`${process.env.REACT_APP_API}/read-lasted-store-product`, { withCredentials: true })
+                                            .then((response) => {
+                                                if (response.data.status) {
+                                                    axios.post(`${process.env.REACT_APP_API}/create-history-product`, {
+                                                        uuid: response.data.payload[0].uuid,
+                                                        email: isLogin.payload.email,
+                                                        game_name: dataGeneral.game_name,
+                                                        product_name: dataGeneral.name,
+                                                        product_price: dataGeneral.normal_price,
+                                                        buy_method: "สินค้าทั่วไป"
+                                                    }, { withCredentials: true })
+                                                        .then((response) => {
+                                                            if (response.data.status) {
+                                                                navigate('/transaction')
+                                                            } else {
+                                                                // console.log("Error")
+                                                            }
+                                                        })
+                                                        .catch((error) => {
+                                                            console.log(error)
+                                                        })
+                                                }
+                                            })
+                                            .catch((error) => {
+                                                console.log(error)
+                                            })
                                     } else {
-                                        // console.log("Error")
+                                        console.log("สร้างสินค้าในไม่คลังสำเร็จ")
                                     }
                                 })
                                 .catch((error) => {
                                     console.log(error)
-                                })
-                            axios.post(`${process.env.REACT_APP_API}/create-history-product`, {
-                                uuid: dataGeneral.uuid,
-                                email: isLogin.payload.email,
-                                game_name: dataGeneral.game_name,
-                                product_name: dataGeneral.name,
-                                product_price: dataGeneral.normal_price,
-                                buy_method: "สินค้าทั่วไป"
-                            }, { withCredentials: true })
-                                .then((response) => {
-                                    if (response.data.status) {
-                                        // navigate('transaction')
-                                    } else {
-                                        // console.log("Error")
-                                    }
-                                })
-                                .catch((error) => {
-                                    console.log(error)
-                                })
-                            axios.delete(`${process.env.REACT_APP_API}/delete-general-product/${uuid}`)
-                                .then((response) => {
-                                    if (response.data.status) {
-                                        Swal.fire({
-                                            title: 'สำเร็จ',
-                                            text: "ซื้อสินค้าสำเร็จ",
-                                            icon: 'success'
-                                        });
-                                        setDataGeneralProductActive(!dataGeneralProductActive)
-                                    } else {
-                                        Swal.fire({
-                                            title: 'ผิดพลาด',
-                                            text: "เกิดข้อผิดพลาดในการซื้อ",
-                                            icon: 'error'
-                                        });
-                                    }
-                                })
-                                .catch((error) => {
-                                    Swal.fire({
-                                        title: 'ผิดพลาด',
-                                        text: 'เกิดข้อผิดพลาดในการซื้อ',
-                                        icon: 'error'
-                                    });
                                 })
                         }
                         else if (parseFloat(isLogin.payload.aysel_amount) < parseFloat(dataGeneral.normal_price)) {
