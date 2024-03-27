@@ -1,7 +1,7 @@
 import MetaHeader from '../../components/meta-header/MetaHeader'
 import Navigation from '../../components/navigation/Navigation'
 import TitleBox from '../../components/title-box/TitleBox'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Icon } from '@iconify/react'
@@ -11,24 +11,43 @@ import axios from 'axios'
 const TopUp = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
-    const [exchangeRate, setExchangeRate] = useState({baht:'', aysel:''})
+    const [exchangeRate, setExchangeRate] = useState({ baht: '', aysel: '' })
     const [giftTrueMoney, setGiftTrueMoney] = useState('')
+    const [dataPaymentMethod, setDataPaymentMethod] = useState({ img: '', video: '' })
+    const [imgPayment, setImgPayment] = useState([])
+    const [videoPayment, setVideoPayment] = useState([])
+
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API}/payment-method-select`)
+            .then((response) => {
+                if (response.data.status) {
+                    response.data.payload.map((value, index) => {
+                        if (value.method === 'รูปภาพ') {
+                            setImgPayment(value)
+                        }
+                        else {
+                            setVideoPayment(value)
+                        }
+                    })
+                }
+            })
+    }, [])
 
     const setExchangeRateBaht = (baht) => {
-        if(isNaN((process.env.REACT_APP_AYSEL/process.env.REACT_APP_BAHT)*baht.target.value)){
-            setExchangeRate({...exchangeRate, baht:'', aysel:''})
-        }else{
-            setExchangeRate({...exchangeRate, baht:baht.target.value, aysel:(process.env.REACT_APP_AYSEL/process.env.REACT_APP_BAHT)*baht.target.value})
+        if (isNaN((process.env.REACT_APP_AYSEL / process.env.REACT_APP_BAHT) * baht.target.value)) {
+            setExchangeRate({ ...exchangeRate, baht: '', aysel: '' })
+        } else {
+            setExchangeRate({ ...exchangeRate, baht: baht.target.value, aysel: (process.env.REACT_APP_AYSEL / process.env.REACT_APP_BAHT) * baht.target.value })
         }
     }
     const setExchangeRateAysel = (aysel) => {
-        if(isNaN((process.env.REACT_APP_BAHT/process.env.REACT_APP_AYSEL)*aysel.target.value)){
-            setExchangeRate({...exchangeRate, baht:'', aysel:''})
-        }else{
-            setExchangeRate({...exchangeRate,  baht:(process.env.REACT_APP_BAHT/process.env.REACT_APP_AYSEL)*aysel.target.value, aysel:aysel.target.value})
+        if (isNaN((process.env.REACT_APP_BAHT / process.env.REACT_APP_AYSEL) * aysel.target.value)) {
+            setExchangeRate({ ...exchangeRate, baht: '', aysel: '' })
+        } else {
+            setExchangeRate({ ...exchangeRate, baht: (process.env.REACT_APP_BAHT / process.env.REACT_APP_AYSEL) * aysel.target.value, aysel: aysel.target.value })
         }
     }
-    
+
     const alertSuccess = (title, text, confirmButtonText) => {
         Swal.fire({
             title: title,
@@ -58,39 +77,39 @@ const TopUp = () => {
 
     const handleTopUp = (event) => {
         event.preventDefault()
-        if(isLogin.payload.role === 0){
-            axios.post(`${process.env.REACT_APP_API}/topup`, {email:isLogin.payload.email, giftTrueMoney:giftTrueMoney}, {
+        if (isLogin.payload.role === 0) {
+            axios.post(`${process.env.REACT_APP_API}/topup`, { email: isLogin.payload.email, giftTrueMoney: giftTrueMoney }, {
                 withCredentials: true
             })
-            .then((response) => {
-                if(response.data.status){
-                    alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
-                }else{
-                    alertError('ผิดพลาด', response.data.payload, 'ตกลง')
-                }
-            })
-            .catch((error) => {
-                alertError('ผิดพลาด', `เติม Aysel ล้มเหลว6`, 'ตกลง')
-            })
-        }else{
+                .then((response) => {
+                    if (response.data.status) {
+                        alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
+                    } else {
+                        alertError('ผิดพลาด', response.data.payload, 'ตกลง')
+                    }
+                })
+                .catch((error) => {
+                    alertError('ผิดพลาด', `เติม Aysel ล้มเหลว6`, 'ตกลง')
+                })
+        } else {
             Swal.fire({
                 title: 'คุณต้องการเข้าสู่ระบบไหม?',
                 text: 'จำเป็นต้องเข้าสู่ระบบเพื่อเติม Aysel',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3FC3EE',
-    
+
                 cancelButtonColor: '#F27474',
                 confirmButtonText: 'ตกลง, ไปเข้าสู่ระบบกัน',
                 cancelButtonText: 'ยกเลิก'
-              }).then((result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
                     navigate('/sign-in')
                 }
-              });
+            });
         }
     }
-
+    console.log(videoPayment.information)
     return (
         <div>
             <MetaHeader title={`เติมเงิน`} />
@@ -105,18 +124,23 @@ const TopUp = () => {
             </div>
             <TitleBox title={'วิธีชำระเงิน'} />
             <div className='flex flex-col items-center justify-center mt-10 mx-60'>
-                <input value={giftTrueMoney} onChange={(text) => {setGiftTrueMoney(text.target.value)}} type={'text'} placeholder={'กรุณากรอก URL'} className={'input w-full text-left border-none bg-shadow-grey text-shadow-black'} />
+                <input value={giftTrueMoney} onChange={(text) => { setGiftTrueMoney(text.target.value) }} type={'text'} placeholder={'กรุณากรอก URL'} className={'input w-full text-left border-none bg-shadow-grey text-shadow-black'} />
                 <Link to='/transaction' className='self-end mt-2 link text-shadow-accent hover:text-shadow-haccent'>ติดตามสถานะการเติมเงิน</Link>
                 <button type='button' onClick={handleTopUp} className='mt-5 border-none btn w-max bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white rounded-box'>ยืนยัน</button>
             </div>
             <div className='flex flex-row items-center mt-10 justify-evenly'>
-                <button type='button' onClick={()=>document.getElementById('image-payment-method').showModal()} className='text-3xl border-none btn size-96 bg-shadow-primary hover:bg-shadow-primary text-shadow-accent'>ภาพวิธีการชำระเงิน</button>
-                <button type='button' onClick={()=>document.getElementById('video-payment-method').showModal()} className='text-3xl border-none btn size-96 bg-shadow-primary hover:bg-shadow-primary text-shadow-accent'>วิดีโอวิธีการชำระเงิน</button>
+                <button type='button' onClick={() => document.getElementById('image-payment-method').showModal()} className='text-3xl border-none btn size-96 bg-shadow-primary hover:bg-shadow-primary text-shadow-accent'>ภาพวิธีการชำระเงิน</button>
+                <button type='button' onClick={() => document.getElementById('video-payment-method').showModal()} className='text-3xl border-none btn size-96 bg-shadow-primary hover:bg-shadow-primary text-shadow-accent'>วิดีโอวิธีการชำระเงิน</button>
             </div>
             <dialog id='image-payment-method' className='modal'>
                 <div className='max-w-5xl modal-box w-svh'>
                     <span className="text-3xl">ภาพวิธีการชำระเงิน</span>
-                    <img src={`${process.env.REACT_APP_PAYMENT_METHOD}payment-method.png`} alt='payment-method' className='size-full h-96' />
+                    {
+                        imgPayment.length === 0 ?
+                            <img src={`${process.env.REACT_APP_PAYMENT_METHOD}payment-method.png`} alt='payment-method' className='size-full h-96' /> :
+                            <img src={`${process.env.REACT_APP_PAYMENT_METHOD}${imgPayment.information}`} alt='payment-method' className='size-full h-96' />
+                    }
+
                     <div className="modal-action">
                         <form method='dialog'>
                             <button className="btn bg-shadow-error hover:bg-shadow-herror text-shadow-white">ปิด</button>
@@ -127,7 +151,12 @@ const TopUp = () => {
             <dialog id='video-payment-method' className='modal'>
                 <div className='max-w-5xl modal-box w-svh'>
                     <span className="text-3xl">วิดีโอวิธีการชำระเงิน</span>
-                    <iframe src='https://www.youtube.com/embed/smdmEhkIRVc?si=mq3E5TZNz1Qi352p' title="payment-method-video" className='size-full h-96' frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                    {
+                        videoPayment.length === 0 ? 
+                        <iframe src='https://www.youtube.com/embed/smdmEhkIRVc?si=mq3E5TZNz1Qi352p' title="payment-method-video" className='size-full h-96' frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe> :
+                        <iframe src={`${videoPayment.information}`} title="payment-method-video" className='size-full h-96' frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                    }
+                    
                     <div className="modal-action">
                         <form method='dialog'>
                             <button className="btn bg-shadow-error hover:bg-shadow-herror text-shadow-white">ปิด</button>
