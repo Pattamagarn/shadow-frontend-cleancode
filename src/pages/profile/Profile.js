@@ -50,14 +50,19 @@ const Profile = () => {
                     <div className='w-[32rem] px-6 py-3 mt-2 rounded-lg bg-neutral text-2xl' >
                         {account.email}
                     </div>
-                    <div className='flex flex-row justify-between'>
-                        <Link className='flex w-[15rem] px-6 py-3 mt-2 rounded-lg border border-shadow-primary bg-shadow-primary/50 hover:text-shadow-white items-center' to='/store-product'>
-                            <div className='flex text-2xl '><Icon icon="streamline:bag-solid" className="mr-1 text-3xl"/>ดูสินค้าของฉัน</div>
-                        </Link>
-                        <Link className='flex w-[15.5rem] px-6 py-3 mt-2 rounded-lg border border-shadow-primary bg-shadow-primary/50 hover:text-shadow-white items-center ' to='/transaction'>
-                            <div className='flex text-2xl'><Icon icon="icon-park-solid:transaction-order" className="mr-1 text-3xl"/>ดูธุรกรรมของฉัน</div>
-                        </Link>
-                    </div>
+                    {
+                        account.role === 0 ? 
+                        <div className='flex flex-row justify-between'>
+                            <Link className='flex w-[15rem] px-6 py-3 mt-2 rounded-lg border border-shadow-primary bg-shadow-primary/50 hover:text-shadow-white items-center' to='/store-product'>
+                                <div className='flex text-2xl '><Icon icon="streamline:bag-solid" className="mr-1 text-3xl" />ดูสินค้าของฉัน</div>
+                            </Link>
+                            <Link className='flex w-[15.5rem] px-6 py-3 mt-2 rounded-lg border border-shadow-primary bg-shadow-primary/50 hover:text-shadow-white items-center ' to='/transaction'>
+                                <div className='flex text-2xl'><Icon icon="icon-park-solid:transaction-order" className="mr-1 text-3xl" />ดูธุรกรรมของฉัน</div>
+                            </Link>
+                        </div> :
+                            <div></div>
+                    }
+
 
                 </div>
             </div>

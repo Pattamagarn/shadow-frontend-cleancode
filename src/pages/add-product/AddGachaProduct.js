@@ -10,7 +10,7 @@ import axios from 'axios'
 const AddGachaProduct = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
-    const [data,setData] = useState([])
+    const [data, setData] = useState([])
 
     useEffect(() => {
         !isLogin.status && navigate('/')
@@ -19,49 +19,49 @@ const AddGachaProduct = () => {
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/game-name-select`)
-        .then((response) => {
-            if(response.data.status) {
-                setData(response.data.payload)
-            }
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-    },[])
+            .then((response) => {
+                if (response.data.status) {
+                    setData(response.data.payload)
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }, [])
 
     const [gachaProductList, setGachaProductList] = useState({
-        productId:'', gameName:'',
-        name:'', chance:'',
-        guaranteeStatus:'', information: '',
+        productId: '', gameName: '',
+        name: '', chance: '',
+        guaranteeStatus: '', information: '',
         description: ''
     })
 
     const setGachaProductProductId = (productId) => {
-        setGachaProductList({...gachaProductList, productId:productId.target.value})
+        setGachaProductList({ ...gachaProductList, productId: productId.target.value })
     }
 
     const setGachaProductGameName = (gameName) => {
-        setGachaProductList({...gachaProductList, gameName:gameName.target.value})
+        setGachaProductList({ ...gachaProductList, gameName: gameName.target.value })
     }
 
     const setGachaProductName = (name) => {
-        setGachaProductList({...gachaProductList, name:name.target.value})
+        setGachaProductList({ ...gachaProductList, name: name.target.value })
     }
 
     const setGachaProductChance = (chance) => {
-        setGachaProductList({...gachaProductList, chance:chance.target.value})
+        setGachaProductList({ ...gachaProductList, chance: chance.target.value })
     }
 
     const setGachaProductGuaranteeStatus = (guaranteeStatus) => {
-        setGachaProductList({...gachaProductList, guaranteeStatus:guaranteeStatus.target.value})
+        setGachaProductList({ ...gachaProductList, guaranteeStatus: guaranteeStatus.target.value })
     }
 
     const setGachaProductInformation = (information) => {
-        setGachaProductList({...gachaProductList, information:information.target.files[0]})
+        setGachaProductList({ ...gachaProductList, information: information.target.files[0] })
     }
 
     const setGachaProductDescription = (description) => {
-        setGachaProductList({...gachaProductList, description:description.target.value})
+        setGachaProductList({ ...gachaProductList, description: description.target.value })
     }
 
     const alertSuccess = (title, text, confirmButtonText) => {
@@ -102,20 +102,20 @@ const AddGachaProduct = () => {
         formData.append('file', gachaProductList.information)
         formData.append('description', gachaProductList.description)
         axios.post(`${process.env.REACT_APP_API}/create-gacha-product`, formData, {
-            headers: {'Content-Type': 'multipart/form-data'},
+            headers: { 'Content-Type': 'multipart/form-data' },
             withCredentials: true
         })
-        .then((response) => {
-            if(response.data.status){
-                alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
-                navigate('/product-management')
-            }else{
-                alertWarning('คำเตือน', response.data.payload, 'ตกลง')
-            }
-        })
-        .catch((error) => {
-            alertError('ผิดพลาด', `เพิ่มสินค้าล้มเหลว`, 'ตกลง')
-        })
+            .then((response) => {
+                if (response.data.status) {
+                    alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
+                    navigate('/product-management')
+                } else {
+                    alertWarning('คำเตือน', response.data.payload, 'ตกลง')
+                }
+            })
+            .catch((error) => {
+                alertError('ผิดพลาด', `เพิ่มสินค้าล้มเหลว`, 'ตกลง')
+            })
     }
 
     return (
@@ -125,14 +125,6 @@ const AddGachaProduct = () => {
             <TitleBox title={'เพิ่มสินค้ากาชาปอง'} />
             <form onSubmit={handleAddGachaProduct} className='items-end mx-auto mt-10 mb-10 form-control justify-evenly size-fit'>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
-                    <span className='mr-10 text-2xl text-nowrap'>รหัสสินค้า</span>
-                    <input value={gachaProductList.productId} type={'text'} placeholder='รหัสสินค้า' onChange={setGachaProductProductId} className='input w-80 bg-shadow-grey text-shadow-black'/>
-                </div>
-                <div className='flex flex-row items-center justify-end mt-2 size-full'>
-                    <span className='mr-10 text-2xl text-nowrap'>ชื่อสินค้า</span>
-                    <input value={gachaProductList.name} type={'text'} placeholder='ชื่อสินค้า' onChange={setGachaProductName} className='input w-80 bg-shadow-grey text-shadow-black'/>
-                </div>
-                <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>ชื่อเกม</span>
                     <select defaultValue='เลือกชื่อเกม' onChange={setGachaProductGameName} className="select w-80 bg-shadow-grey text-shadow-black">
                         <option disabled >เลือกชื่อเกม</option>
@@ -140,8 +132,17 @@ const AddGachaProduct = () => {
                     </select>
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>รหัสสินค้า</span>
+                    <input value={gachaProductList.productId} type={'text'} placeholder='รหัสสินค้า' onChange={setGachaProductProductId} className='input w-80 bg-shadow-grey text-shadow-black' />
+                </div>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>ชื่อสินค้า</span>
+                    <input value={gachaProductList.name} type={'text'} placeholder='ชื่อสินค้า' onChange={setGachaProductName} className='input w-80 bg-shadow-grey text-shadow-black' />
+                </div>
+
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>เปอร์เซ็นต์การดรอป</span>
-                    <input value={gachaProductList.chance} type={'text'} placeholder='เปอร์เซ็นต์การดรอป' onChange={setGachaProductChance} className='input w-80 bg-shadow-grey text-shadow-black'/>
+                    <input value={gachaProductList.chance} type={'text'} placeholder='เปอร์เซ็นต์การดรอป' onChange={setGachaProductChance} className='input w-80 bg-shadow-grey text-shadow-black' />
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>การันตี</span>
@@ -152,11 +153,11 @@ const AddGachaProduct = () => {
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>รูปภาพ</span>
-                    <input type={'file'} onChange={setGachaProductInformation} className='file-input w-80 bg-shadow-grey text-shadow-black'/>
+                    <input type={'file'} onChange={setGachaProductInformation} className='file-input w-80 bg-shadow-grey text-shadow-black' />
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>รายละเอียด</span>
-                    <textarea value={gachaProductList.description} type={'text'} placeholder='รายละเอียด' onChange={setGachaProductDescription} className='textarea w-80 bg-shadow-grey text-shadow-black'/>
+                    <textarea value={gachaProductList.description} type={'text'} placeholder='รายละเอียด' onChange={setGachaProductDescription} className='textarea w-80 bg-shadow-grey text-shadow-black' />
                 </div>
                 <div className='flex flex-row items-center mt-2 size-full'>
                     <button type='submit' className='mr-5 border-none btn grow bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>ยืนยันการเพิ่มสินค้ากาชาปอง</button>

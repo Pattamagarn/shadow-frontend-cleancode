@@ -102,9 +102,52 @@ const SignUp = () => {
             alertWarning('คำเตือน', 'กรุณากรอกรหัสผ่าน และ ยืนยันรหัสผ่านให้ตรงกัน', 'ตกลง')
           }else{
             axios.post(`${process.env.REACT_APP_API}/sign-up-validation`, account)
-            .then((response) => {
+            .then(async (response) => {
                 if(response.data.status){
-                    signUpAccount(account, alertSuccess, alertError, alertWarning)
+                    Swal.fire({
+                        title: "กรุณากรอกรหัส OTP",
+                        input: "text",
+                        inputAttributes: {
+                          autocapitalize: "off"
+                        },
+                        showCancelButton: true,
+                        showLoaderOnConfirm: true,
+                        confirmButtonText: "ยืนยัน OTP",
+                        cancelButtonText: "ยกเลิก",
+                        confirmButtonColor: "#A5DC86",
+                        cancelButtonColor: "#F27474",
+                        inputPlaceholder: "กรอกเลข OTP 6 หลัก",
+                        preConfirm: async (recivedOTP) => {
+                            try{
+                                const response = await axios.post(`${process.env.REACT_APP_API}/recive-otp`, {recivedOTP:recivedOTP})
+                                return response.data
+                            }catch(error){
+                                return {"status": false, "message": "รหัส OTP ไม่ถูกต้อง"}
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                            if(result.value.status){
+                                Swal.fire({
+                                    title: result.value.message,
+                                    icon: "success",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    signUpAccount(account, alertSuccess, alertError, alertWarning)
+                                })
+                            }else{
+                                Swal.fire({
+                                    title: result.value.message,
+                                    icon: "error",
+                                    confirmButtonColor: "#A5DC86",
+                                    confirmButtonText: "รับทราบ",
+                                })
+                            }
+                        }
+                      });
+                    await axios.post(`${process.env.REACT_APP_API}/send-otp`, account)
                 }else{
                     alertWarning('คำเตือน', response.data.payload, 'ตกลง')
                 }
@@ -121,38 +164,38 @@ const SignUp = () => {
             <Navigation />
             <form onSubmit={createAccount} className='p-2 bg-shadow-primary form-control sm:hidden min-w-[240px]'>
                 <div className='flex flex-row items-center justify-center flex-nowrap'>
-                    <Icon icon={'game-icons:minerals'} className='size-fit text-shadow-pink text-2xl sm:text-4xl' />
-                    <span translate='no' className='subpixel-antialiased not-italic size-fit font-normal text-shadow-white text-xl'>SHADOW</span>
+                    <Icon icon={'game-icons:minerals'} className='text-2xl size-fit text-shadow-pink sm:text-4xl' />
+                    <span translate='no' className='text-xl subpixel-antialiased not-italic font-normal size-fit text-shadow-white'>SHADOW</span>
                 </div>
                 <div className='flex flex-row items-center justify-center flex-nowrap'>
-                    <span translate='no' className='subpixel-antialiased not-italic size-fit font-normal text-shadow-white text-xl'>ยินดีต้อนรับสู่ระบบ</span>
+                    <span translate='no' className='text-xl subpixel-antialiased not-italic font-normal size-fit text-shadow-white'>ยินดีต้อนรับสู่ระบบ</span>
                 </div>
-                <input value={account.username} type={'text'} placeholder='ชื่อผู้ใช้' onChange={setUsername} className='input mt-4 bg-shadow-grey text-dshadow-black'/>
-                <input value={account.email} type={'text'} placeholder='อีเมล' onChange={setEmail} className='input mt-4 bg-shadow-grey text-dshadow-black'/>
-                <label className='input mt-4 bg-shadow-grey text-dshadow-black flex flex-row flex-nowrap items-center'>
+                <input value={account.username} type={'text'} placeholder='ชื่อผู้ใช้' onChange={setUsername} className='mt-4 input bg-shadow-grey text-dshadow-black'/>
+                <input value={account.email} type={'text'} placeholder='อีเมล' onChange={setEmail} className='mt-4 input bg-shadow-grey text-dshadow-black'/>
+                <label className='flex flex-row items-center mt-4 input bg-shadow-grey text-dshadow-black flex-nowrap'>
                     <input value={account.password} type={hide ? 'password' : 'text'} placeholder='รหัสผ่าน' onChange={setPassword} className='size-full'/>
                     <span className='flex items-center justify-end'>
                     <Icon icon={hide ? "mdi:hide" : "mdi:show"} className='text-dshadow-black size-full' onClick={() => setHide(!hide)}/>
                     </span>
                 </label>
-                <label className='input mt-4 bg-shadow-grey text-dshadow-black flex flex-row flex-nowrap items-center'>
+                <label className='flex flex-row items-center mt-4 input bg-shadow-grey text-dshadow-black flex-nowrap'>
                     <input value={account.confirmPassword} type={hide2 ? 'password' : 'text'} placeholder='ยืนยันรหัสผ่าน' onChange={setConfirmPassword} className='size-full'/>
                     <span className='flex items-center justify-end'>
                     <Icon icon={hide2 ? "mdi:hide" : "mdi:show"} className='text-dshadow-black size-full' onClick={() => setHide2(!hide2)}/>
                     </span>
                 </label>
-                <button type='button' onClick={()=>document.getElementById('password-required').showModal()} className='btn mt-4 border-none bg-d hover:bg-shadow-haccent text-shadow-white'>
-                    <Icon icon={'material-symbols:info'} className='size-fit text-shadow-white text-2xl sm:text-4xl' />
+                <button type='button' onClick={()=>document.getElementById('password-required').showModal()} className='mt-4 border-none btn bg-d hover:bg-shadow-haccent text-shadow-white'>
+                    <Icon icon={'material-symbols:info'} className='text-2xl size-fit text-shadow-white sm:text-4xl' />
                     ความต้องการของรหัสผ่าน
                 </button>
-                <button type='submit' className='btn mt-4 border-none bg-shadow-info hover:bg-shadow-hinfo text-shadow-white'>สร้างบัญชี</button>
-                <Link to='/' className='btn mt-4 border-none bg-shadow-error hover:bg-shadow-herror text-shadow-white'>กลับสู่หน้าหลัก</Link>
-                <Link to='/sign-in' className='btn mt-4 border-none bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>ไปหน้าเข้าสู่ระบบ</Link>
+                <button type='submit' className='mt-4 border-none btn bg-shadow-info hover:bg-shadow-hinfo text-shadow-white'>สร้างบัญชี</button>
+                <Link to='/' className='mt-4 border-none btn bg-shadow-error hover:bg-shadow-herror text-shadow-white'>กลับสู่หน้าหลัก</Link>
+                <Link to='/sign-in' className='mt-4 border-none btn bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>ไปหน้าเข้าสู่ระบบ</Link>
             </form>
             <dialog id='password-required' className='modal'>
                     <div className='modal-box'>
                         <form method='dialog'>
-                            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                            <button className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
                         </form>
                         <p className='text-sm font-bold'>ความต้องการของรหัสผ่าน</p>
                         <ul>
@@ -164,13 +207,13 @@ const SignUp = () => {
                         </ul>
                     </div>
             </dialog>
-            <div className='container hidden sm:flex justify-center w-full h-full mx-auto mt-5'>
+            <div className='container justify-center hidden w-full h-full mx-auto mt-5 sm:flex'>
                 <form onSubmit={createAccount} className={`p-10 rounded bg-shadow-primary`}>
                     <div className='flex justify-center align-middle'>
                     <Icon icon={"game-icons:minerals"} className='text-shadow-pink' width={48} height={48} />
                     <h4 className='text-5xl text-center text-shadow-white'>SHADOW</h4>
                     </div>
-                    <h4 className='text-3xl text-center text-shadow-white mt-5'>ยินดีต้อนรับสู่ระบบ</h4>
+                    <h4 className='mt-5 text-3xl text-center text-shadow-white'>ยินดีต้อนรับสู่ระบบ</h4>
                     <div className='w-full max-w-xs mt-5 form-control'>
                         <input value={account.username} type={'text'} placeholder='ชื่อผู้ใช้' className='input w-full max-w-xs bg-[#CACACA] text-dshadow-black' onChange={setUsername}/>
                     </div>
@@ -205,8 +248,8 @@ const SignUp = () => {
                         </ul>
                     </div>
                     <div className='flex flex-col justify-center w-full align-middle border-opacity-50'>
-                        <button type='submit' className="btn border-none bg-shadow-info hover:bg-shadow-hinfo text-shadow-white w-full mt-5">สร้างบัญชี</button>
-                        <Link to='/' className="btn border-none bg-shadow-error hover:bg-shadow-herror text-shadow-white w-full mt-5">
+                        <button type='submit' className="w-full mt-5 border-none btn bg-shadow-info hover:bg-shadow-hinfo text-shadow-white">สร้างบัญชี</button>
+                        <Link to='/' className="w-full mt-5 border-none btn bg-shadow-error hover:bg-shadow-herror text-shadow-white">
                             กลับสู่หน้าหลัก
                         </Link>
                     </div>

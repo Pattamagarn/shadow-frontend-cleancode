@@ -13,7 +13,7 @@ const GachaProduct = () => {
     const [dataGacha, setDataGacha] = useState([])
 
     useEffect(() => {
-        // isLogin.status && isLogin.payload.role !== 1 && navigate('/')
+        isLogin.status && isLogin.payload.role === 1 && navigate('/')
     }, [isLogin, navigate])
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-gacha-product`)
@@ -38,38 +38,46 @@ const GachaProduct = () => {
             <TitleBox title={'สินค้าสุ่มกาชา'} />
             <div>
                 <div className='flex justify-end mx-40 '>
-                    <div className='flex items-center btn btn-ghost hover:bg-shadow-white text-md' onClick={() => document.getElementById('detail-gacha-product').showModal()}>ดูสินค้าสุ่มกาชาทั้งหมด<Icon icon={"mdi:information-outline"} width={20} /></div>
+                    <div className='flex items-center btn btn-ghost hover:bg-shadow-white text-md text-shadow-info' onClick={() => document.getElementById('detail-gacha-product').showModal()}>ดูสินค้าสุ่มกาชาทั้งหมด<Icon icon={"mdi:information-outline"} width={20} /></div>
                 </div>
                 <dialog id='detail-gacha-product' className='modal'>
                     <div className='flex flex-col justify-center max-w-5xl modal-box border-x-4 border-y-4 border-shadow-info'>
                         <div className='flex flex-col px-12 my-5'>
                             <div className='flex justify-end my-3 text-shadow-info'>วางลูกศรค้างเพื่อดูชื่อ</div>
                             <div className='grid justify-center grid-flow-row grid-cols-4 gap-5'>
-
                                 {dataGacha.map((value, id) => (
                                     <div key={id} className='flex '>
                                         {
                                             value.guarantee_status ?
                                                 <div>
                                                     <div className='flex border-x-8 border-y-8 rounded-xl border-shadow-accent w-[200px] h-[180px] justify-center bg-'>
-                                                        <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value.information}`} alt='gacha-product' title={value.name} />
+                                                        <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value.information}`} alt='gacha-product' title={value.name}/>
+                                                    </div>
+                                                    <div>
+                                                        <div>อัตตราการออก {value.chance}%</div>
                                                     </div>
                                                 </div> :
                                                 <div>
                                                     <div className='flex border-x-8 border-y-8 rounded-xl border-shadow-primary w-[200px] h-[180px] justify-center bg-'>
                                                         <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value.information}`} alt='gacha-product' title={value.name} />
                                                     </div>
+                                                    <div>
+                                                        <div>อัตตราการออก {value.chance}%</div>
+                                                    </div>
                                                 </div>
                                         }
-
                                     </div>
                                 ))}
 
                             </div>
                         </div>
+                        <div className='flex justify-start '>
+                            <div className=' text-shadow-error'>*สินค้ากรอบสีทองคือสินค้าการันตี</div>
+                        </div>
                         <div className="flex justify-center modal-action">
-                            <form method='dialog'>
-                                <button className="border-none btn bg-shadow-info hover:bg-shadow-hinfo text-shadow-white " >ตกลง</button>
+
+                            <form method='dialog' className='flex justify-center'>
+                                <button className="border-none btn bg-shadow-info hover:bg-shadow-hinfo text-shadow-white" >ตกลง</button>
                             </form>
                         </div>
                     </div>
