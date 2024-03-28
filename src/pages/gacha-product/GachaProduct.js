@@ -24,11 +24,11 @@ const GachaProduct = () => {
             })
     }, [])
 
-    const handleOneTime = () => {
+    const handleBuyOneTime = () => {
 
     }
 
-    const handleTenTime = () => {
+    const handleBuyTenTime = () => {
 
     }
     return (
@@ -94,11 +94,11 @@ const GachaProduct = () => {
                 </div>
                 <div className='flex items-end h-[10rem] justify-evenly'>
                     <div className='flex flex-col items-center'>
-                        <button className='text-2xl border-none btn bg-shadow-primary text-shadow-white hover:bg-shadow-primary/80' onClick={handleOneTime} >20 <Icon icon={"game-icons:minerals"} width={30} className='text-shadow-info' /></button>
+                        <button className='text-2xl border-none btn bg-shadow-primary text-shadow-white hover:bg-shadow-primary/80' onClick={handleBuyOneTime} >{process.env.REACT_APP_BUY_ONCE} <Icon icon={"game-icons:minerals"} width={30} className='text-shadow-info' /></button>
                         <div className='text-xl '>1 ครั้ง</div>
                     </div>
                     <div className='flex flex-col items-center'>
-                        <button className='text-2xl border-none btn bg-shadow-primary text-shadow-white hover:bg-shadow-primary/80' onClick={handleTenTime}>180 <Icon icon={"game-icons:minerals"} width={30} className='text-shadow-info' /></button>
+                        <button className='text-2xl border-none btn bg-shadow-primary text-shadow-white hover:bg-shadow-primary/80' onClick={handleBuyTenTime}>{process.env.REACT_APP_BUY_TEN} <Icon icon={"game-icons:minerals"} width={30} className='text-shadow-info' /></button>
                         <div className='text-xl '>10 ครั้ง</div>
                     </div>
                 </div>

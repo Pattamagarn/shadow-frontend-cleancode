@@ -192,7 +192,7 @@ const GeneralManagement = () => {
                             .catch((error) => {
                                 Swal.fire({
                                     title: 'ผิดพลาด',
-                                    text: 'ลบชื่อเกมล้มเหลว',
+                                    text: 'ลบวิดีโอล้มเหลว',
                                     icon: 'error'
                                 });
                             });
@@ -247,7 +247,7 @@ const GeneralManagement = () => {
                             .catch((error) => {
                                 Swal.fire({
                                     title: 'ผิดพลาด',
-                                    text: 'ลบชื่อเกมล้มเหลว',
+                                    text: 'ลบรูปภาพวิดีโอล้มเหลว',
                                     icon: 'error'
                                 });
                             });

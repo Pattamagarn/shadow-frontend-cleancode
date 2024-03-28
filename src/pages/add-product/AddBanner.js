@@ -56,7 +56,6 @@ const AddBanner = () => {
         const formData = new FormData()
         formData.append('file', bannerList.banner)
         
-
         axios.post(`${process.env.REACT_APP_API}/banner-insert`, formData, {
             headers: {'Content-Type': 'multipart/form-data'},
             withCredentials: true

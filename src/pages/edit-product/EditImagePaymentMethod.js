@@ -70,7 +70,6 @@ const EditImagePaymentMethod = () => {
             alertError('ผิดพลาด', `${error}แก้ไขรูปภาพวิธีการชำระเงินล้มเหลว`, 'ตกลง')
         })
     }
-    
     return (
         <div>
             <MetaHeader title={`เปลี่ยนภาพวิธีการชำระเงิน`} />
