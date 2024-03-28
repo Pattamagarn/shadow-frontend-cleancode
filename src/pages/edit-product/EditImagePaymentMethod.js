@@ -67,7 +67,7 @@ const EditImagePaymentMethod = () => {
             }
         })
         .catch((error) => {
-            alertError('ผิดพลาด', `${error}แก้ไขรูปภาพวิธีการชำระเงินล้มเหลว`, 'ตกลง')
+            alertError('ผิดพลาด', `แก้ไขรูปภาพวิธีการชำระเงินล้มเหลว`, 'ตกลง')
         })
     }
     return (

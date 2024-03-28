@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
-import Swal from 'sweetalert2'
-import { useParams, useNavigate } from "react-router-dom"
-import Navigation from '../../components/navigation/Navigation'
 
 const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid, game_name, product_name, product_price, buy_method, product_id }) => {
   const [day, setDay] = useState('');
   const [hour, seHour] = useState('');
   const [minute, setMinute] = useState('');
   const [second, setSecond] = useState('');
-  const [dataAuctionProductActive, setDataAuctionProductActive] = useState(true)
-
-  const navigate = useNavigate()
 
   useEffect(() => {
     const targetDateTime = new Date(end_time);
@@ -25,32 +19,7 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid
 
       const count = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`
       const finish = `${targetDateTime.getFullYear()}-${targetDateTime.getMonth() + 1}-${targetDateTime.getDate()} ${targetDateTime.getHours()}:${targetDateTime.getMinutes()}:${targetDateTime.getSeconds()}`
-      const alertSuccess = (title, text, confirmButtonText) => {
-        Swal.fire({
-          title: title,
-          text: text,
-          icon: 'success',
-          confirmButtonText: confirmButtonText
-        })
-      }
 
-      const alertError = (title, text, confirmButtonText) => {
-        Swal.fire({
-          title: title,
-          text: text,
-          icon: 'error',
-          confirmButtonText: confirmButtonText
-        })
-      }
-
-      const alertWarning = (title, text, confirmButtonText) => {
-        Swal.fire({
-          title: title,
-          text: text,
-          icon: 'warning',
-          confirmButtonText: confirmButtonText
-        })
-      }
       if (now <= formattedDateTime) {
 
       } else {
