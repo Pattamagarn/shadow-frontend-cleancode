@@ -42,10 +42,17 @@ const Analysis = () => {
                     })
                     setDataMemberAdmin(countAdmin)
                     setDataMemberUser(countMember)
-                    
-                    
                 }
             })
+
+        axios.get(`${process.env.REACT_APP_API}/read-history-product`)
+        .then((response) => {
+            if(response.data.status){
+                setAysel(response.data.payload.map((value) => {
+                    return {...value}
+                }))
+            }
+        })
     },[])
     
     

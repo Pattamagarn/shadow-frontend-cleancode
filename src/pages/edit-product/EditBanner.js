@@ -75,7 +75,7 @@ const EditBanner = () => {
             <MetaHeader title={`แก้ไขแบนเนอร์`} />
             <Navigation />
             <TitleBox title={'แก้ไขแบนเนอร์'} />
-            <form onSubmit={handleEditBanner} className='flex flex-row items-center justify-start mx-10 mt-10 align-middle'>
+            <form onSubmit={handleEditBanner} className='flex flex-row items-center justify-start mx-40 mt-10 align-middle'>
                 <span className="mr-2 text-2xl">ลิงก์ภาพ</span>
                 <input type={'file'} onChange={setBanner} className='mr-2 file-input bg-shadow-grey text-shadow-black'/>
                 <button type='submit' className='mr-2 border-none btn bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>ยืนยันการแก้ไขภาพแบนเนอร์</button>

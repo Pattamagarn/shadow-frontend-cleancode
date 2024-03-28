@@ -24,6 +24,7 @@ const GeneralManagement = () => {
     const [dataPaymentMethod, setDataPaymentMethod] = useState([])
     const [dataBannerActive, setDataBannerActive] = useState(true)
     const [dataGameNameActive, setDataGameNameActive] = useState(true)
+    const [dataPaymentMethodActive, setDataPaymentMethodActive] = useState(true)
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/banner-select`)
@@ -143,7 +144,118 @@ const GeneralManagement = () => {
         });
     }
 
-    const handleDeletePayment = (uuid) => {
+
+    const handleDeletePayment = (uuid, method, information) => {
+        if (method === 'วิดีโอ') {
+            if (method === 'วิดีโอ' && information === '') {
+                Swal.fire({
+                    title: 'ข้อมูลเป็นค่าตั้งต้นแล้ว?',
+                    text: 'ไม่มีข้อมูลให้ลบในขณะนี้',
+                    icon: 'warning',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3FC3EE',
+
+                    cancelButtonColor: '#F27474',
+                    confirmButtonText: 'ตกลง',
+                })
+            }
+            else {
+                Swal.fire({
+                    title: 'คุณแน่ใจใช่ไหม?',
+                    text: 'หากลบวิดีโอแล้วจะไม่สามารถกู้คืนได้',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3FC3EE',
+
+                    cancelButtonColor: '#F27474',
+                    confirmButtonText: 'ตกลง, ลบได้เลย',
+                    cancelButtonText: 'ยกเลิก'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.delete(`${process.env.REACT_APP_API}/delete-payment-method-video/${uuid}`)
+                            .then((response) => {
+                                if (response.data.status) {
+                                    Swal.fire({
+                                        title: 'สำเร็จ',
+                                        text: response.data.payload,
+                                        icon: 'success'
+                                    });
+                                    setDataPaymentMethodActive(!dataPaymentMethodActive)
+                                } else {
+                                    Swal.fire({
+                                        title: 'ผิดพลาด',
+                                        text: response.data.payload,
+                                        icon: 'error'
+                                    });
+                                }
+                            })
+                            .catch((error) => {
+                                Swal.fire({
+                                    title: 'ผิดพลาด',
+                                    text: 'ลบชื่อเกมล้มเหลว',
+                                    icon: 'error'
+                                });
+                            });
+                    }
+                });
+            }
+        }
+        else if (method === 'รูปภาพ') {
+            if (method === 'รูปภาพ' && information === '') {
+                Swal.fire({
+                    title: 'ข้อมูลเป็นค่าตั้งต้นแล้ว?',
+                    text: 'ไม่มีข้อมูลให้ลบในขณะนี้',
+                    icon: 'warning',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3FC3EE',
+
+                    cancelButtonColor: '#F27474',
+                    confirmButtonText: 'ตกลง',
+                    // cancelButtonText: 'ยกเลิก'
+                })
+            }
+            else {
+                Swal.fire({
+                    title: 'คุณแน่ใจใช่ไหม?',
+                    text: 'หากลบรูปภาพแล้วจะไม่สามารถกู้คืนได้',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3FC3EE',
+
+                    cancelButtonColor: '#F27474',
+                    confirmButtonText: 'ตกลง, ลบได้เลย',
+                    cancelButtonText: 'ยกเลิก'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.delete(`${process.env.REACT_APP_API}/delete-payment-method-image/${uuid}`)
+                            .then((response) => {
+                                if (response.data.status) {
+                                    Swal.fire({
+                                        title: 'สำเร็จ',
+                                        text: response.data.payload,
+                                        icon: 'success'
+                                    });
+                                    setDataPaymentMethodActive(!dataPaymentMethodActive)
+                                } else {
+                                    Swal.fire({
+                                        title: 'ผิดพลาด',
+                                        text: response.data.payload,
+                                        icon: 'error'
+                                    });
+                                }
+                            })
+                            .catch((error) => {
+                                Swal.fire({
+                                    title: 'ผิดพลาด',
+                                    text: 'ลบชื่อเกมล้มเหลว',
+                                    icon: 'error'
+                                });
+                            });
+                    }
+                });
+            }
+        }
+
 
     }
 
@@ -206,12 +318,12 @@ const GeneralManagement = () => {
         {
             name: 'เปลี่ยน',
             selector: row => row.uuid,
-            cell: (row) => [<Link key={row.uuid} to={`${row.method === 'วิดีโอ' ? '/edit-video-payment-method' : '/edit-image-payment-method'}`} className='btn border-none bg-[#F8BB86] hover:bg-[#cf9c6f] text-[#FFFFFF]'>เปลี่ยน</Link>]
+            cell: (row) => [<Link key={row.uuid} to={`${row.method === 'วิดีโอ' ? `/edit-video-payment-method/${row.uuid}` : `/edit-image-payment-method/${row.uuid}`}`} className='btn border-none bg-[#F8BB86] hover:bg-[#cf9c6f] text-[#FFFFFF]'>เปลี่ยน</Link>]
         },
         {
             name: 'ล้าง',
             selector: row => row.uuid,
-            cell: (row) => [<button key={row.uuid} type={`button`} className='btn border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>ล้าง</button>]
+            cell: (row) => [<button key={row.uuid} type={`button`} onClick={() => handleDeletePayment(row.uuid, row.method, row.information)} className='btn border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>ล้าง</button>]
         }
     ]
 
@@ -258,32 +370,14 @@ const GeneralManagement = () => {
             </div>
             <TitleBox title={'จัดการวิธีการชำระเงิน'} />
             <div className='mx-32 '>
-                {/* <DataTable
-                columns={columnsPaymentMethod}
-                data={dataPaymentMethod}
-                pagination
-                striped
-                persistTableHead={true}
-                minRows={5}
-            /> */}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Age</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {dataPaymentMethod.map((row,index) => {
-                            <tr key={index}>
-                            <td>{row.method}</td>
-                            <td>เปลี่ยน</td>
-                            <td>ลบ</td>
-                          </tr>
-                        })}
-                    </tbody>
-                </table>
+                <DataTable
+                    columns={columnsPaymentMethod}
+                    data={dataPaymentMethod}
+                    pagination
+                    striped
+                    persistTableHead={true}
+                    minRows={5}
+                />
             </div>
         </div>
     )

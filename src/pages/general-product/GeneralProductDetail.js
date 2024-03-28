@@ -82,7 +82,7 @@ const GeneralProductDetail = () => {
         else {
             Swal.fire({
                 title: 'แจ้งเตือน',
-                text: `คุณต้องการจ่าย ${dataGeneral.normal_price} สำหรับ ${dataGeneral.name}`,
+                text: `คุณต้องการจ่าย ${dataGeneral.normal_price} Aysel สำหรับ ${dataGeneral.name}`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3FC3EE',

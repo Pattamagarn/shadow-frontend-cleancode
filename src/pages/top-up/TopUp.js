@@ -13,7 +13,6 @@ const TopUp = () => {
     const navigate = useNavigate()
     const [exchangeRate, setExchangeRate] = useState({ baht: '', aysel: '' })
     const [giftTrueMoney, setGiftTrueMoney] = useState('')
-    const [dataPaymentMethod, setDataPaymentMethod] = useState({ img: '', video: '' })
     const [imgPayment, setImgPayment] = useState([])
     const [videoPayment, setVideoPayment] = useState([])
 
@@ -21,12 +20,12 @@ const TopUp = () => {
         axios.get(`${process.env.REACT_APP_API}/payment-method-select`)
             .then((response) => {
                 if (response.data.status) {
-                    response.data.payload.map((value, index) => {
+                    response.data.payload.map((value) => {
                         if (value.method === 'รูปภาพ') {
-                            setImgPayment(value)
+                            return setImgPayment(value)
                         }
                         else {
-                            setVideoPayment(value)
+                            return setVideoPayment(value)
                         }
                     })
                 }
@@ -66,15 +65,6 @@ const TopUp = () => {
         })
     }
 
-    const alertWarning = (title, text, confirmButtonText) => {
-        Swal.fire({
-            title: title,
-            text: text,
-            icon: 'warning',
-            confirmButtonText: confirmButtonText
-        })
-    }
-
     const handleTopUp = (event) => {
         event.preventDefault()
         if (isLogin.payload.role === 0) {
@@ -109,7 +99,7 @@ const TopUp = () => {
             });
         }
     }
-    console.log(videoPayment.information)
+    
     return (
         <div>
             <MetaHeader title={`เติมเงิน`} />
@@ -136,7 +126,7 @@ const TopUp = () => {
                 <div className='max-w-5xl modal-box w-svh'>
                     <span className="text-3xl">ภาพวิธีการชำระเงิน</span>
                     {
-                        imgPayment.length === 0 ?
+                        imgPayment.information === '' ?
                             <img src={`${process.env.REACT_APP_PAYMENT_METHOD}payment-method.png`} alt='payment-method' className='size-full h-96' /> :
                             <img src={`${process.env.REACT_APP_PAYMENT_METHOD}${imgPayment.information}`} alt='payment-method' className='size-full h-96' />
                     }
@@ -152,7 +142,7 @@ const TopUp = () => {
                 <div className='max-w-5xl modal-box w-svh'>
                     <span className="text-3xl">วิดีโอวิธีการชำระเงิน</span>
                     {
-                        videoPayment.length === 0 ? 
+                        videoPayment.information === '' ? 
                         <iframe src='https://www.youtube.com/embed/smdmEhkIRVc?si=mq3E5TZNz1Qi352p' title="payment-method-video" className='size-full h-96' frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe> :
                         <iframe src={`${videoPayment.information}`} title="payment-method-video" className='size-full h-96' frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                     }

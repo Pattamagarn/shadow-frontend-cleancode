@@ -82,7 +82,7 @@ const PromotionProductDetail = () => {
         } else {
             Swal.fire({
                 title: 'แจ้งเตือน',
-                text: `คุณต้องการจ่าย ${dataPromotion.special_price} สำหรับ ${dataPromotion.name}`,
+                text: `คุณต้องการจ่าย ${dataPromotion.special_price} Aysel สำหรับ ${dataPromotion.name}`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3FC3EE',

@@ -4,7 +4,7 @@ import TitleBox from '../../components/title-box/TitleBox'
 import DataTable from 'react-data-table-component'
 import { Icon } from '@iconify/react'
 import { useState,useEffect } from 'react'
-import { Link,useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 
@@ -13,7 +13,8 @@ const StoreProduct = () => {
     const navigate = useNavigate()
     const [data_product, setData_product] = useState([])
     const [record_product,setRecord_product] = useState([])
-    const [hide,setHide] = useState(false)
+    const [hideMap,setHideMap] = useState({})
+    const isHidden = (rowID) => hideMap[rowID]
 
     useEffect(() => {
         !isLogin.status && navigate('/')
@@ -31,6 +32,12 @@ const StoreProduct = () => {
         })
         .catch(() => {})
     },[])
+
+    const toggleHide = (rowID) => {
+        setHideMap((prevHideMap) => ({
+            ...prevHideMap,[rowID] : !prevHideMap[rowID]
+        }))
+    }
 
     const columns_data_product = [
         {
@@ -57,19 +64,16 @@ const StoreProduct = () => {
         {
             name: 'โค้ดสินค้า',
             selector: row => row.method_uuid,
-            cell : (row) => [hide ? <div key={row.uuid}>{row.method_uuid}</div> : <div>xxx-xxx-xxx</div>]
+            cell : (row) => [isHidden(row.uuid) ? <div key={row.uuid}>{row.method_uuid}</div> : <div>xxx-xxx-xxx</div>]
 
         },
         {
             name: 'ซ่อน',
-            selector: hide,
-            cell: (row) => [<div key={row.uuid} className='btn btn-ghost' onClick={() => {setHide(!hide)}}>{hide ? <Icon icon={"mdi:show"} className='text-3xl text-shadow-primary' /> : <Icon icon={"mdi:hide"} className='text-3xl text-shadow-primary' /> }</div>]
+            // selector: i,
+            cell: (row) => [<div key={row.uuid} className='btn btn-ghost' onClick={() => toggleHide(row.uuid)} >{isHidden(row.uuid) ? <Icon icon={"mdi:show"} key={row.uuid} className='text-3xl text-shadow-primary' /> : <Icon icon={"mdi:hide"} key={row.uuid}  className='text-3xl text-shadow-primary' /> }</div>]
         },
     ]
 
-    const handleClick = (title) => {
-        console.log(`You clicked me! ${title}`);
-      };
 
     const filterData = (event) => {
         const newData_product = data_product.filter(row => {
