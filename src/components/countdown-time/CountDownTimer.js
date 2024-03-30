@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
+import Swal from 'sweetalert2';
 
 const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid, game_name, product_name, product_price, buy_method, product_id }) => {
   const [day, setDay] = useState('');
@@ -34,6 +35,31 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid
           setSecond(seconds)
         }
         if (count === finish) {
+          axios.patch(`${process.env.REACT_APP_API}/update-auction-status/${uuid}`, {
+            auction_status: 1
+          })
+            .then((response) => {
+              if (response.data.status) {
+                Swal.fire({
+                  title: 'สำเร็จ',
+                  text: response.data.payload,
+                  icon: 'success'
+                });
+              } else {
+                Swal.fire({
+                  title: 'ผิดพลาด',
+                  text: response.data.payload,
+                  icon: 'error'
+                });
+              }
+            })
+            .catch((error) => {
+              Swal.fire({
+                title: 'ผิดพลาด',
+                text: 'แก้ไขสถานะล้มเหลว',
+                icon: 'error'
+              });
+            })
           axios.patch(`${process.env.REACT_APP_API}/update-aysel`, {
             email: email,
             aysel_amount: ayselAmount

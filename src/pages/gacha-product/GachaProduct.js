@@ -2,7 +2,7 @@ import MetaHeader from '../../components/meta-header/MetaHeader'
 import Navigation from '../../components/navigation/Navigation'
 import TitleBox from '../../components/title-box/TitleBox'
 import { Icon } from '@iconify/react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
@@ -11,8 +11,10 @@ import Swal from 'sweetalert2'
 
 
 const GachaProduct = () => {
+    const { uuid } = useParams()
     const navigate = useNavigate()
     const isLogin = useSelector((state) => state.isLogin.isLogin)
+    const [account, setAccount] = useState([])
     const [dataGacha, setDataGacha] = useState([])
     const [dataGachaNormal, setDataGachaNormal] = useState([])
     const [dataGachaSpecial, setDataGachaSpecial] = useState([])
@@ -20,7 +22,7 @@ const GachaProduct = () => {
     const [showData, setShowData] = useState([])
     const [time, setTime] = useState('')
     const [buyBy, setBuyBy] = useState('')
-    const [countGuaruntee,setCountGuaruntee] = useState(0)
+    const [countGuaruntee, setCountGuaruntee] = useState(0)
     const rateNormal = []
     const rateSpecial = []
     let gacha = []
@@ -57,12 +59,13 @@ const GachaProduct = () => {
         axios.get(`${process.env.REACT_APP_API}/authentication-account`, { withCredentials: true })
             .then((response) => {
                 if (response.data.status) {
-                    // setAccount(response.data.payload)
+                    setAccount(response.data.payload)
                     setCountGuaruntee(response.data.payload.gacha_count)
                 }
             })
-        
-        
+
+
+
     }, [])
     const alertSuccess = (title, text, confirmButtonText) => {
         Swal.fire({
@@ -99,13 +102,13 @@ const GachaProduct = () => {
     }
 
     const handleRateGacha = (countsGuaruntee) => {
-        gacha= []
+        gacha = []
         dataNormal = []
         dataChanceNormal = []
         dataSpecial = []
         dataChanceSpecial = []
         // console.log(countsGuaruntee)
-        if (parseInt(countsGuaruntee+1) === parseInt(process.env.REACT_APP_GUARUNTEE)) {
+        if (parseInt(countsGuaruntee + 1) === parseInt(process.env.REACT_APP_GUARUNTEE)) {
             setCountGuaruntee(0)
             //เอาข้อมูลอัตราการออกของสินค้าจากดาต้าเบส ไว้ใน dataChanceSpecial
             dataGachaSpecial.map((value) => {
@@ -141,8 +144,8 @@ const GachaProduct = () => {
             // console.log(gacha)
         }
         else {
-            if(parseInt(countsGuaruntee+1) > parseInt(process.env.REACT_APP_GUARUNTEE) ){
-                setCountGuaruntee(0)
+            if (parseInt(countsGuaruntee + 1) > parseInt(process.env.REACT_APP_GUARUNTEE)) {
+                setCountGuaruntee((countsGuaruntee+1)-(parseInt(process.env.REACT_APP_GUARUNTEE)))
                 // console.log('over set')
             }
             //เอาข้อมูลอัตราการออกของสินค้าจากดาต้าเบส ไว้ใน dataChanceNormal
@@ -220,7 +223,7 @@ const GachaProduct = () => {
                 .then((result) => {
                     if (result.isConfirmed) {
                         if (parseFloat(isLogin.payload.aysel_amount) >= parseFloat(process.env.REACT_APP_BUY_ONCE)) {
-                            setCountGuaruntee(countGuaruntee+1)
+                            setCountGuaruntee(countGuaruntee + 1)
                             setShowModals(true)
                             handleRateGacha(countGuaruntee)
                             axios.patch(`${process.env.REACT_APP_API}/update-aysel`, {
@@ -229,56 +232,65 @@ const GachaProduct = () => {
                             }, { withCredentials: true })
                                 .then((response) => {
                                     if (response.data.status) {
-                                        
+                                        axios.post(`${process.env.REACT_APP_API}/create-store-product`, {
+                                            email: isLogin.payload.email,
+                                            method_uuid: gacha[0].uuid,
+                                            game_name: gacha[0].game_name,
+                                            product_name: gacha[0].name,
+                                            used_status: 0
+                                        }, { withCredentials: true })
+                                            .then((response) => {
+                                                if (response.data.status) {
+                                                    // console.log("สร้างสินค้าในคลังสำเร็จ")
+                                                    axios.get(`${process.env.REACT_APP_API}/read-lasted-store-product`, { withCredentials: true })
+                                                        .then((response) => {
+                                                            if (response.data.status) {
+                                                                axios.post(`${process.env.REACT_APP_API}/create-history-product`, {
+                                                                    uuid: response.data.payload[0].uuid,
+                                                                    email: isLogin.payload.email,
+                                                                    game_name: gacha[0].game_name,
+                                                                    product_name: gacha[0].name,
+                                                                    product_price: process.env.REACT_APP_BUY_ONCE,
+                                                                    buy_method: "สินค้ากาชาแบบสุ่ม1ครั้ง"
+                                                                }, { withCredentials: true })
+                                                                    .then((response) => {
+                                                                        if (response.data.status) {
+                                                                            setShowData(gacha)
+                                                                        }
+                                                                    })
+                                                                    .catch((error) => {
+
+                                                                    })
+                                                                axios.patch(`${process.env.REACT_APP_API}/update-gacha-count/${account.email}`, {
+                                                                    gacha_count: countGuaruntee
+                                                                })
+                                                                    .then((response) => {
+                                                                        if (response.data.status) {
+                                                                            console.log(countGuaruntee)
+                                                                        }
+                                                                    })
+                                                                    .catch((error) => { })
+                                                            }
+                                                        })
+                                                        .catch((error) => {
+                                                            alertError('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
+                                                        })
+                                                } else {
+                                                    // console.log("สร้างสินค้าในไม่คลังสำเร็จ")
+                                                }
+                                            })
+                                            .catch((error) => {
+                                                alertError('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
+                                            })
+
                                     } else {
                                         alertError('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
                                     }
                                 })
                                 .catch((error) => {
-                                    alertError('ไม่สำเร็จ','การซื้อไม่สำเร็จ','ตกลง')
+                                    alertError('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
                                 })
 
-                            axios.post(`${process.env.REACT_APP_API}/create-store-product`, {
-                                email: isLogin.payload.email,
-                                method_uuid: gacha[0].uuid,
-                                game_name: gacha[0].game_name,
-                                product_name: gacha[0].name,
-                                used_status: 0
-                            }, { withCredentials: true })
-                                .then((response) => {
-                                    if (response.data.status) {
-                                        // console.log("สร้างสินค้าในคลังสำเร็จ")
-                                        axios.get(`${process.env.REACT_APP_API}/read-lasted-store-product`, { withCredentials: true })
-                                            .then((response) => {
-                                                if (response.data.status) {
-                                                    axios.post(`${process.env.REACT_APP_API}/create-history-product`, {
-                                                        uuid: response.data.payload[0].uuid,
-                                                        email: isLogin.payload.email,
-                                                        game_name: gacha[0].game_name,
-                                                        product_name: gacha[0].name,
-                                                        product_price: process.env.REACT_APP_BUY_ONCE,
-                                                        buy_method: "สินค้ากาชาแบบสุ่ม1ครั้ง"
-                                                    }, { withCredentials: true })
-                                                        .then((response) => {
-                                                            if (response.data.status) {
-                                                                setShowData(gacha)
-                                                            }
-                                                        })
-                                                        .catch((error) => {
-                                                            
-                                                        })
-                                                }
-                                            })
-                                            .catch((error) => {
-                                                alertError('ไม่สำเร็จ','การซื้อไม่สำเร็จ','ตกลง')
-                                            })
-                                    } else {
-                                        // console.log("สร้างสินค้าในไม่คลังสำเร็จ")
-                                    }
-                                })
-                                .catch((error) => {
-                                    alertError('ไม่สำเร็จ','การซื้อไม่สำเร็จ','ตกลง')
-                                })
 
 
 
@@ -347,80 +359,78 @@ const GachaProduct = () => {
                         if (parseFloat(isLogin.payload.aysel_amount) >= parseFloat(process.env.REACT_APP_BUY_TEN)) {
                             setShowModals(true)
                             for (let index = 0; index <= 9; index++) {
-                                
                                 setTimeout(() => {
                                     setTime(10 - index)
-                                    // if(parseInt(countGuaruntee+1) === parseInt(process.env.REACT_APP_GUARUNTEE)){
-                                    //     setCountGuaruntee(0)
-                                    // }else{
-                                    //     setCountGuaruntee(countGuaruntee+parseInt(index+1))
-                                    // }
-                                    
-                                    handleRateGacha(countGuaruntee+parseInt(index))
-                                    
+                                    handleRateGacha(countGuaruntee + parseInt(index))
                                     axios.patch(`${process.env.REACT_APP_API}/update-aysel`, {
                                         email: isLogin.payload.email,
                                         aysel_amount: parseFloat(isLogin.payload.aysel_amount) - parseFloat(process.env.REACT_APP_BUY_TEN)
                                     }, { withCredentials: true })
                                         .then((response) => {
                                             if (response.data.status) {
-                                                //    alertSuccess('สำเร็จ','การซื้อสำเร็จ','ตกลง')
+                                                axios.post(`${process.env.REACT_APP_API}/create-store-product`, {
+                                                    email: isLogin.payload.email,
+                                                    method_uuid: gacha[0].uuid,
+                                                    game_name: gacha[0].game_name,
+                                                    product_name: gacha[0].name,
+                                                    used_status: 0
+                                                }, { withCredentials: true })
+                                                    .then((response) => {
+                                                        if (response.data.status) {
+                                                            // console.log("สร้างสินค้าในคลังสำเร็จ")
+                                                            axios.get(`${process.env.REACT_APP_API}/read-lasted-store-product`, { withCredentials: true })
+                                                                .then((response) => {
+                                                                    if (response.data.status) {
+                                                                        axios.post(`${process.env.REACT_APP_API}/create-history-product`, {
+                                                                            uuid: response.data.payload[0].uuid,
+                                                                            email: isLogin.payload.email,
+                                                                            game_name: gacha[0].game_name,
+                                                                            product_name: gacha[0].name,
+                                                                            product_price: index === 9 ? 0 : process.env.REACT_APP_BUY_ONCE,
+                                                                            buy_method: "สินค้ากาชาแบบสุ่ม 10 ครั้ง"
+                                                                        }, { withCredentials: true })
+                                                                            .then((response) => {
+                                                                                if (response.data.status) {
+                                                                                    setShowData((previous) => [...previous, gacha])
+                                                                                    axios.patch(`${process.env.REACT_APP_API}/update-gacha-count/${account.email}`, {
+                                                                                        gacha_count: countGuaruntee+parseInt(index)
+                                                                                    })
+                                                                                        .then((response) => {
+                                                                                            if (response.data.status) {
+                                                                                                console.log(countGuaruntee)
+                                                                                            }
+                                                                                        })
+                                                                                        .catch((error) => { })
+                                                                                }
+                                                                            })
+                                                                            .catch((error) => {
+                                                                                alertError('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
+                                                                            })
+                                                                    }
+                                                                })
+                                                                .catch((error) => {
+                                                                    alertError('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
+                                                                })
+                                                        } else {
+                                                            // console.log("สร้างสินค้าในไม่คลังสำเร็จ")
+                                                        }
+                                                    })
+                                                    .catch((error) => {
+                                                        alertError('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
+                                                    })
                                             } else {
                                                 alertSuccess('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
                                             }
                                         })
                                         .catch((error) => {
-                                            alertError('ไม่สำเร็จ','การซื้อไม่สำเร็จ','ตกลง')
+                                            alertError('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
                                         })
 
-                                    axios.post(`${process.env.REACT_APP_API}/create-store-product`, {
-                                        email: isLogin.payload.email,
-                                        method_uuid: gacha[0].uuid,
-                                        game_name: gacha[0].game_name,
-                                        product_name: gacha[0].name,
-                                        used_status: 0
-                                    }, { withCredentials: true })
-                                        .then((response) => {
-                                            if (response.data.status) {
-                                                // console.log("สร้างสินค้าในคลังสำเร็จ")
-                                                axios.get(`${process.env.REACT_APP_API}/read-lasted-store-product`, { withCredentials: true })
-                                                    .then((response) => {
-                                                        if (response.data.status) {
 
-                                                            axios.post(`${process.env.REACT_APP_API}/create-history-product`, {
-                                                                uuid: response.data.payload[0].uuid,
-                                                                email: isLogin.payload.email,
-                                                                game_name: gacha[0].game_name,
-                                                                product_name: gacha[0].name,
-                                                                product_price: index === 9 ? 0 : process.env.REACT_APP_BUY_ONCE,
-                                                                buy_method: "สินค้ากาชาแบบสุ่ม 10 ครั้ง"
-                                                            }, { withCredentials: true })
-                                                                .then((response) => {
-                                                                    if (response.data.status) {
-                                                                        setShowData((previous) => [...previous, gacha])
-                                                                    }
-                                                                })
-                                                                .catch((error) => {
-                                                                    alertError('ไม่สำเร็จ','การซื้อไม่สำเร็จ','ตกลง')
-                                                                })
-
-
-                                                        }
-                                                    })
-                                                    .catch((error) => {
-                                                        alertError('ไม่สำเร็จ','การซื้อไม่สำเร็จ','ตกลง')
-                                                    })
-                                            } else {
-                                                // console.log("สร้างสินค้าในไม่คลังสำเร็จ")
-                                            }
-                                        })
-                                        .catch((error) => {
-                                            alertError('ไม่สำเร็จ','การซื้อไม่สำเร็จ','ตกลง')
-                                        })
                                 }, 2000 * index)
-                                
                             }
-                            setCountGuaruntee(parseInt(countGuaruntee-parseInt(process.env.REACT_APP_GUARUNTEE)))
+                            setCountGuaruntee(parseInt(countGuaruntee - parseInt(process.env.REACT_APP_GUARUNTEE)))
+                            
                         }
                         else if (parseFloat(isLogin.payload.aysel_amount) < parseFloat(process.env.REACT_APP_BUY_ONCE)) {
                             Swal.fire({
@@ -560,14 +570,14 @@ const GachaProduct = () => {
                                                     <dialog id='show-gacha-product-one' className='modal'>
                                                         <div className='flex flex-col justify-center max-w-5xl modal-box border-x-4 border-y-4 border-shadow-info'>
                                                             <div className='flex flex-col justify-center px-12 my-5'>
-                                                            <div className='flex justify-end my-3 text-shadow-info'>วางลูกศรค้างเพื่อดูชื่อ</div>
+                                                                <div className='flex justify-end my-3 text-shadow-info'>วางลูกศรค้างเพื่อดูชื่อ</div>
                                                                 <div className='grid-flow-row grid-cols-4 gap-5 gridjustify-center '>
                                                                     {showData.map((value, id) => (
                                                                         <div key={id} className='flex justify-center '>
                                                                             {
                                                                                 value.guarantee_status ?
                                                                                     <div>
-                                                                                        
+
                                                                                         <div className='flex pb-3 my-2'>
                                                                                             <div className='text-3xl font-bold text-shadow-primary'>{`ยินดีด้วย ! คุณได้รับ`}</div>
                                                                                         </div>
@@ -614,7 +624,7 @@ const GachaProduct = () => {
                                                         <dialog id='show-gacha-product-ten' className='modal'>
                                                             <div className='flex flex-col justify-center max-w-5xl modal-box border-x-4 border-y-4 border-shadow-info'>
                                                                 <div className='flex flex-col px-12 my-5'>
-                                                                <div className='flex justify-end my-3 text-shadow-info'>วางลูกศรค้างเพื่อดูชื่อ</div>
+                                                                    <div className='flex justify-end my-3 text-shadow-info'>วางลูกศรค้างเพื่อดูชื่อ</div>
                                                                     <div className='flex justify-center pb-3 my-2'>
                                                                         <div className='text-3xl font-bold text-shadow-primary'>{`ยินดีด้วย ! คุณได้รับ`}</div>
                                                                     </div>
@@ -624,7 +634,7 @@ const GachaProduct = () => {
                                                                                 {
                                                                                     value[0].guarantee_status ?
                                                                                         <div>
-                                                                                            
+
                                                                                             <div className='flex border-x-8 border-y-8 rounded-xl border-shadow-accent w-[170px] h-[160px] justify-center bg-'>
                                                                                                 <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value[0].information}`} alt='gacha-product' title={value[0].name} />
                                                                                             </div>
