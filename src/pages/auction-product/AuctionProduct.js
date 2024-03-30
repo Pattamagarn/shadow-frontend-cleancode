@@ -14,7 +14,7 @@ const AuctionProduct = () => {
     const [dataAuctionSearch, setDataAuctionSearch] = useState([])
     
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API}/read-auction-product`)
+        axios.get(`${process.env.REACT_APP_API}/read-auction-product-status`)
             .then((response) => {
                 if (response) {
                     setDataAuction(response.data.payload)

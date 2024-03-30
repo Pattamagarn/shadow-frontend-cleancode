@@ -21,7 +21,6 @@ const Profile = () => {
         axios.get(`${process.env.REACT_APP_API}/authentication-account`, { withCredentials: true })
             .then((response) => {
                 if (response.data.status) {
-
                     setAccount(response.data.payload)
                 }
             })

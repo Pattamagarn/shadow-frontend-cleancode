@@ -14,7 +14,6 @@ const GeneralProductDetail = () => {
     const navigate = useNavigate()
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const [dataGeneral, setDataGeneral] = useState([])
-    const [dataGeneralProductActive, setDataGeneralProductActive] = useState(true)
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-general-product-uuid/${uuid}`)
@@ -42,23 +41,6 @@ const GeneralProductDetail = () => {
             })
     }
 
-    const alertError = (title, text, confirmButtonText) => {
-        Swal.fire({
-            title: title,
-            text: text,
-            icon: 'error',
-            confirmButtonText: confirmButtonText
-        })
-    }
-
-    const alertWarning = (title, text, confirmButtonText) => {
-        Swal.fire({
-            title: title,
-            text: text,
-            icon: 'warning',
-            confirmButtonText: confirmButtonText
-        })
-    }
 
     const handleBuyProduct = (event) => {
         if (!isLogin.status) {

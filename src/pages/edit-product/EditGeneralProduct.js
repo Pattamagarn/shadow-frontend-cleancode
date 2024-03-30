@@ -49,10 +49,6 @@ const EditGeneralProduct = () => {
         description: ''
     })
 
-    const setGeneralProductProductId = (productId) => {
-        setGeneralProductList({...generalProductList, productId:productId.target.value})
-    }
-
     const setGeneralProductGameName = (gameName) => {
         setGeneralProductList({...generalProductList, gameName:gameName.target.value})
     }

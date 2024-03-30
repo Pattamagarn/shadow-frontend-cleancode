@@ -94,7 +94,7 @@ const Transaction = () => {
         },
         {
             name: 'ราคา',
-            selector: row => row.product_price,
+            selector: row => row.product_price === 0 ? 'free' : row.product_price ,
             sortable: true
         },
         {

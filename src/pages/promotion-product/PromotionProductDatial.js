@@ -15,7 +15,6 @@ const PromotionProductDetail = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
     const [dataPromotion, setDataPromotion] = useState([])
-    const [dataPromotionProductActive, setDataPromotionProductActive] = useState(true)
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-promotion-product-uuid/${uuid}`)
@@ -43,23 +42,6 @@ const PromotionProductDetail = () => {
             })
     }
 
-    const alertError = (title, text, confirmButtonText) => {
-        Swal.fire({
-            title: title,
-            text: text,
-            icon: 'error',
-            confirmButtonText: confirmButtonText
-        })
-    }
-
-    const alertWarning = (title, text, confirmButtonText) => {
-        Swal.fire({
-            title: title,
-            text: text,
-            icon: 'warning',
-            confirmButtonText: confirmButtonText
-        })
-    }
 
     const handleBuyProduct = (event) => {
         if (!isLogin.status) {

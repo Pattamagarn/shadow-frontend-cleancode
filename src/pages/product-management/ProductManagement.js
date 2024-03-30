@@ -247,8 +247,8 @@ const ProductManagement = () => {
     }
 
     const handleStatusAuctionProduct = (uuid,status) => {
-        axios.patch(`${process.env.REACT_APP_API}/update-guarantee-status/${uuid}`, {
-            guarantee_status: status
+        axios.patch(`${process.env.REACT_APP_API}/update-auction-status/${uuid}`, {
+            auction_status: status
         })
             .then((response) => {
                 if (response.data.status) {
@@ -257,7 +257,7 @@ const ProductManagement = () => {
                         text: response.data.payload,
                         icon: 'success'
                     });
-                    setDataGachaProductActive(!dataGachaProductActive)
+                    setDataAuctionProductActive(!dataAuctionProductActive)
                 } else {
                     Swal.fire({
                         title: 'ผิดพลาด',
