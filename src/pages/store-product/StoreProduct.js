@@ -64,7 +64,7 @@ const StoreProduct = () => {
         {
             name: 'โค้ดสินค้า',
             selector: row => row.method_uuid,
-            cell : (row) => [isHidden(row.uuid) ? <div key={row.uuid}>{row.method_uuid}</div> : <div>xxx-xxx-xxx</div>]
+            cell : (row) => [isHidden(row.uuid) ? <div key={row.uuid}>{row.uuid}</div> : <div>xxx-xxx-xxx</div>]
 
         },
         {
