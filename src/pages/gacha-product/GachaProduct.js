@@ -472,9 +472,9 @@ const GachaProduct = () => {
                                 </div>
                             </div>
                         </div>
-                        <Link className='flex justify-center mt-24' to='/'>
-                            <div className='border-none btn bg-shadow-error hover:bg-shadow-herror'>กลับไปหน้าแรก</div>
-                        </Link>
+                        <div className='flex justify-center mt-24' >
+                            <Link className='border-none btn bg-shadow-error hover:bg-shadow-herror' to='/'>กลับไปหน้าแรก</Link>
+                        </div>
                     </div>
                     :
                     <div className='flex flex-col'>
