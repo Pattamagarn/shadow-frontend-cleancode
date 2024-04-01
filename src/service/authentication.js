@@ -52,6 +52,7 @@ export const signInAccount = (account, alertSuccess, alertError, alertWarning) =
         })
     })
     .catch((error) => {
+        console.log(error)
         alertWarning('เตือน', 'ชื่อผู้ใช้ หรือรหัสผ่านไม่ถูกต้อง', 'ตกลง')
     })
 }
@@ -75,7 +76,7 @@ export const updatePasswordAccount = (email,oldPass,newPass,alertSuccess, alertE
             alertSuccess('สำเร็จ','แก้ไขรหัสผ่านเสร็จสิ้น','ตกลง')
         })
         .catch((error) => {
-            alertError('ล้มเหลว', 'การแก้ไขรหัสผ่านล้มเหลว ควรใส่รหัสผ่านอย่างน้อย 6 ตัวอักษร', 'ตกลง')
+            alertError('ล้มเหลว', 'การแก้ไขรหัสผ่านล้มเหลว ควรใส่รหัสผ่านอย่างน้อย 8 ตัวอักษร', 'ตกลง')
         })
     })
     .catch(() => {

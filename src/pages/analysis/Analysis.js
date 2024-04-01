@@ -110,6 +110,8 @@ const Analysis = () => {
             ]
         },
     ]
+
+
     return (
         <div>
             <MetaHeader title={`วิเคราะห์ข้อมูล`} />

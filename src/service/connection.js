@@ -5,12 +5,12 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC7496N5NLfQmNfwds5JeWsfiMqSx7Z0OA",
-  authDomain: "shadow-project-2024.firebaseapp.com",
-  projectId: "shadow-project-2024",
-  storageBucket: "shadow-project-2024.appspot.com",
-  messagingSenderId: "990015530249",
-  appId: "1:990015530249:web:c720ce089d4b2144ae1fd8"
+  apiKey: "AIzaSyD7eFaYrpINDfaXcDXVKcGyomiBzx_R5-I",
+  authDomain: "shadow-project-new-2024.firebaseapp.com",
+  projectId: "shadow-project-new-2024",
+  storageBucket: "shadow-project-new-2024.appspot.com",
+  messagingSenderId: "866600532937",
+  appId: "1:866600532937:web:76974ab07c0d5f87a14618"
 };
 
 // Initialize Firebase
