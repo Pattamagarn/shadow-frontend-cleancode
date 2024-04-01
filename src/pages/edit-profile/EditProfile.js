@@ -247,11 +247,7 @@ const EditProfile = () => {
                         ?
                         <div className='flex items-center'>
                             <div>
-<<<<<<< HEAD
-                                <button type='button' onClick={() => document.getElementById('password-required').showModal()} className=' border-none btn btn-ghost hover:bg-shadow-white text-shadow-info'>
-=======
                                 <button type='button' onClick={() => document.getElementById('password-required').showModal()} className='border-none btn btn-ghost hover:bg-shadow-white text-shadow-info'>
->>>>>>> 06fb80dc2755b506d73cd83c6666dc270f077c63
                                     <Icon icon={'material-symbols:info'} className='text-2xl size-fit text-shadow-info sm:text-4xl hover:text-shadow-hinfo' />
                                 </button>
                             </div>
@@ -274,11 +270,7 @@ const EditProfile = () => {
                         :
                         <div className='flex items-center pt-16'>
                             <div>
-<<<<<<< HEAD
-                                <button type='button' onClick={() => document.getElementById('password-required').showModal()} className=' border-none btn btn-ghost hover:bg-shadow-white text-shadow-info'>
-=======
                                 <button type='button' onClick={() => document.getElementById('password-required').showModal()} className='border-none btn btn-ghost hover:bg-shadow-white text-shadow-info'>
->>>>>>> 06fb80dc2755b506d73cd83c6666dc270f077c63
                                     <Icon icon={'material-symbols:info'} className='text-2xl size-fit text-shadow-info sm:text-4xl hover:text-shadow-hinfo' />
                                 </button>
                             </div>

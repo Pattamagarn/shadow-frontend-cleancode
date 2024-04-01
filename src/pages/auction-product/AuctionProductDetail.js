@@ -25,11 +25,7 @@ const AuctionProductDetail = () => {
         if (isLogin.status && isLogin.payload.role === 0) {
             setAccount({ ...account, email: isLogin.payload.email, amount: isLogin.payload.aysel_amount })
         }
-<<<<<<< HEAD
     }, [isLogin, navigate])
-=======
-    }, [isLogin,account, navigate])
->>>>>>> 06fb80dc2755b506d73cd83c6666dc270f077c63
 
     useEffect(() => {
         const fetchData = async () => {
