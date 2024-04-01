@@ -278,23 +278,28 @@ const ProductManagement = () => {
     const columnsGeneralProduct = [
         {
             name: 'ลำดับ',
-            selector: row => row.index
+            selector: row => row.index,
+            sortable:true
         },
         {
             name: 'ชื่อเกม',
-            selector: row => row.game_name
+            selector: row => row.game_name,
+            sortable:true
         },
         {
             name: 'ชื่อสินค้า',
-            selector: row => row.name
+            selector: row => row.name,
+            sortable:true
         },
         {
             name: 'ราคาลด',
-            selector: row => row.special_price
+            selector: row => row.special_price,
+            sortable:true
         },
         {
             name: 'ราคา',
-            selector: row => row.normal_price
+            selector: row => row.normal_price,
+            sortable:true
         },
         {
             name: 'ลดราคา',
@@ -316,19 +321,24 @@ const ProductManagement = () => {
     const columnsGachaProduct = [
         {
             name: 'ลำดับ',
-            selector: row => row.index
+            selector: row => row.index,
+            sortable:true
         },
         {
             name: 'ชื่อเกม',
-            selector: row => row.game_name
+            selector: row => row.game_name,
+            sortable:true
         },
         {
             name: 'ชื่อสินค้า',
-            selector: row => row.name
+            selector: row => row.name,
+            sortable:true
+            
         },
         {
             name: 'อัตราการออก',
-            selector: row => row.chance
+            selector: row => row.chance,
+            sortable:true
         },
         {
             name: 'การันตี',
@@ -350,19 +360,23 @@ const ProductManagement = () => {
     const columnsAuctionProduct = [
         {
             name: 'ลำดับ',
-            selector: row => row.index
+            selector: row => row.index,
+            sortable:true
         },
         {
             name: 'ชื่อเกม',
-            selector: row => row.game_name
+            selector: row => row.game_name,
+            sortable:true
         },
         {
             name: 'ชื่อสินค้า',
-            selector: row => row.name
+            selector: row => row.name,
+            sortable:true
         },
         {
             name: 'ราคาปัจจุบัน',
-            selector: row => row.default_price
+            selector: row => row.default_price,
+            sortable:true
         },
         {
             name: 'สถานะ',

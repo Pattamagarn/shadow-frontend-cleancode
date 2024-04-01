@@ -1,8 +1,8 @@
 import MetaHeader from '../../components/meta-header/MetaHeader'
 import Navigation from '../../components/navigation/Navigation'
 import TitleBox from '../../components/title-box/TitleBox'
-import { useState,useEffect } from 'react'
-import { Link,useNavigate, useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import axios from 'axios'
@@ -11,8 +11,8 @@ const EditGachaProduct = () => {
     const { uuid } = useParams()
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
-    const [data,setData] = useState([])
-    const [dataGacha,setDataGacha] = useState([])
+    const [data, setData] = useState([])
+    const [dataGacha, setDataGacha] = useState([])
 
     useEffect(() => {
         !isLogin.status && navigate('/')
@@ -21,59 +21,59 @@ const EditGachaProduct = () => {
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/game-name-select`)
-        .then((response) => {
-            if(response.data.status) {
-                setData(response.data.payload)
-            }
-        })
-    },[])
+            .then((response) => {
+                if (response.data.status) {
+                    setData(response.data.payload)
+                }
+            })
+    }, [])
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-gacha-product-uuid/${uuid}`)
-        .then((response) => {
-            if (response.data.status) {
-                setDataGacha(response.data.payload[0])
-            }
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-        
-    },[uuid])
+            .then((response) => {
+                if (response.data.status) {
+                    setDataGacha(response.data.payload[0])
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+    }, [uuid])
 
     const [gachaProductList, setGachaProductList] = useState({
-        productId:'', gameName:'',
-        name:'', chance:'',
-        guaranteeStatus:'', information: '',
+        productId: '', gameName: '',
+        name: '', chance: '',
+        guaranteeStatus: '', information: '',
         description: ''
     })
 
     const setGachaProductProductId = (productId) => {
-        setGachaProductList({...gachaProductList, productId:productId.target.value})
+        setGachaProductList({ ...gachaProductList, productId: productId.target.value })
     }
 
     const setGachaProductGameName = (gameName) => {
-        setGachaProductList({...gachaProductList, gameName:gameName.target.value})
+        setGachaProductList({ ...gachaProductList, gameName: gameName.target.value })
     }
 
     const setGachaProductName = (name) => {
-        setGachaProductList({...gachaProductList, name:name.target.value})
+        setGachaProductList({ ...gachaProductList, name: name.target.value })
     }
 
     const setGachaProductChance = (chance) => {
-        setGachaProductList({...gachaProductList, chance:chance.target.value})
+        setGachaProductList({ ...gachaProductList, chance: chance.target.value })
     }
 
     const setGachaProductGuaranteeStatus = (guaranteeStatus) => {
-        setGachaProductList({...gachaProductList, guaranteeStatus:guaranteeStatus.target.value})
+        setGachaProductList({ ...gachaProductList, guaranteeStatus: guaranteeStatus.target.value })
     }
 
     const setGachaProductInformation = (information) => {
-        setGachaProductList({...gachaProductList, information:information.target.files[0]})
+        setGachaProductList({ ...gachaProductList, information: information.target.files[0] })
     }
 
     const setGachaProductDescription = (description) => {
-        setGachaProductList({...gachaProductList, description:description.target.value})
+        setGachaProductList({ ...gachaProductList, description: description.target.value })
     }
 
     const alertSuccess = (title, text, confirmButtonText) => {
@@ -83,6 +83,7 @@ const EditGachaProduct = () => {
             icon: 'success',
             confirmButtonText: confirmButtonText
         })
+        navigate('/product-management')
     }
 
     const alertError = (title, text, confirmButtonText) => {
@@ -104,23 +105,34 @@ const EditGachaProduct = () => {
     }
 
     const handleEditGachaProduct = (event) => {
-
+        event.preventDefault()
+        axios.patch(`${process.env.REACT_APP_API}/update-gacha-product/${uuid}`, {  
+            name: gachaProductList.name !== '' ? gachaProductList.name : dataGacha.name,
+            game_name: gachaProductList.gameName !== '' ? gachaProductList.gameName : dataGacha.game_name,
+            chance : gachaProductList.chance !== ''? gachaProductList.chance : dataGacha.chance,
+            guarantee_status:gachaProductList.guaranteeStatus !== '' ? gachaProductList.guaranteeStatus : dataGacha.guaruntee_status,
+            information: gachaProductList.information !== '' ? gachaProductList.information : dataGacha.information,
+            description: gachaProductList.description !== '' ? gachaProductList.description : dataGacha.description
+        })
+            .then((response) => {
+                if (response.data.status) {
+                    alertSuccess("สำเร็จ", response.data.payload, 'success')
+                }
+                else {
+                    alertError('ผิดพลาด', response.data.payload, 'error')
+                }
+            })
+            .catch((error) => {
+                alertError('ผิดพลาด', 'แก้ไขสินค้าทั่วไปล้มเหลว', 'error')
+            })
     }
-    
+
     return (
         <div>
             <MetaHeader title={`แก้ไขสินค้ากาชาปอง`} />
             <Navigation />
             <TitleBox title={'แก้ไขสินค้ากาชาปอง'} />
             <form onSubmit={handleEditGachaProduct} className='items-end mx-auto mt-10 mb-10 form-control justify-evenly size-fit'>
-                <div className='flex flex-row items-center justify-end mt-2 size-full'>
-                    <span className='mr-10 text-2xl text-nowrap'>รหัสสินค้า</span>
-                    <input type={'text'} defaultValue={dataGacha.product_id} placeholder='รหัสสินค้า' onChange={setGachaProductProductId} className='input w-80 bg-shadow-grey text-shadow-black'/>
-                </div>
-                <div className='flex flex-row items-center justify-end mt-2 size-full'>
-                    <span className='mr-10 text-2xl text-nowrap'>ชื่อสินค้า</span>
-                    <input type={'text'} defaultValue={dataGacha.name} placeholder='ชื่อสินค้า' onChange={setGachaProductName} className='input w-80 bg-shadow-grey text-shadow-black'/>
-                </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>ชื่อเกม</span>
                     <select onChange={setGachaProductGameName} className="select w-80 bg-shadow-grey text-shadow-black">
@@ -129,8 +141,17 @@ const EditGachaProduct = () => {
                     </select>
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>รหัสสินค้า</span>
+                    <div type={'text'} placeholder='รหัสสินค้า' onChange={setGachaProductProductId} className='py-2 input w-80 bg-shadow-grey text-shadow-black' >{dataGacha.product_id}</div>
+                </div>
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>ชื่อสินค้า</span>
+                    <input type={'text'} defaultValue={dataGacha.name} placeholder='ชื่อสินค้า' onChange={setGachaProductName} className='input w-80 bg-shadow-grey text-shadow-black' />
+                </div>
+
+                <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>เปอร์เซ็นต์การดรอป</span>
-                    <input type={'text'} defaultValue={dataGacha.chance} placeholder='เปอร์เซ็นต์การดรอป' onChange={setGachaProductChance} className='input w-80 bg-shadow-grey text-shadow-black'/>
+                    <input type={'text'} defaultValue={dataGacha.chance} placeholder='เปอร์เซ็นต์การดรอป' onChange={setGachaProductChance} className='input w-80 bg-shadow-grey text-shadow-black' />
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>การันตี</span>
@@ -141,11 +162,11 @@ const EditGachaProduct = () => {
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>รูปภาพ</span>
-                    <input type={'file'} defaultValue={dataGacha.information} onChange={setGachaProductInformation} className='file-input w-80 bg-shadow-grey text-shadow-black'/>
+                    <input type={'file'} defaultValue={dataGacha.information} onChange={setGachaProductInformation} className='file-input w-80 bg-shadow-grey text-shadow-black' />
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>รายละเอียด</span>
-                    <textarea defaultValue={dataGacha.description} type={'text'} placeholder='รายละเอียด' onChange={setGachaProductDescription} className='textarea w-80 bg-shadow-grey text-shadow-black'/>
+                    <textarea defaultValue={dataGacha.description} type={'text'} placeholder='รายละเอียด' onChange={setGachaProductDescription} className='textarea w-80 bg-shadow-grey text-shadow-black' />
                 </div>
                 <div className='flex flex-row items-center mt-2 size-full'>
                     <button type='submit' className='mr-5 border-none btn grow bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>ยืนยันการเพิ่มสินค้ากาชาปอง</button>

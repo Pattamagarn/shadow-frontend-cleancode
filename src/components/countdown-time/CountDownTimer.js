@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid, game_name, product_name, product_price, buy_method, product_id }) => {
   const [day, setDay] = useState('');
   const [hour, seHour] = useState('');
   const [minute, setMinute] = useState('');
   const [second, setSecond] = useState('');
+  const navigate = useNavigate()
 
   useEffect(() => {
     const targetDateTime = new Date(end_time);
@@ -42,9 +44,10 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid
               if (response.data.status) {
                 Swal.fire({
                   title: 'สำเร็จ',
-                  text: response.data.payload,
+                  text: 'สินค้าชิ้นนี้ถูกปิดประมูล',
                   icon: 'success'
-                });
+                })
+                navigate('/transaction')
               } else {
                 Swal.fire({
                   title: 'ผิดพลาด',

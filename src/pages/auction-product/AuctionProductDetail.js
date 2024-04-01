@@ -24,7 +24,7 @@ const AuctionProductDetail = () => {
         if (isLogin.status && isLogin.payload.role === 0) {
             setAccount({ ...account, email: isLogin.payload.email, amount: isLogin.payload.aysel_amount })
         }
-    }, [isLogin, navigate,account])
+    }, [isLogin,account, navigate])
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/read-auction-product-uuid/${uuid}`)

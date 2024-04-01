@@ -11,6 +11,7 @@ const AddAuctionProduct = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
     const [data, setData] = useState([])
+    const [dataProduct, setDataProduct] = useState([])
 
     useEffect(() => {
         !isLogin.status && navigate('/')
@@ -21,6 +22,12 @@ const AddAuctionProduct = () => {
             .then((response) => {
                 if (response.data.status) {
                     setData(response.data.payload)
+                }
+            })
+        axios.get(`${process.env.REACT_APP_API}/read-redeem-code`)
+            .then((response) => {
+                if (response.data.status) {
+                    setDataProduct(response.data.payload)
                 }
             })
     }, [])
@@ -34,7 +41,10 @@ const AddAuctionProduct = () => {
     })
 
     const setAuctionProductProductId = (productId) => {
-        setAuctionProductList({ ...auctionProductList, productId: productId.target.value })
+        dataProduct.map((value) => {
+            if(value.product_id === productId.target.value)
+            setAuctionProductList({ ...auctionProductList, productId: productId.target.value,name: value.name,description: value.description})
+        })
     }
 
     const setAuctionProductGameName = (gameName) => {
@@ -140,7 +150,14 @@ const AddAuctionProduct = () => {
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>รหัสสินค้า</span>
-                    <input value={auctionProductList.productId} type={'text'} placeholder='รหัสสินค้า' onChange={setAuctionProductProductId} className='input w-80 bg-shadow-grey text-dshadow-black' />
+                    <select defaultValue='เลือกรหัสสินค้า' onChange={setAuctionProductProductId} className="select w-80 bg-shadow-grey text-shadow-black">
+                        <option disabled >เลือกรหัสสินค้า</option>
+                        {
+                            dataProduct.map((value) =>
+                                value.game_name === auctionProductList.gameName &&
+                                <option key={value.product_id}>{value.product_id}</option>)
+                        }
+                    </select>
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>ชื่อสินค้า</span>
