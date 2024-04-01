@@ -75,7 +75,7 @@ export const updatePasswordAccount = (email,oldPass,newPass,alertSuccess, alertE
             alertSuccess('สำเร็จ','แก้ไขรหัสผ่านเสร็จสิ้น','ตกลง')
         })
         .catch((error) => {
-            alertError('ล้มเหลว', 'การแก้ไขรหัสผ่านล้มเหลว ควรใส่รหัสผ่านอย่างน้อย 6 ตัวอักษร', 'ตกลง')
+            // alertError('ล้มเหลว', 'การแก้ไขรหัสผ่านล้มเหลว ควรใส่รหัสผ่านอย่างน้อย 6 ตัวอักษร', 'ตกลง')
         })
     })
     .catch(() => {

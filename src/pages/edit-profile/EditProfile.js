@@ -26,7 +26,6 @@ const EditProfile = () => {
     const atLeastOneNumeric = /[0-9]/g
     const atLeastOneSpecialChar = /[#?!@$%^&*-]/g
     const eightCharsOrMore = /.{8,}/g
-    const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
     const [passwordRequireMent, setPasswordRequireMent] = useState({ minimumLength: false, alphabetLower: false, alphabetUpper: false, number: false, special: false })
 
     useEffect(() => {
@@ -103,19 +102,7 @@ const EditProfile = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        if(!passwordRequireMent.minimumLength || !passwordRequireMent.alphabetLower || !passwordRequireMent.alphabetUpper || !passwordRequireMent.number || !passwordRequireMent.special){
-            alertWarning('คำเตือน', (!passwordRequireMent.minimumLength) ? 
-            'ต้องการความยาวรหัสผ่านอย่างน้อย 8 ตัว' : 
-            (!passwordRequireMent.alphabetLower) ? 
-            'ต้องการตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว' : 
-            (!passwordRequireMent.alphabetUpper) ? 
-            'ต้องการตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว' : 
-            (!passwordRequireMent.number) ? 
-            'ต้องการตัวเลขอย่างน้อย 1 ตัว' : 
-            (!passwordRequireMent.special) && 
-            'ต้องการตัวอักษรพิเศษอย่างน้อย 1 ตัว', 'ตกลง')
-          }
-        else if (username !== '' || profileAvatar !== '' || password.newPassword !== '') {
+        if (username !== '' || profileAvatar !== '' || password.newPassword !== '') {
             if ((password.newPassword) === (password.confirmPassword) && (password.newPassword !== '')) {
                 //change password
                 if (password.oldPassword === '') {  //not yet input old password
@@ -127,6 +114,18 @@ const EditProfile = () => {
                     })
                 } else { // already input old password
                     event.preventDefault()
+                    if (!passwordRequireMent.minimumLength || !passwordRequireMent.alphabetLower || !passwordRequireMent.alphabetUpper || !passwordRequireMent.number || !passwordRequireMent.special) {
+                        alertWarning('คำเตือน', (!passwordRequireMent.minimumLength) ?
+                            'ต้องการความยาวรหัสผ่านอย่างน้อย 8 ตัว' :
+                            (!passwordRequireMent.alphabetLower) ?
+                                'ต้องการตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว' :
+                                (!passwordRequireMent.alphabetUpper) ?
+                                    'ต้องการตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว' :
+                                    (!passwordRequireMent.number) ?
+                                        'ต้องการตัวเลขอย่างน้อย 1 ตัว' :
+                                        (!passwordRequireMent.special) &&
+                                        'ต้องการตัวอักษรพิเศษอย่างน้อย 1 ตัว', 'ตกลง')
+                    }
                     updatePasswordAccount(account.email, password.oldPassword, password.newPassword, alertSuccess, alertError, alertWarning)
                 }
             }
@@ -210,7 +209,7 @@ const EditProfile = () => {
 
         }
         else {
-            console.log('nothing')
+            // console.log('nothing')
         }
     }
     return (
@@ -245,52 +244,52 @@ const EditProfile = () => {
 
                     </div>
                     {(password.newPassword) === (password.confirmPassword) && password.newPassword !== ''
-                    ?
-                    <div className='flex items-center'>
-                        <div>
-                            <button type='button' onClick={() => document.getElementById('password-required').showModal()} className=' border-none btn btn-ghost hover:bg-shadow-white text-shadow-info'>
-                                <Icon icon={'material-symbols:info'} className='text-2xl size-fit text-shadow-info sm:text-4xl hover:text-shadow-hinfo' />
-                            </button>
-                        </div>
-                        <dialog id='password-required' className='modal'>
-                            <div className='modal-box'>
-                                <form method='dialog'>
-                                    <button className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
-                                </form>
-                                <p className='text-sm font-bold'>ความต้องการของรหัสผ่าน</p>
-                                <ul>
-                                    <li className={`${passwordRequireMent.minimumLength ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* ความยาวรหัสผ่านอย่างน้อย 8 ตัว</li>
-                                    <li className={`${passwordRequireMent.alphabetLower ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว</li>
-                                    <li className={`${passwordRequireMent.alphabetUpper ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว</li>
-                                    <li className={`${passwordRequireMent.number ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีตัวเลขอย่างน้อย 1 ตัว</li>
-                                    <li className={`${passwordRequireMent.special ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีเครื่องหมายพิเศษ เช่น #?!@$%^&*- อย่างน้อย 1 ตัว</li>
-                                </ul>
+                        ?
+                        <div className='flex items-center'>
+                            <div>
+                                <button type='button' onClick={() => document.getElementById('password-required').showModal()} className=' border-none btn btn-ghost hover:bg-shadow-white text-shadow-info'>
+                                    <Icon icon={'material-symbols:info'} className='text-2xl size-fit text-shadow-info sm:text-4xl hover:text-shadow-hinfo' />
+                                </button>
                             </div>
-                        </dialog>
-                    </div>
-                    :
-                    <div className='flex items-center pt-16'>
-                        <div>
-                            <button type='button' onClick={() => document.getElementById('password-required').showModal()} className=' border-none btn btn-ghost hover:bg-shadow-white text-shadow-info'>
-                                <Icon icon={'material-symbols:info'} className='text-2xl size-fit text-shadow-info sm:text-4xl hover:text-shadow-hinfo' />
-                            </button>
+                            <dialog id='password-required' className='modal'>
+                                <div className='modal-box'>
+                                    <form method='dialog'>
+                                        <button className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
+                                    </form>
+                                    <p className='text-sm font-bold'>ความต้องการของรหัสผ่าน</p>
+                                    <ul>
+                                        <li className={`${passwordRequireMent.minimumLength ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* ความยาวรหัสผ่านอย่างน้อย 8 ตัว</li>
+                                        <li className={`${passwordRequireMent.alphabetLower ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว</li>
+                                        <li className={`${passwordRequireMent.alphabetUpper ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว</li>
+                                        <li className={`${passwordRequireMent.number ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีตัวเลขอย่างน้อย 1 ตัว</li>
+                                        <li className={`${passwordRequireMent.special ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีเครื่องหมายพิเศษ เช่น #?!@$%^&*- อย่างน้อย 1 ตัว</li>
+                                    </ul>
+                                </div>
+                            </dialog>
                         </div>
-                        <dialog id='password-required' className='modal'>
-                            <div className='modal-box'>
-                                <form method='dialog'>
-                                    <button className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
-                                </form>
-                                <p className='text-sm font-bold'>ความต้องการของรหัสผ่าน</p>
-                                <ul>
-                                    <li className={`${passwordRequireMent.minimumLength ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* ความยาวรหัสผ่านอย่างน้อย 8 ตัว</li>
-                                    <li className={`${passwordRequireMent.alphabetLower ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว</li>
-                                    <li className={`${passwordRequireMent.alphabetUpper ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว</li>
-                                    <li className={`${passwordRequireMent.number ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีตัวเลขอย่างน้อย 1 ตัว</li>
-                                    <li className={`${passwordRequireMent.special ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีเครื่องหมายพิเศษ เช่น #?!@$%^&*- อย่างน้อย 1 ตัว</li>
-                                </ul>
+                        :
+                        <div className='flex items-center pt-16'>
+                            <div>
+                                <button type='button' onClick={() => document.getElementById('password-required').showModal()} className=' border-none btn btn-ghost hover:bg-shadow-white text-shadow-info'>
+                                    <Icon icon={'material-symbols:info'} className='text-2xl size-fit text-shadow-info sm:text-4xl hover:text-shadow-hinfo' />
+                                </button>
                             </div>
-                        </dialog>
-                    </div>}
+                            <dialog id='password-required' className='modal'>
+                                <div className='modal-box'>
+                                    <form method='dialog'>
+                                        <button className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
+                                    </form>
+                                    <p className='text-sm font-bold'>ความต้องการของรหัสผ่าน</p>
+                                    <ul>
+                                        <li className={`${passwordRequireMent.minimumLength ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* ความยาวรหัสผ่านอย่างน้อย 8 ตัว</li>
+                                        <li className={`${passwordRequireMent.alphabetLower ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว</li>
+                                        <li className={`${passwordRequireMent.alphabetUpper ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว</li>
+                                        <li className={`${passwordRequireMent.number ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีตัวเลขอย่างน้อย 1 ตัว</li>
+                                        <li className={`${passwordRequireMent.special ? 'text-shadow-success' : 'text-shadow-error'} text-md`}>* มีเครื่องหมายพิเศษ เช่น #?!@$%^&*- อย่างน้อย 1 ตัว</li>
+                                    </ul>
+                                </div>
+                            </dialog>
+                        </div>}
                 </div>
 
                 <div className='flex flex-col justify-center items-center '>
