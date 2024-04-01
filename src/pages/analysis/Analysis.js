@@ -106,7 +106,7 @@ const Analysis = () => {
         {
             name: 'ประมูลด่วน',
             selector: row => row.auction,
-            cell: (row) => [<Link key={row.index} to={`/add-auction-product/${row.product_name}`}>{console.log(row.product_name)}<Icon key={row.index} icon={"mingcute:auction-line"} className='text-[#000000]' width={25} height={25} /></Link>
+            cell: (row) => [<Link key={row.index} to={`/add-auction-product/${row.product_name}`}><Icon key={row.index} icon={"mingcute:auction-line"} className='text-[#000000]' width={25} height={25} /></Link>
             ]
         },
     ]

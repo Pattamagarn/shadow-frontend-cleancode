@@ -74,7 +74,7 @@ const EditVideoPaymentMethod = () => {
             <TitleBox title={'เปลี่ยนวิดีโอวิธีการชำระเงิน'} />
             <form onSubmit={handleEditVideo} className='flex flex-row items-center justify-start mx-40 mt-10 align-middle'>
                 <span className="mr-2 text-2xl">ลิงก์วิดีโอสำหรับฝัง</span>
-                <input type={'text'} onChange={setVideo} className='px-5 mx-2 w-96 input bg-shadow-grey text-shadow-black'/>
+                <input type={'text'} onChange={setVideo} placeholder='ใส่ลิงก์สำหรับฝัง' className='px-5 mx-2 w-96 input bg-shadow-grey text-shadow-black'/>
                 <button type='submit' className='mr-2 border-none btn bg-shadow-success hover:bg-shadow-hsuccess text-shadow-white'>ยืนยันการแก้ไขวิดีโอวิธีการชำระเงิน</button>
                 <Link to='/general-management' className='mr-2 border-none btn bg-shadow-error hover:bg-shadow-herror text-shadow-white'>ยกเลิกการแก้ไขวิดีโอวิธีการชำระเงิน</Link>
             </form>

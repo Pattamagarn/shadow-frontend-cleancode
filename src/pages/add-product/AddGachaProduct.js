@@ -45,8 +45,8 @@ const AddGachaProduct = () => {
 
     const setGachaProductProductId = (productId) => {
         dataProduct.map((value) => {
-            if(value.product_id === productId.target.value)
-            setGachaProductList({ ...gachaProductList, productId: productId.target.value,name: value.name,description: value.description})
+            if (value.product_id === productId.target.value)
+                setGachaProductList({ ...gachaProductList, productId: productId.target.value, name: value.name, description: value.description })
         })
     }
 
@@ -103,29 +103,35 @@ const AddGachaProduct = () => {
 
     const handleAddGachaProduct = (event) => {
         event.preventDefault()
-        const formData = new FormData()
-        formData.append('productId', gachaProductList.productId)
-        formData.append('gameName', gachaProductList.gameName)
-        formData.append('name', gachaProductList.name)
-        formData.append('chance', gachaProductList.chance)
-        formData.append('guaranteeStatus', gachaProductList.guaranteeStatus)
-        formData.append('file', gachaProductList.information)
-        formData.append('description', gachaProductList.description)
-        axios.post(`${process.env.REACT_APP_API}/create-gacha-product`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-            withCredentials: true
-        })
-            .then((response) => {
-                if (response.data.status) {
-                    alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
-                    navigate('/product-management')
-                } else {
-                    alertWarning('คำเตือน', response.data.payload, 'ตกลง')
-                }
+        if ((gachaProductList.productId === '') || (gachaProductList.gameName === '') || (gachaProductList.name === '') || (gachaProductList.chance === '') || (gachaProductList.description === '')) {
+            alertWarning('คำเตือน', 'กรุณากรอกข้อมูลให้ครบ', 'ตกลง')
+        }
+        else {
+            const formData = new FormData()
+            formData.append('productId', gachaProductList.productId)
+            formData.append('gameName', gachaProductList.gameName)
+            formData.append('name', gachaProductList.name)
+            formData.append('chance', gachaProductList.chance)
+            formData.append('guaranteeStatus', gachaProductList.guaranteeStatus)
+            formData.append('file', gachaProductList.information)
+            formData.append('description', gachaProductList.description)
+            axios.post(`${process.env.REACT_APP_API}/create-gacha-product`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+                withCredentials: true
             })
-            .catch((error) => {
-                alertError('ผิดพลาด', `เพิ่มสินค้าล้มเหลว`, 'ตกลง')
-            })
+                .then((response) => {
+                    if (response.data.status) {
+                        alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
+                        navigate('/product-management')
+                    } else {
+                        alertWarning('คำเตือน', response.data.payload, 'ตกลง')
+                    }
+                })
+                .catch((error) => {
+                    alertError('ผิดพลาด', `เพิ่มสินค้าล้มเหลว`, 'ตกลง')
+                })
+        }
+
     }
 
     return (
