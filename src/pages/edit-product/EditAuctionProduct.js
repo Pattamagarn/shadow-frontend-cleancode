@@ -92,6 +92,7 @@ const EditAuctionProduct = () => {
             icon: 'success',
             confirmButtonText: confirmButtonText
         })
+        navigate('/product-management')
     }
 
     const alertError = (title, text, confirmButtonText) => {
@@ -113,7 +114,28 @@ const EditAuctionProduct = () => {
     }
 
     const handleEditAuctionProduct = (event) => {
-        navigate('/product-management')
+        event.preventDefault()
+        axios.patch(`${process.env.REACT_APP_API}/update-auction-product/${uuid}`, {  
+            name: auctionProductList.name !== '' ? auctionProductList.name : dataAuction.name,
+            game_name: auctionProductList.gameName !== '' ? auctionProductList.gameName : dataAuction.game_name,
+            default_price : auctionProductList.defaultPrice !== '' ? auctionProductList.defaultPrice : dataAuction.default_price,
+            default_bid : auctionProductList.defaultBid !== '' ? auctionProductList.defaultBid : dataAuction.default_bid,
+            start_time : auctionProductList.startTime !== '' ? auctionProductList.startTime : dataAuction.start_time,
+            end_time : auctionProductList.endTime !== '' ? auctionProductList.endTime : dataAuction.end_time,
+            information: auctionProductList.information !== '' ? auctionProductList.information : dataAuction.information,
+            description: auctionProductList.description !== '' ? auctionProductList.description : dataAuction.description
+        })
+            .then((response) => {
+                if (response.data.status) {
+                    alertSuccess("สำเร็จ", response.data.payload, 'success')
+                }
+                else {
+                    alertError('ผิดพลาด', response.data.payload, 'error')
+                }
+            })
+            .catch((error) => {
+                alertError('ผิดพลาด', 'แก้ไขสินค้าทั่วไปล้มเหลว', 'error')
+            })
     }
     
     return (
@@ -122,6 +144,13 @@ const EditAuctionProduct = () => {
             <Navigation />
             <TitleBox title={'แก้ไขสินค้าประมูล'} />
             <form onSubmit={handleEditAuctionProduct} className='items-end mx-auto mt-10 mb-10 form-control justify-evenly size-fit'>
+            <div className='flex flex-row items-center justify-end mt-2 size-full'>
+                    <span className='mr-10 text-2xl text-nowrap'>ชื่อเกม</span>
+                    <select defaultValue={dataAuction.game_name} onChange={setAuctionProductGameName} className="select w-80 bg-shadow-grey text-dshadow-black">
+                        <option disabled>เลือกชื่อเกม</option>
+                        {data.map((game) => <option key={game.game_name}>{game.game_name}</option>)}
+                    </select>
+                </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>รหัสสินค้า</span>
                     <input type={'text'} defaultValue={dataAuction.product_id} placeholder='รหัสสินค้า' onChange={setAuctionProductProductId} className='input w-80 bg-shadow-grey text-dshadow-black'/>
@@ -129,13 +158,6 @@ const EditAuctionProduct = () => {
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>ชื่อสินค้า</span>
                     <input type={'text'} defaultValue={dataAuction.name} placeholder='ชื่อสินค้า' onChange={setAuctionProductName} className='input w-80 bg-shadow-grey text-dshadow-black'/>
-                </div>
-                <div className='flex flex-row items-center justify-end mt-2 size-full'>
-                    <span className='mr-10 text-2xl text-nowrap'>ชื่อเกม</span>
-                    <select defaultValue={dataAuction.game_name} onChange={setAuctionProductGameName} className="select w-80 bg-shadow-grey text-dshadow-black">
-                        <option disabled>เลือกชื่อเกม</option>
-                        {data.map((game) => <option key={game.game_name}>{game.game_name}</option>)}
-                    </select>
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>ราคาเริ่มต้น</span>

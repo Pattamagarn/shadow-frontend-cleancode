@@ -10,6 +10,7 @@ const CountdownTimer = ({ start_time, end_time, email, initialAyselAmount, detai
   const [hour, seHour] = useState('');
   const [minute, setMinute] = useState('');
   const [second, setSecond] = useState('');
+  const navigate = useNavigate()
 
   useEffect(() => {
     setAyselAmount(initialAyselAmount);
@@ -42,9 +43,30 @@ const CountdownTimer = ({ start_time, end_time, email, initialAyselAmount, detai
           setSecond(seconds)
         }
         if (count === finish) {
+<<<<<<< HEAD
           if (email === latestBidderEmail) {
             axios.patch(`${process.env.REACT_APP_API}/update-auction-status/${uuid}`, {
               auction_status: 1
+=======
+          axios.patch(`${process.env.REACT_APP_API}/update-auction-status/${uuid}`, {
+            auction_status: 1
+          })
+            .then((response) => {
+              if (response.data.status) {
+                Swal.fire({
+                  title: 'สำเร็จ',
+                  text: 'สินค้าชิ้นนี้ถูกปิดประมูล',
+                  icon: 'success'
+                })
+                navigate('/transaction')
+              } else {
+                Swal.fire({
+                  title: 'ผิดพลาด',
+                  text: response.data.payload,
+                  icon: 'error'
+                });
+              }
+>>>>>>> 06fb80dc2755b506d73cd83c6666dc270f077c63
             })
               .then((response) => {
                 if (response.data.status) {

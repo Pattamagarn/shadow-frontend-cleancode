@@ -78,11 +78,13 @@ const Home = () => {
 
             {
                 dataGeneral.length === 0 ?
-                    <div className='max-w-full mb-5'>
-                        <div className='btn lg:flex md:hidden sm:hidden relative rounded-3xl max-w-[1200px] py-10 mx-auto overflow-hidden max-h-[500px] hidden bg-gradient-to-r from-shadow-primary to-[#9d09cf]' >
-                            <div className='flex justify-center w-full h-full' >
-                                <div className='flex items-center '>
-                                    <div className='text-5xl font-bold text-shadow-white '>สินค้าทั่วไปยังไม่พร้อมให้บริการ</div>
+                    <div>
+                        <div className='max-w-full mb-5'>
+                            <div className='btn lg:flex md:hidden sm:hidden relative rounded-3xl max-w-[1200px] py-10 mx-auto overflow-hidden max-h-[500px] hidden bg-gradient-to-r from-shadow-primary to-[#9d09cf]' >
+                                <div className='flex justify-center w-full h-full' >
+                                    <div className='flex items-center '>
+                                        <div className='text-5xl font-bold text-shadow-white '>สินค้าทั่วไปยังไม่พร้อมให้บริการ</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

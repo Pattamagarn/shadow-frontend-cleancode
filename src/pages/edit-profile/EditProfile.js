@@ -218,8 +218,8 @@ const EditProfile = () => {
             <Navigation />
             <TitleBox title={'แก้ไขโปรไฟล์'} />
             <div className='flex flex-row w-auto mt-20 place-content-center justify-evenly'>
-                <div className=' flex'>
-                    <div className='grid gap-4  '>
+                <div className='flex '>
+                    <div className='grid gap-4 '>
                         <div className='w-full max-w-sm px-6 pt-2 my-2 rounded-lg bg-neutral ' >{account.email}</div>
                         <label className='input w-full max-w-xs bg-neutral text-[#000000] flex justify-between items-center gap-2'>
                             <input key={account.username} defaultValue={account.username} placeholder='ชื่อผู้ใช้' onChange={handleEditUsername} />
@@ -247,7 +247,11 @@ const EditProfile = () => {
                         ?
                         <div className='flex items-center'>
                             <div>
+<<<<<<< HEAD
                                 <button type='button' onClick={() => document.getElementById('password-required').showModal()} className=' border-none btn btn-ghost hover:bg-shadow-white text-shadow-info'>
+=======
+                                <button type='button' onClick={() => document.getElementById('password-required').showModal()} className='border-none btn btn-ghost hover:bg-shadow-white text-shadow-info'>
+>>>>>>> 06fb80dc2755b506d73cd83c6666dc270f077c63
                                     <Icon icon={'material-symbols:info'} className='text-2xl size-fit text-shadow-info sm:text-4xl hover:text-shadow-hinfo' />
                                 </button>
                             </div>
@@ -270,7 +274,11 @@ const EditProfile = () => {
                         :
                         <div className='flex items-center pt-16'>
                             <div>
+<<<<<<< HEAD
                                 <button type='button' onClick={() => document.getElementById('password-required').showModal()} className=' border-none btn btn-ghost hover:bg-shadow-white text-shadow-info'>
+=======
+                                <button type='button' onClick={() => document.getElementById('password-required').showModal()} className='border-none btn btn-ghost hover:bg-shadow-white text-shadow-info'>
+>>>>>>> 06fb80dc2755b506d73cd83c6666dc270f077c63
                                     <Icon icon={'material-symbols:info'} className='text-2xl size-fit text-shadow-info sm:text-4xl hover:text-shadow-hinfo' />
                                 </button>
                             </div>
@@ -292,7 +300,7 @@ const EditProfile = () => {
                         </div>}
                 </div>
 
-                <div className='flex flex-col justify-center items-center '>
+                <div className='flex flex-col items-center justify-center '>
                     {dataProfile !== '' ?
                         <div className='w-[256px] h-[256px] rounded-full'>
                             <img src={dataProfile} alt={`profile ${account.username}`} title={`${account.username}`} className='w-full h-full rounded-full'></img>

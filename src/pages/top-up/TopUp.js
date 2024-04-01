@@ -99,7 +99,7 @@ const TopUp = () => {
             });
         }
     }
-    
+
     return (
         <div>
             <MetaHeader title={`เติมเงิน`} />
@@ -124,11 +124,16 @@ const TopUp = () => {
             </div>
             <dialog id='image-payment-method' className='modal'>
                 <div className='max-w-5xl modal-box w-svh'>
-                    <span className="text-3xl">ภาพวิธีการชำระเงิน</span>
+                    <span className="text-3xl ">ภาพวิธีการชำระเงิน</span>
                     {
                         imgPayment.information === '' ?
-                            <img src={`${process.env.REACT_APP_PAYMENT_METHOD}payment-method.png`} alt='payment-method' className='size-full h-96' /> :
-                            <img src={`${process.env.REACT_APP_PAYMENT_METHOD}${imgPayment.information}`} alt='payment-method' className='size-full h-96' />
+                            <div className='flex justify-center'>
+                                <img src={`${process.env.REACT_APP_PAYMENT_METHOD}payment-method.png`} alt='payment-method' className='h-96' />
+                            </div>
+                            :
+                            <div className='flex justify-center'>
+                                <img src={`${process.env.REACT_APP_PAYMENT_METHOD}${imgPayment.information}`} alt='payment-method' className='h-96' />
+                            </div>
                     }
 
                     <div className="modal-action">
@@ -142,11 +147,11 @@ const TopUp = () => {
                 <div className='max-w-5xl modal-box w-svh'>
                     <span className="text-3xl">วิดีโอวิธีการชำระเงิน</span>
                     {
-                        videoPayment.information === '' ? 
-                        <iframe src='https://www.youtube.com/embed/smdmEhkIRVc?si=mq3E5TZNz1Qi352p' title="payment-method-video" className='size-full h-96' frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe> :
-                        <iframe src={`${videoPayment.information}`} title="payment-method-video" className='size-full h-96' frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                        videoPayment.information === '' ?
+                            <iframe src='https://www.youtube.com/embed/KEcd278cvRc' title="payment-method-video" className='size-full h-96' frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe> :
+                            <iframe src={`${videoPayment.information}`} title="payment-method-video" className='size-full h-96' frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                     }
-                    
+
                     <div className="modal-action">
                         <form method='dialog'>
                             <button className="btn bg-shadow-error hover:bg-shadow-herror text-shadow-white">ปิด</button>

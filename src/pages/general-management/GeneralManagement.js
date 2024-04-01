@@ -321,6 +321,17 @@ const GeneralManagement = () => {
             cell: (row) => [<Link key={row.uuid} to={`${row.method === 'วิดีโอ' ? `/edit-video-payment-method/${row.uuid}` : `/edit-image-payment-method/${row.uuid}`}`} className='btn border-none bg-[#F8BB86] hover:bg-[#cf9c6f] text-[#FFFFFF]'>เปลี่ยน</Link>]
         },
         {
+            name: 'ลิงก์ภาพ',
+            selector: row => row.information,
+            cell: (row) => [<div className='flex w-full'> 
+                {row.method === 'วิดีโอ' ?
+                    <iframe key={row.uuid} alt={row.uuid} src={row.method === 'วิดีโอ' && row.information === '' ? 'https://www.youtube.com/embed/KEcd278cvRc' : `${row.information}`} /> :
+                <img key={row.uuid} alt={row.uuid} src={row.method === 'วิดีโอ' && row.information === '' ? `${process.env.REACT_APP_PAYMENT_METHOD}payment-method.png` : `${process.env.REACT_APP_PAYMENT_METHOD}${row.information}`} /> }
+
+            </div>
+            ]
+        },
+        {
             name: 'ล้าง',
             selector: row => row.uuid,
             cell: (row) => [<button key={row.uuid} type={`button`} onClick={() => handleDeletePayment(row.uuid, row.method, row.information)} className='btn border-none bg-[#F27474] hover:bg-[#ca6161] text-[#FFFFFF]'>ล้าง</button>]

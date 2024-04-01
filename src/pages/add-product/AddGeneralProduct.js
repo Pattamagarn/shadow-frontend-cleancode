@@ -11,6 +11,7 @@ const AddGeneralProduct = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
     const [data, setData] = useState([])
+    const [dataProduct, setDataProduct] = useState([])
 
     useEffect(() => {
         !isLogin.status && navigate('/')
@@ -24,6 +25,12 @@ const AddGeneralProduct = () => {
                     setData(response.data.payload)
                 }
             })
+        axios.get(`${process.env.REACT_APP_API}/read-redeem-code`)
+            .then((response) => {
+                if (response.data.status) {
+                    setDataProduct(response.data.payload)
+                }
+            })
     }, [])
 
     const [generalProductList, setGeneralProductList] = useState({
@@ -34,7 +41,11 @@ const AddGeneralProduct = () => {
     })
 
     const setGeneralProductProductId = (productId) => {
-        setGeneralProductList({ ...generalProductList, productId: productId.target.value })
+        dataProduct.map((value) => {
+            if (value.product_id === productId.target.value)
+                setGeneralProductList({ ...generalProductList, productId: productId.target.value, name: value.name, description: value.description })
+        })
+
     }
 
     const setGeneralProductGameName = (gameName) => {
@@ -90,29 +101,36 @@ const AddGeneralProduct = () => {
 
     const handleAddGeneralProduct = (event) => {
         event.preventDefault()
-        const formData = new FormData()
-        formData.append('productId', generalProductList.productId)
-        formData.append('gameName', generalProductList.gameName)
-        formData.append('name', generalProductList.name)
-        formData.append('normalPrice', generalProductList.normalPrice)
-        formData.append('specialPrice', generalProductList.specialPrice)
-        formData.append('file', generalProductList.information)
-        formData.append('description', generalProductList.description)
-        axios.post(`${process.env.REACT_APP_API}/create-general-product`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-            withCredentials: true
-        })
-            .then((response) => {
-                if (response.data.status) {
-                    alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
-                    navigate('/product-management')
-                } else {
-                    alertWarning('คำเตือน', response.data.payload, 'ตกลง')
-                }
+        if ((generalProductList.productId === '') || (generalProductList.gameName === '') || (generalProductList.name === '') || (generalProductList.normalPrice === '') || (generalProductList.specialPrice === '') || (generalProductList.description === '')) {
+            alertWarning('คำเตือน', 'กรุณากรอกข้อมูลให้ครบ', 'ตกลง')
+
+        }
+        else {
+            const formData = new FormData()
+            formData.append('productId', generalProductList.productId)
+            formData.append('gameName', generalProductList.gameName)
+            formData.append('name', generalProductList.name)
+            formData.append('normalPrice', generalProductList.normalPrice)
+            formData.append('specialPrice', generalProductList.specialPrice)
+            formData.append('file', generalProductList.information)
+            formData.append('description', generalProductList.description)
+            axios.post(`${process.env.REACT_APP_API}/create-general-product`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+                withCredentials: true
             })
-            .catch((error) => {
-                alertError('ผิดพลาด', `เพิ่มสินค้าล้มเหลว`, 'ตกลง')
-            })
+                .then((response) => {
+                    if (response.data.status) {
+                        alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
+                        navigate('/product-management')
+                    } else {
+                        alertWarning('คำเตือน', response.data.payload, 'ตกลง')
+                    }
+                })
+                .catch((error) => {
+                    alertError('ผิดพลาด', `เพิ่มสินค้าล้มเหลว`, 'ตกลง')
+                })
+        }
+
     }
 
     return (
@@ -130,7 +148,14 @@ const AddGeneralProduct = () => {
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>รหัสสินค้า</span>
-                    <input value={generalProductList.productId} type={'text'} placeholder='รหัสสินค้า' onChange={setGeneralProductProductId} className='input w-80 bg-shadow-grey text-shadow-black' />
+                    <select defaultValue='เลือกรหัสสินค้า' onChange={setGeneralProductProductId} className="select w-80 bg-shadow-grey text-shadow-black">
+                        <option disabled >เลือกรหัสสินค้า</option>
+                        {
+                            dataProduct.map((value) =>
+                                value.game_name === generalProductList.gameName &&
+                                <option key={value.product_id}>{value.product_id}</option>)
+                        }
+                    </select>
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>ชื่อสินค้า</span>

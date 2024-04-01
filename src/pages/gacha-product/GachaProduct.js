@@ -22,6 +22,7 @@ const GachaProduct = () => {
     const [time, setTime] = useState('')
     const [buyBy, setBuyBy] = useState('')
     const [countGuaruntee, setCountGuaruntee] = useState(0)
+    const [dataCountActive, setDataCountActive] = useState(true)
     const rateNormal = []
     const rateSpecial = []
     let gacha = []
@@ -65,7 +66,7 @@ const GachaProduct = () => {
 
 
 
-    }, [])
+    }, [dataCountActive])
     const alertSuccess = (title, text, confirmButtonText) => {
         Swal.fire({
             title: title,
@@ -106,7 +107,6 @@ const GachaProduct = () => {
         dataChanceNormal = []
         dataSpecial = []
         dataChanceSpecial = []
-        // console.log(countsGuaruntee)
         if (parseInt(countsGuaruntee + 1) === parseInt(process.env.REACT_APP_GUARUNTEE)) {
             setCountGuaruntee(0)
             //เอาข้อมูลอัตราการออกของสินค้าจากดาต้าเบส ไว้ใน dataChanceSpecial
@@ -144,8 +144,7 @@ const GachaProduct = () => {
         }
         else {
             if (parseInt(countsGuaruntee + 1) > parseInt(process.env.REACT_APP_GUARUNTEE)) {
-                setCountGuaruntee((countsGuaruntee+1)-(parseInt(process.env.REACT_APP_GUARUNTEE)))
-                // console.log('over set')
+                setCountGuaruntee((countsGuaruntee + 1) - (parseInt(process.env.REACT_APP_GUARUNTEE)))
             }
             //เอาข้อมูลอัตราการออกของสินค้าจากดาต้าเบส ไว้ใน dataChanceNormal
             dataGachaNormal.map((value) => {
@@ -250,22 +249,22 @@ const GachaProduct = () => {
                                                                     game_name: gacha[0].game_name,
                                                                     product_name: gacha[0].name,
                                                                     product_price: process.env.REACT_APP_BUY_ONCE,
-                                                                    buy_method: "สินค้ากาชาแบบสุ่ม1ครั้ง"
+                                                                    buy_method: "สินค้ากาชา"
                                                                 }, { withCredentials: true })
                                                                     .then((response) => {
                                                                         if (response.data.status) {
                                                                             setShowData(gacha)
+                                                                            setDataCountActive(!dataCountActive)
                                                                         }
                                                                     })
                                                                     .catch((error) => {
 
                                                                     })
                                                                 axios.patch(`${process.env.REACT_APP_API}/update-gacha-count/${account.email}`, {
-                                                                    gacha_count: countGuaruntee
+                                                                    gacha_count: countGuaruntee + 1 === parseInt(process.env.REACT_APP_GUARUNTEE) ? parseInt(process.env.REACT_APP_GUARUNTEE) - (countGuaruntee + 1) : countGuaruntee + 1
                                                                 })
                                                                     .then((response) => {
                                                                         if (response.data.status) {
-                                                                            console.log(countGuaruntee)
                                                                         }
                                                                     })
                                                                     .catch((error) => { })
@@ -318,7 +317,6 @@ const GachaProduct = () => {
 
 
     }
-
     const handleBuyTenTime = () => {
         setShowModals(false)
         setShowData([])
@@ -361,6 +359,7 @@ const GachaProduct = () => {
                                 setTimeout(() => {
                                     setTime(10 - index)
                                     handleRateGacha(countGuaruntee + parseInt(index))
+
                                     axios.patch(`${process.env.REACT_APP_API}/update-aysel`, {
                                         email: isLogin.payload.email,
                                         aysel_amount: parseFloat(isLogin.payload.aysel_amount) - parseFloat(process.env.REACT_APP_BUY_TEN)
@@ -386,17 +385,17 @@ const GachaProduct = () => {
                                                                             game_name: gacha[0].game_name,
                                                                             product_name: gacha[0].name,
                                                                             product_price: index === 9 ? 0 : process.env.REACT_APP_BUY_ONCE,
-                                                                            buy_method: "สินค้ากาชาแบบสุ่ม 10 ครั้ง"
+                                                                            buy_method: "สินค้ากาชา"
                                                                         }, { withCredentials: true })
                                                                             .then((response) => {
                                                                                 if (response.data.status) {
-                                                                                    setShowData((previous) => [...previous, gacha])
                                                                                     axios.patch(`${process.env.REACT_APP_API}/update-gacha-count/${account.email}`, {
-                                                                                        gacha_count: countGuaruntee+parseInt(index)
+                                                                                        gacha_count: countGuaruntee + parseInt(index + 1) === parseInt(process.env.REACT_APP_GUARUNTEE) ? parseInt(process.env.REACT_APP_GUARUNTEE) - (countGuaruntee + parseInt(index + 1)) : countGuaruntee + parseInt(index + 1) >= parseInt(process.env.REACT_APP_GUARUNTEE) ? (countGuaruntee + parseInt(index + 1)) - parseInt(process.env.REACT_APP_GUARUNTEE) : countGuaruntee + parseInt(index + 1)
                                                                                     })
                                                                                         .then((response) => {
                                                                                             if (response.data.status) {
-                                                                                                console.log(countGuaruntee)
+                                                                                                setShowData((previous) => [...previous, gacha])
+
                                                                                             }
                                                                                         })
                                                                                         .catch((error) => { })
@@ -418,7 +417,7 @@ const GachaProduct = () => {
                                                         alertError('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
                                                     })
                                             } else {
-                                                alertSuccess('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
+                                                alertError('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
                                             }
                                         })
                                         .catch((error) => {
@@ -428,8 +427,8 @@ const GachaProduct = () => {
 
                                 }, 2000 * index)
                             }
-                            setCountGuaruntee(parseInt(countGuaruntee - parseInt(process.env.REACT_APP_GUARUNTEE)))
-                            
+                            setCountGuaruntee(parseInt(process.env.REACT_APP_GUARUNTEE) - (countGuaruntee))
+
                         }
                         else if (parseFloat(isLogin.payload.aysel_amount) < parseFloat(process.env.REACT_APP_BUY_ONCE)) {
                             Swal.fire({
@@ -453,6 +452,9 @@ const GachaProduct = () => {
                 })
         }
     }
+
+
+
     return (
         <div>
             <MetaHeader title={`สินค้าสุ่มกาชา`} />
@@ -471,9 +473,9 @@ const GachaProduct = () => {
                                 </div>
                             </div>
                         </div>
-                        <Link className='flex justify-center mt-24' to='/'>
-                            <div className='border-none btn bg-shadow-error hover:bg-shadow-herror'>กลับไปหน้าแรก</div>
-                        </Link>
+                        <div className='flex justify-center mt-24' >
+                            <Link className='border-none btn bg-shadow-error hover:bg-shadow-herror' to='/'>กลับไปหน้าแรก</Link>
+                        </div>
                     </div>
                     :
                     <div className='flex flex-col'>
@@ -524,9 +526,12 @@ const GachaProduct = () => {
                         <div className='max-w-full mb-5'>
                             <div className='flex relative  max-w-[1200px] py-10 mx-auto overflow-hidden max-h-[500px] bg-gradient-to-r from-shadow-primary to-[#9d09cf] ' >
                                 <div className='flex justify-center w-full ' >
-                                    <div className='flex items-center'>
+                                    <div className='flex items-center '>
                                         <Icon icon={"game-icons:perspective-dice-six-faces-random"} width={125} className='text-shadow-white' />
-                                        <div className='text-5xl font-bold text-shadow-white'>เริ่มกดสุ่มได้</div>
+                                        <div className='flex flex-col justify-center h-full '>
+                                            <div className='text-5xl font-bold text-shadow-white'>{`เริ่มกดสุ่มได้ `} </div>
+                                            <div className='mt-5 text-xl text-shadow-accent'>{isLogin.status === false ? '' : account.gacha_count === parseInt(process.env.REACT_APP_GUARUNTEE) ? ` (สุ่มอีก ${process.env.REACT_APP_GUARUNTEE} ครั้งการันตี)` : ` (สุ่มอีก ${process.env.REACT_APP_GUARUNTEE - account.gacha_count} ครั้งการันตี)`}</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -575,7 +580,7 @@ const GachaProduct = () => {
                                                                         <div key={id} className='flex justify-center '>
                                                                             {
                                                                                 value.guarantee_status ?
-                                                                                    <div>
+                                                                                    <div className='flex flex-col items-center'>
 
                                                                                         <div className='flex pb-3 my-2'>
                                                                                             <div className='text-3xl font-bold text-shadow-primary'>{`ยินดีด้วย ! คุณได้รับ`}</div>
@@ -583,13 +588,19 @@ const GachaProduct = () => {
                                                                                         <div className='flex border-x-8 border-y-8 rounded-xl border-shadow-accent w-[200px] h-[180px] justify-center bg-'>
                                                                                             <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value.information}`} alt='gacha-product' title={value.name} />
                                                                                         </div>
+                                                                                        <div className='flex justify-center'>
+                                                                                            <div className=' text-shadow-primary'>{value.name}</div>
+                                                                                        </div>
                                                                                     </div> :
-                                                                                    <div>
+                                                                                    <div className='flex flex-col items-center'>
                                                                                         <div className='flex pb-3 my-2'>
                                                                                             <div className='text-3xl font-bold text-shadow-primary'>{`ยินดีด้วย ! คุณได้รับ`}</div>
                                                                                         </div>
                                                                                         <div className='flex border-x-8 border-y-8 rounded-xl border-shadow-primary w-[200px] h-[180px] justify-center bg-'>
                                                                                             <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value.information}`} alt='gacha-product' title={value.name} />
+                                                                                        </div>
+                                                                                        <div >
+                                                                                            <div className=' text-shadow-primary'>{value.name}</div>
                                                                                         </div>
                                                                                     </div>
                                                                             }
@@ -600,8 +611,7 @@ const GachaProduct = () => {
                                                             </div>
                                                             <div className="flex justify-center modal-action">
                                                                 <form method='dialog' className='flex justify-center gap-5'>
-                                                                    <button className="w-full border-none btn bg-shadow-info hover:bg-shadow-hinfo text-shadow-white" onClick={() => { navigate('/transaction') }}>ตกลง</button>
-                                                                    <button className="w-full border-none btn bg-shadow-error hover:bg-shadow-herror text-shadow-white" onClick={() => { setShowModals(false) }}>ปิด</button>
+                                                                    <button className="w-full border-none btn bg-shadow-info hover:bg-shadow-hinfo text-shadow-white" onClick={() => { setShowModals(false) }}>ตกลง</button>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -632,16 +642,21 @@ const GachaProduct = () => {
                                                                             <div key={id} className='flex'>
                                                                                 {
                                                                                     value[0].guarantee_status ?
-                                                                                        <div>
-
+                                                                                        <div className='flex flex-col items-center'>
                                                                                             <div className='flex border-x-8 border-y-8 rounded-xl border-shadow-accent w-[170px] h-[160px] justify-center bg-'>
                                                                                                 <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value[0].information}`} alt='gacha-product' title={value[0].name} />
                                                                                             </div>
+                                                                                            <div>
+                                                                                                <div className='text-shadow-primary'>{value[0].name}</div>
+                                                                                            </div>
                                                                                         </div> :
-                                                                                        <div>
+                                                                                        <div className='flex flex-col items-center'>
 
                                                                                             <div className='flex border-x-8 border-y-8 rounded-xl border-shadow-primary w-[160px] h-[160px] justify-center bg-'>
                                                                                                 <img src={`${process.env.REACT_APP_GACHA_PRODUCT}${value[0].information}`} alt='gacha-product' title={value[0].name} />
+                                                                                            </div>
+                                                                                            <div>
+                                                                                                <div className='text-shadow-primary'>{value[0].name}</div>
                                                                                             </div>
                                                                                         </div>
                                                                                 }
@@ -652,8 +667,7 @@ const GachaProduct = () => {
                                                                 </div>
                                                                 <div className="flex justify-center modal-action">
                                                                     <form method='dialog' className='flex justify-center gap-5'>
-                                                                        <button className="w-full border-none btn bg-shadow-info hover:bg-shadow-hinfo text-shadow-white" onClick={() => { navigate('/transaction') }}>ตกลง</button>
-                                                                        <button className="w-full border-none btn bg-shadow-error hover:bg-shadow-herror text-shadow-white" onClick={() => { setShowModals(false) }}>ปิด</button>
+                                                                        <button className="w-full border-none btn bg-shadow-info hover:bg-shadow-hinfo text-shadow-white" onClick={() => { setShowModals(false); setDataCountActive(!dataCountActive) }}>ตกลง</button>
                                                                     </form>
                                                                 </div>
                                                             </div>

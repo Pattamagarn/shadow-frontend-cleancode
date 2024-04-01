@@ -11,6 +11,7 @@ const AddGachaProduct = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const navigate = useNavigate()
     const [data, setData] = useState([])
+    const [dataProduct, setDataProduct] = useState([])
 
     useEffect(() => {
         !isLogin.status && navigate('/')
@@ -27,6 +28,12 @@ const AddGachaProduct = () => {
             .catch((error) => {
                 console.log(error)
             })
+        axios.get(`${process.env.REACT_APP_API}/read-redeem-code`)
+            .then((response) => {
+                if (response.data.status) {
+                    setDataProduct(response.data.payload)
+                }
+            })
     }, [])
 
     const [gachaProductList, setGachaProductList] = useState({
@@ -37,7 +44,10 @@ const AddGachaProduct = () => {
     })
 
     const setGachaProductProductId = (productId) => {
-        setGachaProductList({ ...gachaProductList, productId: productId.target.value })
+        dataProduct.map((value) => {
+            if (value.product_id === productId.target.value)
+                setGachaProductList({ ...gachaProductList, productId: productId.target.value, name: value.name, description: value.description })
+        })
     }
 
     const setGachaProductGameName = (gameName) => {
@@ -93,29 +103,35 @@ const AddGachaProduct = () => {
 
     const handleAddGachaProduct = (event) => {
         event.preventDefault()
-        const formData = new FormData()
-        formData.append('productId', gachaProductList.productId)
-        formData.append('gameName', gachaProductList.gameName)
-        formData.append('name', gachaProductList.name)
-        formData.append('chance', gachaProductList.chance)
-        formData.append('guaranteeStatus', gachaProductList.guaranteeStatus)
-        formData.append('file', gachaProductList.information)
-        formData.append('description', gachaProductList.description)
-        axios.post(`${process.env.REACT_APP_API}/create-gacha-product`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-            withCredentials: true
-        })
-            .then((response) => {
-                if (response.data.status) {
-                    alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
-                    navigate('/product-management')
-                } else {
-                    alertWarning('คำเตือน', response.data.payload, 'ตกลง')
-                }
+        if ((gachaProductList.productId === '') || (gachaProductList.gameName === '') || (gachaProductList.name === '') || (gachaProductList.chance === '') || (gachaProductList.description === '')) {
+            alertWarning('คำเตือน', 'กรุณากรอกข้อมูลให้ครบ', 'ตกลง')
+        }
+        else {
+            const formData = new FormData()
+            formData.append('productId', gachaProductList.productId)
+            formData.append('gameName', gachaProductList.gameName)
+            formData.append('name', gachaProductList.name)
+            formData.append('chance', gachaProductList.chance)
+            formData.append('guaranteeStatus', gachaProductList.guaranteeStatus)
+            formData.append('file', gachaProductList.information)
+            formData.append('description', gachaProductList.description)
+            axios.post(`${process.env.REACT_APP_API}/create-gacha-product`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+                withCredentials: true
             })
-            .catch((error) => {
-                alertError('ผิดพลาด', `เพิ่มสินค้าล้มเหลว`, 'ตกลง')
-            })
+                .then((response) => {
+                    if (response.data.status) {
+                        alertSuccess('สำเร็จ', response.data.payload, 'ตกลง')
+                        navigate('/product-management')
+                    } else {
+                        alertWarning('คำเตือน', response.data.payload, 'ตกลง')
+                    }
+                })
+                .catch((error) => {
+                    alertError('ผิดพลาด', `เพิ่มสินค้าล้มเหลว`, 'ตกลง')
+                })
+        }
+
     }
 
     return (
@@ -133,7 +149,14 @@ const AddGachaProduct = () => {
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>รหัสสินค้า</span>
-                    <input value={gachaProductList.productId} type={'text'} placeholder='รหัสสินค้า' onChange={setGachaProductProductId} className='input w-80 bg-shadow-grey text-shadow-black' />
+                    <select defaultValue='เลือกรหัสสินค้า' onChange={setGachaProductProductId} className="select w-80 bg-shadow-grey text-shadow-black">
+                        <option disabled >เลือกรหัสสินค้า</option>
+                        {
+                            dataProduct.map((value) =>
+                                value.game_name === gachaProductList.gameName &&
+                                <option key={value.product_id}>{value.product_id}</option>)
+                        }
+                    </select>
                 </div>
                 <div className='flex flex-row items-center justify-end mt-2 size-full'>
                     <span className='mr-10 text-2xl text-nowrap'>ชื่อสินค้า</span>
