@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
+import { combineSlices } from '@reduxjs/toolkit'
 
 const Analysis = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
@@ -45,16 +46,32 @@ const Analysis = () => {
                 }
             })
 
-        axios.get(`${process.env.REACT_APP_API}/read-history-product`)
+        axios.get(`${process.env.REACT_APP_API}/read-sum-aysel`)
         .then((response) => {
             if(response.data.status){
-                setAysel(response.data.payload.map((value) => {
-                    return {...value}
-                }))
+                setAysel(response.data.payload[0].sum_aysel)
             }
         })
+        .catch((error)=> {} )
+
+        axios.get(`${process.env.REACT_APP_API}/read-sum-cash`)
+        .then((response) => {
+            if(response.data.status){
+                setAmount(response.data.payload[0].sum_cash)
+            }
+        })
+        .catch((error)=> {} )
+
+        axios.get(`${process.env.REACT_APP_API}/read-sum-buy-items`)
+        .then((response) => {
+            if(response.data.status){
+                setProduct(response.data.payload[0].sumBuyItem)
+            }
+        })
+        .catch((error)=> {} )
+        
+
     },[])
-    
     
     const [top_product, setTop_product] = ([])
     const columns_top_product = [
@@ -87,7 +104,6 @@ const Analysis = () => {
             ]
         },
     ]
-
     return (
         <div>
             <MetaHeader title={`วิเคราะห์ข้อมูล`} />
@@ -98,9 +114,9 @@ const Analysis = () => {
                     <span>จำนวนบัญชีทั้งหมดในระบบ {dataMember.length} บัญชี</span>
                     <span>จำนวนบัญชีผู้ดูแลระบบทั้งหมดในระบบ {dataMemberAdmin} บัญชี</span>
                     <span>จำนวนบัญชีสมาชิกทั้งหมดในระบบ { dataMemberUser} บัญชี</span>
-                    <span>จำนวน Aysel ที่ขายไปทั้งหมด {aysel} Aysel</span>
-                    <span>จำนวนเงินที่ได้รับทั้งหมด {amount} บาท</span>
-                    <span>จำนวนสินค้าที่ขายไปทั้งหมด {product} ชิ้น</span>
+                    <span>จำนวน Aysel ที่ขายไปทั้งหมด {aysel === null ? 0 : aysel} Aysel</span>
+                    <span>จำนวนเงินที่ได้รับทั้งหมด {amount === null ? 0 : amount} บาท</span>
+                    <span>จำนวนสินค้าที่ขายไปทั้งหมด {product === null ? 0 : product} ชิ้น</span>
                 </div>
                 <TitleBox title={'10 อันดับของขายดีประจำวัน'} />
                 <div className='mx-32 mb-10'>
