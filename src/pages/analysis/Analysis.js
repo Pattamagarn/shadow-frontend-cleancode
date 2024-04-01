@@ -4,10 +4,9 @@ import TitleBox from '../../components/title-box/TitleBox'
 import DataTable from 'react-data-table-component'
 import { Icon } from '@iconify/react'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
-import { combineSlices } from '@reduxjs/toolkit'
 
 const Analysis = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
@@ -15,9 +14,11 @@ const Analysis = () => {
     const [dataMember, setDataMember] = useState([])
     const [dataMemberAdmin, setDataMemberAdmin] = useState(0)
     const [dataMemberUser, setDataMemberUser] = useState(0)
+    const [top_product, setTop_product] = useState([])
     const [aysel, setAysel] = useState([])
     const [amount, setAmount] = useState([])
     const [product, setProduct] = useState([])
+    
 
     useEffect(() => {
         !isLogin.status && navigate('/')
@@ -70,14 +71,22 @@ const Analysis = () => {
         })
         .catch((error)=> {} )
         
+        axios.get(`${process.env.REACT_APP_API}/read-top-10`)
+        .then((response) => {
+            if(response.data.status){
+                setTop_product(response.data.payload.map((value,index) => {
+                    return {...value,index:index+1}
+                }))
+            }
+        })
+        .catch((error) => {})
 
     },[])
     
-    const [top_product, setTop_product] = ([])
     const columns_top_product = [
         {
             name: 'ลำดับ',
-            selector: row => row.id,
+            selector: row => row.index,
             sortable: true
         },
         {
@@ -86,21 +95,18 @@ const Analysis = () => {
         },
         {
             name: 'ชื่อสินค้า',
-            selector: row => row.product,
+            selector: row => row.product_name,
 
         },
         {
             name: 'จำนวน',
-            selector: row => row.amount,
+            selector: row => row.count,
 
         },
         {
             name: 'ประมูลด่วน',
             selector: row => row.auction,
-            cell: (d) => [<button
-                key={d.title}>
-                <Icon icon={"mingcute:auction-line"} className='text-[#000000]' width={25} height={25} />
-            </button>
+            cell: (row) => [<Link key={row.index} to={`/add-auction-product/${row.product_name}`}>{console.log(row.product_name)}<Icon key={row.index} icon={"mingcute:auction-line"} className='text-[#000000]' width={25} height={25} /></Link>
             ]
         },
     ]

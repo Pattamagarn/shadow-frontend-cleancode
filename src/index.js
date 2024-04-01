@@ -65,6 +65,7 @@ root.render(
           <Route exact path='/general-management' element={<GeneralManagement />} />
           <Route exact path='/member-management' element={<MemberManagement />} />
           <Route exact path='/product-management' element={<ProductManagement />} />
+          <Route exact path='/add-auction-product/:namenow' element={<AddAuctionProduct />} />
           <Route exact path='/add-auction-product' element={<AddAuctionProduct />} />
           <Route exact path='/add-banner' element={<AddBanner />} />
           <Route exact path='/add-gacha-product' element={<AddGachaProduct />} />
