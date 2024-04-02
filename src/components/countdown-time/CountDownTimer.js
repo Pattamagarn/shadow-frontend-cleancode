@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'
+import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid, game_name, product_name, product_price, buy_method, product_id }) => {
+const CountdownTimer = ({ start_time, end_time, email, initialAyselAmount, detail, uuid, game_name, product_name, product_price, buy_method, product_id, latestBidderEmail }) => {
+  const [ayselAmount, setAyselAmount] = useState(initialAyselAmount);
   const [day, setDay] = useState('');
   const [hour, seHour] = useState('');
   const [minute, setMinute] = useState('');
   const [second, setSecond] = useState('');
   const navigate = useNavigate()
+
+  useEffect(() => {
+    setAyselAmount(initialAyselAmount);
+  }, [initialAyselAmount]);
 
   useEffect(() => {
     const targetDateTime = new Date(end_time);
@@ -37,90 +42,123 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid
           setSecond(seconds)
         }
         if (count === finish) {
-          axios.patch(`${process.env.REACT_APP_API}/update-auction-status/${uuid}`, {
-            auction_status: 1
-          })
-            .then((response) => {
-              if (response.data.status) {
-                Swal.fire({
-                  title: 'สำเร็จ',
-                  text: 'สินค้าชิ้นนี้ถูกปิดประมูล',
-                  icon: 'success'
-                })
-                navigate('/transaction')
-              } else {
-                Swal.fire({
-                  title: 'ผิดพลาด',
-                  text: response.data.payload,
-                  icon: 'error'
-                });
-              }
+          if (email === latestBidderEmail) {
+            axios.patch(`${process.env.REACT_APP_API}/update-auction-status/${uuid}`, {
+              auction_status: 1
             })
-            .catch((error) => {
-              Swal.fire({
-                title: 'ผิดพลาด',
-                text: 'แก้ไขสถานะล้มเหลว',
-                icon: 'error'
-              });
-            })
-          axios.patch(`${process.env.REACT_APP_API}/update-aysel`, {
-            email: email,
-            aysel_amount: ayselAmount
-          }, {
-            withCredentials: true
-          })
-            .then((response) => {
-              if (response.data.status) {
-                // console.log("Update Aysel finish")
-              } else {
-                // console.log("Warning")
-              }
-            })
-            .catch((error) => {
-              console.log(error)
-            })
-          axios.post(`${process.env.REACT_APP_API}/create-store-product`, {
-            email: email,
-            method_uuid: product_id,
-            game_name: game_name,
-            product_name: product_name,
-            used_status: 0
-          }, { withCredentials: true })
-            .then((response) => {
-              if (response.data.status) {
-                // console.log("สร้างสินค้าในคลังสำเร็จ")
-                axios.get(`${process.env.REACT_APP_API}/read-lasted-store-product`, { withCredentials: true })
-                  .then((response) => {
-                    if (response.data.status) {
-                      axios.post(`${process.env.REACT_APP_API}/create-history-product`, {
-                        email: email,
-                        game_name: game_name,
-                        product_name: product_name,
-                        product_price: product_price,
-                        buy_method: buy_method
-                      }, { withCredentials: true })
-                        .then((response) => {
-                          if (response.data.status) {
-                            // navigate('/transaction')
-                          } else {
-                            // console.log("Error")
-                          }
-                        })
-                        .catch((error) => {
-                          console.log(error)
-                        })
+              .then((response) => {
+                if (response.data.status) {
+                  Swal.fire({
+                    title: 'หมดเวลาประมูล',
+                    text: 'สินค้าชิ้นนี้ปิดประมูลเรียบร้อยแล้ว',
+                    icon: 'success',
+                    confirmButtonText: 'ตกลง'
+                  })
+                  .then((result) => {
+                    if(result.isConfirmed){
+                      navigate('/transaction')
                     }
                   })
-                  .catch((error) => {
-                    console.log(error)
-                  })
-              } else {
-                console.log("สร้างสินค้าในไม่คลังสำเร็จ")
-              }
+                } else {
+                  Swal.fire({
+                    title: 'ผิดพลาด',
+                    text: 'ไม่สามารถปิดประมูลสินค้าได้',
+                    icon: 'error'
+                  });
+                }
+              })
+              .catch((error) => {
+                Swal.fire({
+                  title: 'ผิดพลาด',
+                  text: 'ไม่สามารถปิดประมูลสินค้าได้',
+                  icon: 'error'
+                });
+              })
+            axios.patch(`${process.env.REACT_APP_API}/update-aysel`, {
+              email: email,
+              aysel_amount: ayselAmount
+            }, {
+              withCredentials: true
             })
-            .catch((error) => {
-              console.log(error)
+              .then((response) => {
+                if (response.data.status) {
+                  // console.log("Update Aysel finish")
+                } else {
+                  // console.log("Warning")
+                }
+              })
+              .catch((error) => {
+                console.log(error)
+              })
+            axios.post(`${process.env.REACT_APP_API}/create-store-product`, {
+              email: email,
+              method_uuid: product_id,
+              game_name: game_name,
+              product_name: product_name,
+              used_status: 0
+            }, { withCredentials: true })
+              .then((response) => {
+                if (response.data.status) {
+                  // console.log("สร้างสินค้าในคลังสำเร็จ")
+                  axios.get(`${process.env.REACT_APP_API}/read-lasted-store-product`, { withCredentials: true })
+                    .then((response) => {
+                      if (response.data.status) {
+                        axios.post(`${process.env.REACT_APP_API}/create-history-product`, {
+                          email: email,
+                          game_name: game_name,
+                          product_name: product_name,
+                          product_price: product_price,
+                          buy_method: buy_method
+                        }, { withCredentials: true })
+                          .then((response) => {
+                            if (response.data.status) {
+                              // navigate('/transaction')
+                            } else {
+                              // console.log("Error")
+                            }
+                          })
+                          .catch((error) => {
+                            console.log(error)
+                          })
+                      }
+                    })
+                    .catch((error) => {
+                      console.log(error)
+                    })
+                } else {
+                  console.log("สร้างสินค้าในไม่คลังสำเร็จ")
+                }
+              })
+              .catch((error) => {
+                console.log(error)
+              })
+          } else {
+            axios.patch(`${process.env.REACT_APP_API}/update-auction-status/${uuid}`, {
+              auction_status: 1
             })
+              .then((response) => {
+                if (response.data.status) {
+                  Swal.fire({
+                    title: 'หมดเวลาประมูล',
+                    text: 'สินค้าชิ้นนี้ปิดประมูลเรียบร้อยแล้ว',
+                    icon: 'success'
+                  });
+                } else {
+                  Swal.fire({
+                    title: 'ผิดพลาด',
+                    text: 'ไม่สามารถปิดประมูลสินค้าได้',
+                    icon: 'error'
+                  });
+                }
+              })
+              .catch((error) => {
+                Swal.fire({
+                  title: 'ผิดพลาด',
+                  text: 'ไม่สามารถปิดประมูลสินค้าได้',
+                  icon: 'error'
+                });
+              })
+          }
         }
         if (distance <= 0) {
           clearInterval(interval);
@@ -132,7 +170,7 @@ const CountdownTimer = ({ start_time, end_time, email, ayselAmount, detail, uuid
     return () => {
       clearInterval(interval);
     };
-  });
+  }, [start_time, end_time, email, ayselAmount, uuid, game_name, product_name, product_price, buy_method, product_id, latestBidderEmail]);
 
 
   return (

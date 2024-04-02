@@ -58,7 +58,7 @@ const StoreProduct = () => {
         {
             name: 'สถานะ',
             selector: row => row.used_status,
-            cell : (row) => [row.used_status ? 'ใช้งานแล้ว' : 'ยังไม่ได้ใช้งาน']
+            cell : (row) => [row.used_status ? <div key={row.uuid}>ใช้งานแล้ว</div> : <div>ยังไม่ได้ใช้งาน</div>]
 
         },
         {
@@ -70,7 +70,7 @@ const StoreProduct = () => {
         {
             name: 'ซ่อน',
             // selector: i,
-            cell: (row) => [<div key={row.uuid} className='btn btn-ghost' onClick={() => toggleHide(row.uuid)} >{isHidden(row.uuid) ? <Icon icon={"mdi:show"} key={row.uuid} className='text-3xl text-shadow-primary' /> : <Icon icon={"mdi:hide"} key={row.uuid}  className='text-3xl text-shadow-primary' /> }</div>]
+            cell: (row) => [<div key={row.uuid} className='btn btn-ghost' onClick={() => toggleHide(row.uuid)} > {isHidden(row.uuid) ? <Icon icon={"mdi:show"} key={row.uuid} className='text-3xl text-shadow-primary' /> : <Icon icon={"mdi:hide"} key={row.uuid}  className='text-3xl text-shadow-primary' /> }</div>]
         },
     ]
 

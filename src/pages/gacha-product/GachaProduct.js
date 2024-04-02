@@ -2,7 +2,7 @@ import MetaHeader from '../../components/meta-header/MetaHeader'
 import Navigation from '../../components/navigation/Navigation'
 import TitleBox from '../../components/title-box/TitleBox'
 import { Icon } from '@iconify/react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
@@ -11,7 +11,6 @@ import Swal from 'sweetalert2'
 
 
 const GachaProduct = () => {
-    const { uuid } = useParams()
     const navigate = useNavigate()
     const isLogin = useSelector((state) => state.isLogin.isLogin)
     const [account, setAccount] = useState([])

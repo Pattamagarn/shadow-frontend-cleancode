@@ -26,7 +26,6 @@ const EditProfile = () => {
     const atLeastOneNumeric = /[0-9]/g
     const atLeastOneSpecialChar = /[#?!@$%^&*-]/g
     const eightCharsOrMore = /.{8,}/g
-    const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
     const [passwordRequireMent, setPasswordRequireMent] = useState({ minimumLength: false, alphabetLower: false, alphabetUpper: false, number: false, special: false })
 
     useEffect(() => {
@@ -115,6 +114,18 @@ const EditProfile = () => {
                     })
                 } else { // already input old password
                     event.preventDefault()
+                    if (!passwordRequireMent.minimumLength || !passwordRequireMent.alphabetLower || !passwordRequireMent.alphabetUpper || !passwordRequireMent.number || !passwordRequireMent.special) {
+                        alertWarning('คำเตือน', (!passwordRequireMent.minimumLength) ?
+                            'ต้องการความยาวรหัสผ่านอย่างน้อย 8 ตัว' :
+                            (!passwordRequireMent.alphabetLower) ?
+                                'ต้องการตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว' :
+                                (!passwordRequireMent.alphabetUpper) ?
+                                    'ต้องการตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว' :
+                                    (!passwordRequireMent.number) ?
+                                        'ต้องการตัวเลขอย่างน้อย 1 ตัว' :
+                                        (!passwordRequireMent.special) &&
+                                        'ต้องการตัวอักษรพิเศษอย่างน้อย 1 ตัว', 'ตกลง')
+                    }
                     updatePasswordAccount(account.email, password.oldPassword, password.newPassword, alertSuccess, alertError, alertWarning)
                 }
             }
@@ -198,7 +209,7 @@ const EditProfile = () => {
 
         }
         else {
-            console.log('nothing')
+            // console.log('nothing')
         }
     }
     return (

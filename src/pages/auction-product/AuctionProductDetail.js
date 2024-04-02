@@ -17,24 +17,43 @@ const AuctionProductDetail = () => {
     const [dataAuction, setDataAuction] = useState([])
     const [account, setAccount] = useState({ email: '', amount: '' })
     const [offer, setOffer] = useState('')
-
+    const [updateBid, setUpdateBid] = useState(false)
+    const [latestBidderUsername, setLatestBidderUsername] = useState('');
 
     useEffect(() => {
         isLogin.status && isLogin.payload.role !== 0 && navigate('/')
         if (isLogin.status && isLogin.payload.role === 0) {
             setAccount({ ...account, email: isLogin.payload.email, amount: isLogin.payload.aysel_amount })
         }
-    }, [isLogin,account, navigate])
+    }, [isLogin, navigate])
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API}/read-auction-product-uuid/${uuid}`)
-            .then((response) => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_API}/read-auction-product-uuid/${uuid}`);
                 if (response.data.status) {
-                    setDataAuction(response.data.payload[0])
+                    setDataAuction(response.data.payload[0]);
+                    if (response.data.payload[0].latest_bidder) {
+                        const usernameResponse = await axios.get(`${process.env.REACT_APP_API}/read-username-by-email/${response.data.payload[0].latest_bidder}`);
+                        if (usernameResponse.data.status) {
+                            setLatestBidderUsername(usernameResponse.data.payload[0].username);
+                        }
+                    }
                 }
-            })
-            .catch((error) => { })
-    }, [uuid])
+            } catch (error) {
+                console.log(error)
+            }
+        };
+    
+        fetchData(); 
+    
+        const interval = setInterval(fetchData, 1000); 
+    
+        return () => {
+            clearInterval(interval); 
+        };
+    }, [uuid]);
+    
 
     const handleInputChange = (event) => {
         try {
@@ -45,10 +64,10 @@ const AuctionProductDetail = () => {
                 setOffer(parseInt(event.target.value))
             }
         }
-        catch(error) {
+        catch (error) {
             setOffer(event.target.value)
         }
-        
+
     }
 
     const handlePlus = () => {
@@ -91,7 +110,7 @@ const AuctionProductDetail = () => {
             const bid = offer
             const newPrice = parseInt(defaultPrice) + parseInt(bid)
             const ayselAmount = isLogin.payload.aysel_amount
-            const user = isLogin.payload.username
+            const user = isLogin.payload.email
             if (bid === '') {
                 Swal.fire({
                     title: 'กรุณาใส่จำนวนที่ต้องการประมูล?',
@@ -149,7 +168,8 @@ const AuctionProductDetail = () => {
         })
             .then((result) => {
                 if (result.isConfirmed) {
-                    navigate('/transaction')
+                    setUpdateBid(!updateBid)
+                    // navigate('/transaction')
                 }
             })
     }
@@ -182,9 +202,9 @@ const AuctionProductDetail = () => {
                     <CountdownTimer
                         start_time={dataAuction.start_time}
                         end_time={dataAuction.end_time}
-                        detail={false}
                         email={account.email}
-                        ayselAmount={parseFloat(account.amount) - parseFloat(dataAuction.default_price)}
+                        initialAyselAmount={parseFloat(account.amount) - parseFloat(dataAuction.default_price)}
+                        detail={false}
 
                         uuid={dataAuction.uuid}
                         game_name={dataAuction.game_name}
@@ -192,6 +212,7 @@ const AuctionProductDetail = () => {
                         product_price={dataAuction.default_price}
                         buy_method="สินค้าประมูล"
                         product_id={dataAuction.product_id}
+                        latestBidderEmail={dataAuction.latest_bidder}
                     />
                 </div>
                 <div className='flex items-center justify-center md:grid-cols-2 lg:w-full sm:grid-cols-1'>
@@ -248,7 +269,7 @@ const AuctionProductDetail = () => {
                         </div>
                         <div className='flex gap-5'>
                             <span className='text-3xl text-shadow-primary'>โดย</span>
-                            <span className='text-3xl font-semibold text-shadow-primary'>{dataAuction.latest_bidder}</span>
+                            <span className='text-3xl font-semibold text-shadow-primary'>{latestBidderUsername}</span>
                         </div>
                     </div>
                     <div className='flex flex-col w-full h-full '>
