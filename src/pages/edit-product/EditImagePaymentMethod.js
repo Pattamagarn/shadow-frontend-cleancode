@@ -30,6 +30,8 @@ const EditImagePaymentMethod = () => {
             icon: 'success',
             confirmButtonText: confirmButtonText
         })
+        navigate('/general-management')
+        
     }
 
     const alertError = (title, text, confirmButtonText) => {
@@ -39,6 +41,7 @@ const EditImagePaymentMethod = () => {
             icon: 'error',
             confirmButtonText: confirmButtonText
         })
+       
     }
 
     const alertWarning = (title, text, confirmButtonText) => {

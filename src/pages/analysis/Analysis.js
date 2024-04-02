@@ -50,7 +50,7 @@ const Analysis = () => {
         axios.get(`${process.env.REACT_APP_API}/read-sum-aysel`)
         .then((response) => {
             if(response.data.status){
-                setAysel(response.data.payload[0].sum_aysel)
+                setAysel(response.data.payload[0].sumAysel)
             }
         })
         .catch((error)=> {} )
@@ -58,7 +58,7 @@ const Analysis = () => {
         axios.get(`${process.env.REACT_APP_API}/read-sum-cash`)
         .then((response) => {
             if(response.data.status){
-                setAmount(response.data.payload[0].sum_cash)
+                setAmount(response.data.payload[0].sumCash)
             }
         })
         .catch((error)=> {} )
@@ -110,7 +110,6 @@ const Analysis = () => {
             ]
         },
     ]
-
 
     return (
         <div>

@@ -60,7 +60,7 @@ const GeneralManagement = () => {
                 }
             })
             .catch((error) => { })
-    }, [])
+    }, [dataPaymentMethodActive])
 
     const handleDeleteBanner = (uuid) => {
         Swal.fire({
@@ -326,7 +326,7 @@ const GeneralManagement = () => {
             cell: (row) => [<div className='flex w-full'> 
                 {row.method === 'วิดีโอ' ?
                     <iframe key={row.uuid} alt={row.uuid} src={row.method === 'วิดีโอ' && row.information === '' ? 'https://www.youtube.com/embed/KEcd278cvRc' : `${row.information}`} /> :
-                <img key={row.uuid} alt={row.uuid} src={row.method === 'วิดีโอ' && row.information === '' ? `${process.env.REACT_APP_PAYMENT_METHOD}payment-method.png` : `${process.env.REACT_APP_PAYMENT_METHOD}${row.information}`} /> }
+                <img key={row.uuid} alt={row.uuid} src={row.method === 'รูปภาพ' && row.information === '' ? `${process.env.REACT_APP_PAYMENT_METHOD}payment-method.png` : `${process.env.REACT_APP_PAYMENT_METHOD}${row.information}`} /> }
 
             </div>
             ]
