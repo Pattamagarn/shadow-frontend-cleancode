@@ -60,7 +60,7 @@ const GeneralProduct = () => {
                                 <DropDown data={dataGeneral} type={'general'} setData={setDataGeneral} />
                                 <label className="flex items-center self-center gap-2 input input-bordered input-md size-fit">
                                     <Icon icon={"material-symbols:search"} className='text-xl' />
-                                    <input type="text" placeholder="ชื่อสินค้าหรือชื่อเกม" onChange={filterDataGeneral} />
+                                    <input type="text" placeholder="ชื่อเกมหรือชื่อสินค้า" onChange={filterDataGeneral} />
                                 </label>
                             </div>
                         </div>

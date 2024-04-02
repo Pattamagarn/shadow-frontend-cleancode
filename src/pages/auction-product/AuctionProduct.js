@@ -58,7 +58,7 @@ const AuctionProduct = () => {
                                 <DropDown data={dataAuction} type={'auction'} setData={setDataAuction} />
                                 <label className="flex items-center self-center gap-2 input input-bordered input-md size-fit">
                                     <Icon icon={"material-symbols:search"} className='text-xl' />
-                                    <input type="text" placeholder="ชื่อเกม" onChange={filterDataAuction} />
+                                    <input type="text" placeholder="ชื่อเกมหรือชื่อสินค้า" onChange={filterDataAuction} />
                                 </label>
                             </div>
                         </div>

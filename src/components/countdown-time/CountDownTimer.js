@@ -60,19 +60,19 @@ const CountdownTimer = ({ start_time, end_time, email, initialAyselAmount, detai
                     }
                   })
                 } else {
-                  Swal.fire({
-                    title: 'ผิดพลาด',
-                    text: 'ไม่สามารถปิดประมูลสินค้าได้',
-                    icon: 'error'
-                  });
+                  // Swal.fire({
+                  //   title: 'ผิดพลาด',
+                  //   text: 'ไม่สามารถปิดประมูลสินค้าได้',
+                  //   icon: 'error'
+                  // });
                 }
               })
               .catch((error) => {
-                Swal.fire({
-                  title: 'ผิดพลาด',
-                  text: 'ไม่สามารถปิดประมูลสินค้าได้',
-                  icon: 'error'
-                });
+                // Swal.fire({
+                //   title: 'ผิดพลาด',
+                //   text: 'ไม่สามารถปิดประมูลสินค้าได้',
+                //   icon: 'error'
+                // });
               })
             axios.patch(`${process.env.REACT_APP_API}/update-aysel`, {
               email: email,
@@ -88,7 +88,7 @@ const CountdownTimer = ({ start_time, end_time, email, initialAyselAmount, detai
                 }
               })
               .catch((error) => {
-                console.log(error)
+                // console.log(error)
               })
             axios.post(`${process.env.REACT_APP_API}/create-store-product`, {
               email: email,
@@ -126,11 +126,11 @@ const CountdownTimer = ({ start_time, end_time, email, initialAyselAmount, detai
                       console.log(error)
                     })
                 } else {
-                  console.log("สร้างสินค้าในไม่คลังสำเร็จ")
+                  // console.log("สร้างสินค้าในไม่คลังสำเร็จ")
                 }
               })
               .catch((error) => {
-                console.log(error)
+                // console.log(error)
               })
           } else {
             axios.patch(`${process.env.REACT_APP_API}/update-auction-status/${uuid}`, {
@@ -142,13 +142,14 @@ const CountdownTimer = ({ start_time, end_time, email, initialAyselAmount, detai
                     title: 'หมดเวลาประมูล',
                     text: 'สินค้าชิ้นนี้ปิดประมูลเรียบร้อยแล้ว',
                     icon: 'success'
-                  });
+                  })
+                  navigate('/')
                 } else {
-                  Swal.fire({
-                    title: 'ผิดพลาด',
-                    text: 'ไม่สามารถปิดประมูลสินค้าได้',
-                    icon: 'error'
-                  });
+                  // Swal.fire({
+                  //   title: 'ผิดพลาด',
+                  //   text: 'ไม่สามารถปิดประมูลสินค้าได้',
+                  //   icon: 'error'
+                  // });
                 }
               })
               .catch((error) => {

@@ -458,7 +458,7 @@ const GachaProduct = () => {
     return (
         <div>
             <MetaHeader title={`สินค้าสุ่มกาชา`} />
-            <Navigation />
+            <Navigation refresh={!dataCountActive} />
             <TitleBox title={'สินค้าสุ่มกาชา'} />
             {
                 dataGacha.length === 0 ?
@@ -611,7 +611,7 @@ const GachaProduct = () => {
                                                             </div>
                                                             <div className="flex justify-center modal-action">
                                                                 <form method='dialog' className='flex justify-center gap-5'>
-                                                                    <button className="w-full border-none btn bg-shadow-info hover:bg-shadow-hinfo text-shadow-white" onClick={() => { setShowModals(false) }}>ตกลง</button>
+                                                                    <button className="w-full border-none btn bg-shadow-info hover:bg-shadow-hinfo text-shadow-white" onClick={() => { setShowModals(false); setDataCountActive(!dataCountActive) }}>ตกลง</button>
                                                                 </form>
                                                             </div>
                                                         </div>

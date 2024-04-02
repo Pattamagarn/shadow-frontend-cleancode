@@ -58,7 +58,7 @@ const PromotionProduct = () => {
                                 <DropDown data={dataPromotion} type={'promotion'} setData={setDataPromotion} />
                                 <label className="flex items-center self-center gap-2 input input-bordered input-md size-fit">
                                     <Icon icon={"material-symbols:search"} className='text-xl' />
-                                    <input type="text" placeholder="ชื่อสินค้าหรือชื่อเกม" onChange={filterDataPromotion} />
+                                    <input type="text" placeholder="ชื่อเกมหรือชื่อสินค้า" onChange={filterDataPromotion} />
                                 </label>
                             </div>
                         </div>

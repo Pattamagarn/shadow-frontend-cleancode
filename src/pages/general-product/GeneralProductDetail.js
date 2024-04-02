@@ -82,7 +82,7 @@ const GeneralProductDetail = () => {
                             }, { withCredentials: true })
                                 .then((response) => {
                                     if (response.data.status) {
-                                        //    alertSuccess('สำเร็จ','การซื้อสำเร็จ','ตกลง')
+                                           alertSuccess('สำเร็จ','การซื้อสำเร็จ','ตกลง')
                                     } else {
                                         alertSuccess('ไม่สำเร็จ', 'การซื้อไม่สำเร็จ', 'ตกลง')
                                     }

@@ -7,6 +7,7 @@ import { useState,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 const StoreProduct = () => {
     const isLogin = useSelector((state) => state.isLogin.isLogin)
@@ -14,6 +15,7 @@ const StoreProduct = () => {
     const [data_product, setData_product] = useState([])
     const [record_product,setRecord_product] = useState([])
     const [hideMap,setHideMap] = useState({})
+    const [text,setText] = useState('')
     const isHidden = (rowID) => hideMap[rowID]
 
     useEffect(() => {
@@ -37,6 +39,17 @@ const StoreProduct = () => {
         setHideMap((prevHideMap) => ({
             ...prevHideMap,[rowID] : !prevHideMap[rowID]
         }))
+    }
+
+    const handleCopy = (rowID) => {
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "คัดลอกสำเร็จ",
+            showConfirmButton: false,
+            timer: 500
+          });
+        navigator.clipboard.writeText(rowID)
     }
 
     const columns_data_product = [
@@ -66,6 +79,11 @@ const StoreProduct = () => {
             selector: row => row.method_uuid,
             cell : (row) => [isHidden(row.uuid) ? <div key={row.uuid}>{row.uuid}</div> : <div>xxx-xxx-xxx</div>]
 
+        },
+        {
+            name: 'คัดลอก',
+            // selector: i,
+            cell: (row) => [<div key={row.uuid} className='btn btn-ghost' onClick={() => handleCopy(row.uuid)} >  <Icon icon={"icon-park-solid:copy"} key={row.uuid}  className='text-xl text-shadow-primary' /></div>]
         },
         {
             name: 'ซ่อน',

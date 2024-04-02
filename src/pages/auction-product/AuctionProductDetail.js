@@ -112,7 +112,10 @@ const AuctionProductDetail = () => {
             const newPrice = parseInt(defaultPrice) + parseInt(bid)
             const ayselAmount = isLogin.payload.aysel_amount
             const user = isLogin.payload.email
-            if (bid === '') {
+            if(bid < dataAuction.default_bid){
+                alertWarning('คำเตือน','กรุณาใส่จำนวนที่มากกว่าหรือเท่ากับจำนวนประมูลพื้นฐาน','ตกลง')
+            }
+            else if (bid === '') {
                 Swal.fire({
                     title: 'กรุณาใส่จำนวนที่ต้องการประมูล?',
                     text: 'คุณยังไม่ได้ใส่จำนวนAyselที่ต้องการประมูล',
@@ -135,6 +138,7 @@ const AuctionProductDetail = () => {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         if (newPrice <= parseInt(ayselAmount)) {
+                            setOffer('')
                             axios.patch(`${process.env.REACT_APP_API}/update-bid`, {
                                 uuid: productId,
                                 default_price: newPrice,

@@ -126,7 +126,10 @@ const EditProfile = () => {
                                         (!passwordRequireMent.special) &&
                                         'ต้องการตัวอักษรพิเศษอย่างน้อย 1 ตัว', 'ตกลง')
                     }
-                    updatePasswordAccount(account.email, password.oldPassword, password.newPassword, alertSuccess, alertError, alertWarning)
+                    else{
+                        updatePasswordAccount(account.email, password.oldPassword, password.newPassword, alertSuccess, alertError, alertWarning)
+                    }
+                    
                 }
             }
             else if ((password.newPassword) !== (password.confirmPassword) && (password.newPassword !== '')) {

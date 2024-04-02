@@ -6,7 +6,7 @@ import NavigationAdmin from './NavigationAdmin'
 import { useSelector, useDispatch } from 'react-redux'
 import { setIsLogin } from '../../redux/isLoginSlice'
 
-const Navigation = () => {
+const Navigation = ({refresh}) => {
     const dispatch = useDispatch()
     const isLogin = useSelector((state) => state.isLogin.isLogin)
 
@@ -15,7 +15,7 @@ const Navigation = () => {
         .then((response) => {
             dispatch(setIsLogin({status: response.data.status, payload: response.data.payload}))
         })
-    }, [dispatch])
+    }, [dispatch,refresh])
     
     return (
         <>
