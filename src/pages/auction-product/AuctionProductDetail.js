@@ -37,6 +37,7 @@ const AuctionProductDetail = () => {
                         const usernameResponse = await axios.get(`${process.env.REACT_APP_API}/read-username-by-email/${response.data.payload[0].latest_bidder}`);
                         if (usernameResponse.data.status) {
                             setLatestBidderUsername(usernameResponse.data.payload[0].username);
+                            console.log(usernameResponse.data.payload[0].username)
                         }
                     }
                 }
@@ -269,7 +270,8 @@ const AuctionProductDetail = () => {
                         </div>
                         <div className='flex gap-5'>
                             <span className='text-3xl text-shadow-primary'>โดย</span>
-                            <span className='text-3xl font-semibold text-shadow-primary'>{latestBidderUsername}</span>
+                            {console.log(` lastest ${latestBidderUsername}`)}
+                            <span className='text-3xl font-semibold text-shadow-primary'>{latestBidderUsername.length === 0 ? 'ไร้นาม' : latestBidderUsername }</span>
                         </div>
                     </div>
                     <div className='flex flex-col w-full h-full '>

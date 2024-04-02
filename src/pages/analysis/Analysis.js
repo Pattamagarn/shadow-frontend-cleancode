@@ -110,7 +110,7 @@ const Analysis = () => {
             ]
         },
     ]
-
+    console.log(aysel)
     return (
         <div>
             <MetaHeader title={`วิเคราะห์ข้อมูล`} />
@@ -121,7 +121,7 @@ const Analysis = () => {
                     <span>จำนวนบัญชีทั้งหมดในระบบ {dataMember.length} บัญชี</span>
                     <span>จำนวนบัญชีผู้ดูแลระบบทั้งหมดในระบบ {dataMemberAdmin} บัญชี</span>
                     <span>จำนวนบัญชีสมาชิกทั้งหมดในระบบ { dataMemberUser} บัญชี</span>
-                    <span>จำนวน Aysel ที่ขายไปทั้งหมด {aysel === null ? 0 : aysel} Aysel</span>
+                    <span>จำนวน Aysel ที่ขายไปทั้งหมด {aysel.length === 0 ? 0 : aysel} Aysel</span>
                     <span>จำนวนเงินที่ได้รับทั้งหมด {amount === null ? 0 : amount} บาท</span>
                     <span>จำนวนสินค้าที่ขายไปทั้งหมด {product === null ? 0 : product} ชิ้น</span>
                 </div>
