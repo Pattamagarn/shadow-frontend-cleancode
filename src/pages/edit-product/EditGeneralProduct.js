@@ -105,25 +105,50 @@ const EditGeneralProduct = () => {
 
     const handleEditGeneralProduct = (event) => {        
         event.preventDefault()
-        axios.patch(`${process.env.REACT_APP_API}/update-general-product/${uuid}`,{
-            name: generalProductList.name !== '' ? generalProductList.name : dataGeneral.name,
-            game_name: generalProductList.gameName !== '' ? generalProductList.gameName : dataGeneral.game_name,
-            normal_price: generalProductList.normalPrice !== '' ? generalProductList.normalPrice : dataGeneral.normal_price,
-            special_price: generalProductList.specialPrice !== '' ? generalProductList.specialPrice : dataGeneral.special_price,
-            information: generalProductList.information !== '' ? generalProductList.information : dataGeneral.information,
-            description: generalProductList.description !== '' ? generalProductList.description : dataGeneral.description
-        })
-        .then((response) => {
-            if(response.data.status){
-                alertSuccess("สำเร็จ",response.data.payload,'success')
-            }
-            else {
-                alertError('ผิดพลาด',response.data.payload,'error')
-            }
-        })
-        .catch((error) => {
-            alertError('ผิดพลาด','แก้ไขสินค้าทั่วไปล้มเหลว','error')
-        })
+        if(typeof(generalProductList.information) === 'object'){
+            const formData = new FormData()
+            formData.append('file', generalProductList.information)
+            formData.append('name', generalProductList.name !== '' ? generalProductList.name : dataGeneral.name)
+            formData.append('game_name', generalProductList.gameName !== '' ? generalProductList.gameName : dataGeneral.game_name)
+            formData.append('normal_price', generalProductList.normalPrice !== '' ? generalProductList.normalPrice : dataGeneral.normal_price)
+            formData.append('special_price', generalProductList.specialPrice !== '' ? generalProductList.specialPrice : dataGeneral.special_price)
+            formData.append('description', generalProductList.description !== '' ? generalProductList.description : dataGeneral.description)
+            axios.patch(`${process.env.REACT_APP_API}/update-general-product-image/${uuid}`, formData, {
+                headers: {'Content-Type': 'multipart/form-data'},
+                withCredentials: true
+            })
+            .then((response) => {
+                if(response.data.status){
+                    alertSuccess("สำเร็จ",response.data.payload,'success')
+                }
+                else {
+                    alertError('ผิดพลาด',response.data.payload,'error')
+                }
+            })
+            .catch((error) => {
+                alertError('ผิดพลาด','แก้ไขสินค้าทั่วไปล้มเหลว','error')
+            })
+        }else{
+            axios.patch(`${process.env.REACT_APP_API}/update-general-product/${uuid}`,{
+                name: generalProductList.name !== '' ? generalProductList.name : dataGeneral.name,
+                game_name: generalProductList.gameName !== '' ? generalProductList.gameName : dataGeneral.game_name,
+                normal_price: generalProductList.normalPrice !== '' ? generalProductList.normalPrice : dataGeneral.normal_price,
+                special_price: generalProductList.specialPrice !== '' ? generalProductList.specialPrice : dataGeneral.special_price,
+                information: generalProductList.information !== '' ? generalProductList.information : dataGeneral.information,
+                description: generalProductList.description !== '' ? generalProductList.description : dataGeneral.description
+            })
+            .then((response) => {
+                if(response.data.status){
+                    alertSuccess("สำเร็จ",response.data.payload,'success')
+                }
+                else {
+                    alertError('ผิดพลาด',response.data.payload,'error')
+                }
+            })
+            .catch((error) => {
+                alertError('ผิดพลาด','แก้ไขสินค้าทั่วไปล้มเหลว','error')
+            })
+        }
     }
 
     return (

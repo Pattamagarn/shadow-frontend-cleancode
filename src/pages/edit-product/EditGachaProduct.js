@@ -106,14 +106,18 @@ const EditGachaProduct = () => {
 
     const handleEditGachaProduct = (event) => {
         event.preventDefault()
-        axios.patch(`${process.env.REACT_APP_API}/update-gacha-product/${uuid}`, {  
-            name: gachaProductList.name !== '' ? gachaProductList.name : dataGacha.name,
-            game_name: gachaProductList.gameName !== '' ? gachaProductList.gameName : dataGacha.game_name,
-            chance : gachaProductList.chance !== ''? gachaProductList.chance : dataGacha.chance,
-            guarantee_status:gachaProductList.guaranteeStatus !== '' ? gachaProductList.guaranteeStatus : dataGacha.guaruntee_status,
-            information: gachaProductList.information !== '' ? gachaProductList.information : dataGacha.information,
-            description: gachaProductList.description !== '' ? gachaProductList.description : dataGacha.description
-        })
+        if(typeof(gachaProductList.information) === 'object'){
+            const formData = new FormData()
+            formData.append('file', gachaProductList.information)
+            formData.append('name', gachaProductList.name !== '' ? gachaProductList.name : dataGacha.name)
+            formData.append('game_name', gachaProductList.gameName !== '' ? gachaProductList.gameName : dataGacha.game_name)
+            formData.append('chance', gachaProductList.chance !== ''? gachaProductList.chance : dataGacha.chance)
+            formData.append('guarantee_status', gachaProductList.guaranteeStatus !== '' ? gachaProductList.guaranteeStatus : dataGacha.guaruntee_status)
+            formData.append('description', gachaProductList.description !== '' ? gachaProductList.description : dataGacha.description)
+            axios.patch(`${process.env.REACT_APP_API}/update-gacha-product-image/${uuid}`, formData, {
+                headers: {'Content-Type': 'multipart/form-data'},
+                withCredentials: true
+            })
             .then((response) => {
                 if (response.data.status) {
                     alertSuccess("สำเร็จ", response.data.payload, 'success')
@@ -123,8 +127,29 @@ const EditGachaProduct = () => {
                 }
             })
             .catch((error) => {
-                alertError('ผิดพลาด', 'แก้ไขสินค้าทั่วไปล้มเหลว', 'error')
+                alertError('ผิดพลาด', 'แก้ไขสินค้ากาชาล้มเหลว', 'error')
             })
+        }else{
+            axios.patch(`${process.env.REACT_APP_API}/update-gacha-product/${uuid}`, {  
+                name: gachaProductList.name !== '' ? gachaProductList.name : dataGacha.name,
+                game_name: gachaProductList.gameName !== '' ? gachaProductList.gameName : dataGacha.game_name,
+                chance: gachaProductList.chance !== ''? gachaProductList.chance : dataGacha.chance,
+                guarantee_status:gachaProductList.guaranteeStatus !== '' ? gachaProductList.guaranteeStatus : dataGacha.guaruntee_status,
+                information: gachaProductList.information !== '' ? gachaProductList.information : dataGacha.information,
+                description: gachaProductList.description !== '' ? gachaProductList.description : dataGacha.description
+            })
+            .then((response) => {
+                if (response.data.status) {
+                    alertSuccess("สำเร็จ", response.data.payload, 'success')
+                }
+                else {
+                    alertError('ผิดพลาด', response.data.payload, 'error')
+                }
+            })
+            .catch((error) => {
+                alertError('ผิดพลาด', 'แก้ไขสินค้ากาชาล้มเหลว', 'error')
+            })
+        }
     }
 
     return (

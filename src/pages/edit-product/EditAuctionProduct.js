@@ -115,17 +115,42 @@ const EditAuctionProduct = () => {
 
     const handleEditAuctionProduct = (event) => {
         event.preventDefault()
-        axios.patch(`${process.env.REACT_APP_API}/update-auction-product/${uuid}`, {  
-            name: auctionProductList.name !== '' ? auctionProductList.name : dataAuction.name,
-            game_name: auctionProductList.gameName !== '' ? auctionProductList.gameName : dataAuction.game_name,
-            default_price : auctionProductList.defaultPrice !== '' ? auctionProductList.defaultPrice : dataAuction.default_price,
-            default_bid : auctionProductList.defaultBid !== '' ? auctionProductList.defaultBid : dataAuction.default_bid,
-            start_time : auctionProductList.startTime !== '' ? auctionProductList.startTime : dataAuction.start_time,
-            end_time : auctionProductList.endTime !== '' ? auctionProductList.endTime : dataAuction.end_time,
-            information: auctionProductList.information !== '' ? auctionProductList.information : dataAuction.information,
-            description: auctionProductList.description !== '' ? auctionProductList.description : dataAuction.description
-        })
+        if(typeof(auctionProductList.information) === 'object'){
+            const formData = new FormData()
+            formData.append('file', auctionProductList.information)
+            formData.append('name', auctionProductList.name !== '' ? auctionProductList.name : dataAuction.name)
+            formData.append('game_name', auctionProductList.gameName !== '' ? auctionProductList.gameName : dataAuction.game_name)
+            formData.append('default_price', auctionProductList.defaultPrice !== '' ? auctionProductList.defaultPrice : dataAuction.default_price)
+            formData.append('default_bid', auctionProductList.defaultBid !== '' ? auctionProductList.defaultBid : dataAuction.default_bid)
+            formData.append('start_time', auctionProductList.startTime !== '' ? auctionProductList.startTime : dataAuction.start_time)
+            formData.append('end_time', auctionProductList.endTime !== '' ? auctionProductList.endTime : dataAuction.end_time)
+            formData.append('description', auctionProductList.description !== '' ? auctionProductList.description : dataAuction.description)
+            axios.patch(`${process.env.REACT_APP_API}/update-auction-product-image/${uuid}`, formData, {
+                headers: {'Content-Type': 'multipart/form-data'},
+                withCredentials: true
+            })
             .then((response) => {
+                if(response.data.status){
+                    alertSuccess("สำเร็จ",response.data.payload,'success')
+                }
+                else {
+                    alertError('ผิดพลาด',response.data.payload,'error')
+                }
+            })
+            .catch((error) => {
+                alertError('ผิดพลาด','แก้ไขสินค้าประมูลล้มเหลว','error')
+            })
+        }else{
+            axios.patch(`${process.env.REACT_APP_API}/update-auction-product/${uuid}`, {  
+                name: auctionProductList.name !== '' ? auctionProductList.name : dataAuction.name,
+                game_name: auctionProductList.gameName !== '' ? auctionProductList.gameName : dataAuction.game_name,
+                default_price : auctionProductList.defaultPrice !== '' ? auctionProductList.defaultPrice : dataAuction.default_price,
+                default_bid : auctionProductList.defaultBid !== '' ? auctionProductList.defaultBid : dataAuction.default_bid,
+                start_time : auctionProductList.startTime !== '' ? auctionProductList.startTime : dataAuction.start_time,
+                end_time : auctionProductList.endTime !== '' ? auctionProductList.endTime : dataAuction.end_time,
+                information: auctionProductList.information !== '' ? auctionProductList.information : dataAuction.information,
+                description: auctionProductList.description !== '' ? auctionProductList.description : dataAuction.description
+            }).then((response) => {
                 if (response.data.status) {
                     alertSuccess("สำเร็จ", response.data.payload, 'success')
                 }
@@ -134,8 +159,9 @@ const EditAuctionProduct = () => {
                 }
             })
             .catch((error) => {
-                alertError('ผิดพลาด', 'แก้ไขสินค้าทั่วไปล้มเหลว', 'error')
+                alertError('ผิดพลาด', 'แก้ไขสินค้าประมูลล้มเหลว', 'error')
             })
+        }
     }
     
     return (

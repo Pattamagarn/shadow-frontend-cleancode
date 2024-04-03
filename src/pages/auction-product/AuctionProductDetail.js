@@ -210,7 +210,7 @@ const AuctionProductDetail = () => {
                         email={account.email}
                         initialAyselAmount={parseFloat(account.amount) - parseFloat(dataAuction.default_price)}
                         detail={false}
-
+                        default_price={parseFloat(dataAuction.default_price)}
                         uuid={dataAuction.uuid}
                         game_name={dataAuction.game_name}
                         product_name={dataAuction.name}

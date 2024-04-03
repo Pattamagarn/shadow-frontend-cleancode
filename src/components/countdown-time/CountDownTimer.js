@@ -3,7 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-const CountdownTimer = ({ start_time, end_time, email, initialAyselAmount, detail, uuid, game_name, product_name, product_price, buy_method, product_id, latestBidderEmail }) => {
+const CountdownTimer = ({ start_time, end_time, email, initialAyselAmount, detail, default_price,uuid, game_name, product_name, product_price, buy_method, product_id, latestBidderEmail }) => {
   const [ayselAmount, setAyselAmount] = useState(initialAyselAmount);
   const [day, setDay] = useState('');
   const [hour, seHour] = useState('');
@@ -74,22 +74,39 @@ const CountdownTimer = ({ start_time, end_time, email, initialAyselAmount, detai
                 //   icon: 'error'
                 // });
               })
-            axios.patch(`${process.env.REACT_APP_API}/update-aysel`, {
-              email: email,
-              aysel_amount: ayselAmount
-            }, {
-              withCredentials: true
-            })
-              .then((response) => {
-                if (response.data.status) {
-                  // console.log("Update Aysel finish")
-                } else {
-                  // console.log("Warning")
-                }
+
+              axios.post(`${process.env.REACT_APP_API}/get-aysel`, {
+                email: email,
+                aysel_amount: default_price
+              }, {
+                withCredentials: true
               })
-              .catch((error) => {
-                // console.log(error)
-              })
+                .then((response) => {
+                  if (response.data.status) {
+                    axios.patch(`${process.env.REACT_APP_API}/update-aysel`, {
+                      email: email,
+                      aysel_amount: ayselAmount
+                    }, {
+                      withCredentials: true
+                    })
+                      .then((response) => {
+                        if (response.data.status) {
+                          // console.log("Update Aysel finish")
+                        } else {
+                          // console.log("Warning")
+                        }
+                      })
+                      .catch((error) => {
+                        // console.log(error)
+                      })
+                  } else {
+                    // console.log("Warning")
+                  }
+                })
+                .catch((error) => {
+                  // console.log(error)
+                })
+ 
             axios.post(`${process.env.REACT_APP_API}/create-store-product`, {
               email: email,
               method_uuid: product_id,
